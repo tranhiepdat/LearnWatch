@@ -1139,6 +1139,26 @@ export const watches: Watch[] = [
       "Dùng máy Cal. 4130 huyền thoại, nay đã ngừng để nhường bản gốm 116500LN.",
     ],
   },
+  {
+    id: "rolex-yachtmaster2",
+    brand: "Rolex",
+    collection: "Yacht-Master II",
+    model: "Yacht-Master II (đua thuyền)",
+    nickname: undefined,
+    reference: "116680",
+    materials: ["Oystersteel", "Cerachrom"],
+    bezelColors: ["#0b4ea2"],
+    dialColor: "#eef2f5",
+    caseColor: "steel",
+    caseSize: "44mm",
+    movement: "Cal. 4161",
+    year: "2007",
+    facts: [
+      "Đồng hồ bấm giờ đếm ngược đua thuyền (regatta), lập trình được 1-10 phút.",
+      "Vành 'Ring Command' xoay được để cài đặt bộ đếm - cơ chế độc đáo.",
+      "Vỏ 44mm bản lớn, kim đỏ to và mặt số phụ xanh nổi bật.",
+    ],
+  },
 
   // ----- OMEGA (mở rộng) -----
   {

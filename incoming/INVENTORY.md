@@ -3,9 +3,11 @@
 Bảng này cho biết **ảnh nào là đồng hồ gì**. Cột "Mẫu trong app" là mã (id) tương ứng.
 Dấu **★** = ảnh được chọn làm hình đại diện cho mẫu đó trong app.
 
-> ⚠️ Lưu ý: một số ảnh là hàng nhái/marketplace nên có thể phối mặt số - vỏ không
-> giống cấu hình Rolex chính hãng. Mình nhận diện theo **thiết kế nhìn thấy** để bạn
-> gọi tên khi tư vấn; thông số chính hãng nên đối chiếu lại khi cần.
+> ⚠️ Lưu ý độ tin cậy: ảnh nhỏ (240×320) và nhiều món là hàng nhái/marketplace nên
+> có thể phối mặt số - vỏ không giống cấu hình Rolex chính hãng → rất dễ nhầm.
+> Mình đã **kiểm tra kỹ 23 ảnh đại diện (★)** đang hiển thị trong app. Các dòng còn lại
+> (ảnh trùng mẫu) là **nhận diện nhanh, có thể sai vài tấm**. Bạn cầm đồng hồ thật trong
+> tay nên **soi lại giúp mình** — thấy tấm nào sai tên cứ báo, mình sửa ngay.
 
 | Ảnh | Tên gọi (để nói với khách) | Mẫu trong app |
 |---|---|---|
@@ -27,15 +29,15 @@ Dấu **★** = ảnh được chọn làm hình đại diện cho mẫu đó tr
 | 0182 | Submariner **'Hulk'** (xanh lá toàn bộ) | rolex-sub-hulk ★ |
 | 0183 | GMT-Master II **'Pepsi'** (dây Oyster) | rolex-gmt-pepsi |
 | 0184 | GMT-Master II **'Pepsi'** (dây Jubilee) | rolex-gmt-pepsi ★ |
-| 0185 | GMT-Master II **'Batman'** (dây Oyster) | rolex-gmt-batman ★ |
+| 0185 | Submariner **Vàng vàng 18k** | rolex-sub-yellowgold |
 | 0186 | GMT-Master II **'Batgirl'** (Batman dây Jubilee) | rolex-gmt-batman |
 | 0187 | Submariner Date **Vàng vàng 18k** | rolex-sub-yellowgold ★ |
-| 0188 | GMT-Master II **'Batgirl'** (dây Jubilee) | rolex-gmt-batman |
+| 0188 | GMT-Master II **'Batman'** (dây Oyster) | rolex-gmt-batman ★ |
 | 0189 | GMT-Master II **'Coke'** (đỏ/đen) | rolex-gmt-coke |
 | 0190 | GMT-Master II **'Batman'** (dây Oyster) | rolex-gmt-batman |
-| 0191 | Yacht-Master **'Rolesium'** (bezel platinum) | rolex-yachtmaster-rolesium |
-| 0192 | Yacht-Master **'Rolesium'** | rolex-yachtmaster-rolesium ★ |
-| 0193 | Yacht-Master **'Rolesium'** | rolex-yachtmaster-rolesium |
+| 0191 | Yacht-Master mặt xanh (có thể YM II) | rolex-yachtmaster2 ? |
+| 0192 | **Yacht-Master II** (đua thuyền, mặt xanh) | rolex-yachtmaster2 ★ |
+| 0193 | Yacht-Master mặt xanh (có thể YM II) | rolex-yachtmaster2 ? |
 | 0194 | GMT-Master II **'Coke'** (đỏ/đen) | rolex-gmt-coke |
 | 0195 | Submariner mặt xanh (**'Smurf'**) | rolex-sub-smurf |
 | 0196 | Yacht-Master 42 Everose hai tông (mặt nạm) | rolex-yachtmaster42 ★ |
@@ -43,7 +45,7 @@ Dấu **★** = ảnh được chọn làm hình đại diện cho mẫu đó tr
 | 0198 | Daytona Platinum **'Ice Blue'** | rolex-daytona-platinum |
 | 0199 | Daytona **'Panda'** (vàng trắng) | rolex-daytona-panda |
 | 0200 | Daytona thép vành thép, mặt đen (đời cũ) | rolex-daytona-steel-vintage |
-| 0201 | Daytona thép mặt đen (vành gốm) | rolex-daytona-blackceramic |
+| 0201 | Daytona thép mặt đen (vành gốm) | rolex-daytona-blackceramic ★ |
 | 0202 | Daytona mặt đen vành gốm (vàng trắng, Oysterflex) | rolex-daytona-blackceramic |
 | 0203 | Daytona thép mặt đen vành gốm (Oysterflex) | rolex-daytona-blackceramic |
 | 0204 | Daytona **Vàng vàng**, mặt trắng | rolex-daytona-yellowgold ★ |
@@ -58,7 +60,7 @@ Dấu **★** = ảnh được chọn làm hình đại diện cho mẫu đó tr
 | 0213 | Daytona thép vành thép, mặt xanh (đời cũ) | rolex-daytona-steel-vintage |
 | 0214 | Daytona thép vành thép, mặt đen (đời cũ) | rolex-daytona-steel-vintage ★ |
 | 0215 | Daytona **'Panda'** (thép, vành gốm) | rolex-daytona-panda ★ |
-| 0216 | Daytona thép mặt đen (vành gốm) | rolex-daytona-blackceramic ★ |
+| 0216 | Daytona thép mặt đen | rolex-daytona-blackceramic |
 | 0217 | Daytona Vàng trắng, mặt xà cừ nạm kim cương | rolex-daytona-whitegold |
 | 0218 | Daytona Platinum **'Ice Blue'** | rolex-daytona-platinum ★ |
 | 0219 | Daytona thép vành thép, mặt xám (đời cũ) | rolex-daytona-steel-vintage |
@@ -74,7 +76,7 @@ Dấu **★** = ảnh được chọn làm hình đại diện cho mẫu đó tr
 - **GMT-Master II**: Pepsi (4), Batman/Batgirl (5), Coke (3), Sprite (1), Root Beer (1), Hai tông đen (2), bezel đen thép (1)
 - **Submariner**: Date đen (3), Smurf xanh (2), Hulk (1), Vàng vàng (1)
 - **Sea-Dweller Deepsea**: James Cameron (2)
-- **Yacht-Master**: Rolesium (3), YM42 Everose (1)
+- **Yacht-Master**: Yacht-Master II mặt xanh (3), YM42 Everose (1)
 - **Daytona** (nhiều nhất): Panda (3), mặt đen vành gốm (4), thép đời cũ (5), Vàng vàng (4), Everose (1), Hai tông (3), Platinum Ice Blue (3), Vàng trắng (5), Rainbow (2)
 
 ➡️ 60 ảnh gộp thành **23 mẫu khác nhau**, mỗi mẫu đã có 1 ảnh đại diện (★) hiển thị trong app.
