@@ -1,8 +1,9 @@
 import { watches } from "@/data/watches";
 import { terms } from "@/data/terms";
+import { watchPhotos } from "@/data/photos";
 import type { Brand } from "@/data/types";
 
-export type QuizCategory = "Biệt danh" | "Mẫu mã" | "Chất liệu";
+export type QuizCategory = "Biệt danh" | "Mẫu mã" | "Chất liệu" | "Nhìn hình";
 export type QuizBrand = Brand | "Chung";
 
 export interface QuizQuestion {
@@ -13,6 +14,8 @@ export interface QuizQuestion {
   options: string[];
   correctIndex: number;
   explanation: string;
+  /** Duong dan anh /watches/<id>.jpg cho cau hoi nhin hinh */
+  image?: string;
 }
 
 export function shuffle<T>(arr: T[]): T[] {
@@ -37,11 +40,12 @@ function assemble(
   correct: string,
   pool: string[],
   explanation: string,
+  image?: string,
 ): QuizQuestion | null {
   const distractors = pickDistractors(pool, correct);
   if (distractors.length < 3) return null;
   const options = shuffle([correct, ...distractors]);
-  return { id, brand, category, prompt, options, correctIndex: options.indexOf(correct), explanation };
+  return { id, brand, category, prompt, options, correctIndex: options.indexOf(correct), explanation, image };
 }
 
 /** Sinh toan bo kho cau hoi co the co tu data. */
@@ -120,6 +124,47 @@ export function buildPool(): QuizQuestion[] {
       `${t.term} (${t.brand}) — ${t.detail}`,
     );
     if (q4) out.push(q4);
+  }
+
+  // ----- Cau hoi NHIN HINH (chi cho mau co anh that) -----
+  const labelOf = (w: (typeof watches)[number]) => w.nickname ?? w.model;
+  for (const w of watches) {
+    if (!watchPhotos.has(w.id)) continue;
+    const img = `/watches/${w.id}.jpg`;
+
+    // 1) Nhin anh -> doan ten mau
+    const sameColl = watches
+      .filter((x) => x.id !== w.id && x.collection === w.collection)
+      .map(labelOf);
+    const allLabels = watches.filter((x) => x.id !== w.id).map(labelOf);
+    const idPool = sameColl.length >= 3 ? sameColl : [...sameColl, ...allLabels];
+    const qImg = assemble(
+      `img-${w.id}`,
+      w.brand,
+      "Nhìn hình",
+      "Đồng hồ trong ảnh là mẫu nào?",
+      labelOf(w),
+      idPool,
+      `${w.brand} ${w.model}${w.reference ? ` — ref ${w.reference}` : ""}.`,
+      img,
+    );
+    if (qImg) out.push(qImg);
+
+    // 2) Nhin anh -> doan biet danh (neu co)
+    if (w.nickname) {
+      const nickPool = watches.filter((x) => x.id !== w.id && x.nickname).map((x) => x.nickname!);
+      const qNick = assemble(
+        `imgnick-${w.id}`,
+        w.brand,
+        "Nhìn hình",
+        "Biệt danh của đồng hồ trong ảnh là gì?",
+        w.nickname,
+        nickPool,
+        `${w.model}${w.nicknameMeaning ? `: ${w.nicknameMeaning}` : ""}`,
+        img,
+      );
+      if (qNick) out.push(qNick);
+    }
   }
 
   return out;

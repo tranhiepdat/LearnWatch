@@ -9,6 +9,7 @@ const CAT_COLOR: Record<string, string> = {
   "Biệt danh": "bg-amber-100 text-amber-800",
   "Mẫu mã": "bg-sky-100 text-sky-800",
   "Chất liệu": "bg-violet-100 text-violet-800",
+  "Nhìn hình": "bg-rose-100 text-rose-800",
 };
 
 export default function QuizRunner({
@@ -121,6 +122,15 @@ export default function QuizRunner({
           {q.category}
         </span>
         <h2 className="mt-3 text-lg font-bold leading-snug text-slate-900">{q.prompt}</h2>
+
+        {q.image && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={q.image}
+            alt="Đồng hồ cần nhận diện"
+            className="mx-auto mt-3 h-60 w-60 rounded-2xl object-cover shadow-md"
+          />
+        )}
 
         <div className="mt-4 grid gap-2.5">
           {q.options.map((opt, i) => {

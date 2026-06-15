@@ -15,7 +15,7 @@ const MODES = [
     href: "/quiz",
     emoji: "🎯",
     title: "Trắc nghiệm",
-    desc: "Đố vui 4 đáp án, có giải thích. Cộng XP, giữ chuỗi ngày.",
+    desc: "Đố 4 đáp án + nhìn hình đoán mẫu. Có giải thích, cộng XP.",
     color: "from-amber-500 to-orange-600",
   },
   {

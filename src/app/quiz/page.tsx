@@ -9,7 +9,7 @@ type BrandOpt = "Tất cả" | Brand;
 type CatOpt = "Tất cả" | QuizCategory;
 
 const BRANDS: BrandOpt[] = ["Tất cả", "Rolex", "Omega"];
-const CATS: CatOpt[] = ["Tất cả", "Biệt danh", "Mẫu mã", "Chất liệu"];
+const CATS: CatOpt[] = ["Tất cả", "Nhìn hình", "Biệt danh", "Mẫu mã", "Chất liệu"];
 const LENGTHS = [5, 10, 15];
 
 export default function QuizPage() {
