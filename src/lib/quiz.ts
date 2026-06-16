@@ -1,4 +1,4 @@
-import { watches } from "@/data/watches";
+import { visibleWatches as watches } from "@/data/watches";
 import { terms } from "@/data/terms";
 import { watchPhotos } from "@/data/photos";
 import type { Brand } from "@/data/types";

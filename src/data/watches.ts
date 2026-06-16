@@ -1,4 +1,5 @@
 import type { Watch } from "./types";
+import { watchPhotos } from "./photos";
 
 /**
  * Thu vien dong ho - tap trung Rolex & Omega.
@@ -1391,3 +1392,6 @@ for (const w of watches) {
 export const getWatch = (id: string) => watches.find((w) => w.id === id);
 export const rolexWatches = watches.filter((w) => w.brand === "Rolex");
 export const omegaWatches = watches.filter((w) => w.brand === "Omega");
+
+/** Chi nhung mau DA CO ANH that — dung de hien thi/hoc/quiz (mau chua co anh tam an). */
+export const visibleWatches = watches.filter((w) => watchPhotos.has(w.id));

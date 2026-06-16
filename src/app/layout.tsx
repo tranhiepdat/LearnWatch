@@ -1,18 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
 import TopBar from "@/components/TopBar";
 import BottomNav from "@/components/BottomNav";
 
-const display = Playfair_Display({
+const sans = Be_Vietnam_Pro({
   subsets: ["latin", "vietnamese"],
-  weight: ["500", "600", "700", "800"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const sans = Inter({
-  subsets: ["latin", "vietnamese"],
+  weight: ["400", "500", "600", "700", "800"],
   variable: "--font-sans",
   display: "swap",
 });
@@ -31,11 +25,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="vi" className={`${display.variable} ${sans.variable}`}>
+    <html lang="vi" className={sans.variable}>
       <body>
-        <div className="app-frame relative flex min-h-[100dvh] flex-col">
+        <div className="app-frame relative flex h-[100dvh] flex-col">
           <TopBar />
-          <main className="relative z-10 flex-1 px-5 pb-28 pt-1">{children}</main>
+          <main className="relative z-10 min-h-0 flex-1 overflow-y-auto px-5 pb-28 pt-1">{children}</main>
           <BottomNav />
         </div>
       </body>

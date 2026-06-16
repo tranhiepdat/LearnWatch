@@ -76,7 +76,7 @@ export default function SwipeDeck({
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="card-lux flex h-[clamp(440px,60vh,560px)] flex-col items-center justify-center gap-4 p-8 text-center"
+        className="card-lux flex h-full min-h-[420px] flex-col items-center justify-center gap-4 p-8 text-center"
       >
         <IconSparkle className="h-10 w-10 text-gold-300" />
         <h2 className="font-display text-3xl font-semibold gold-text">Hoàn thành bộ thẻ</h2>
@@ -99,8 +99,8 @@ export default function SwipeDeck({
   }
 
   return (
-    <div className="select-none">
-      <div className="relative h-[clamp(440px,60vh,560px)]">
+    <div className="flex h-full select-none flex-col">
+      <div className="relative min-h-0 flex-1">
         {/* the nen phia sau (chieu sau) */}
         {next && (
           <div className="absolute inset-x-4 top-3 h-full origin-top scale-[0.94] opacity-50">
@@ -112,6 +112,7 @@ export default function SwipeDeck({
         <motion.div
           key={current.id}
           drag="x"
+          dragDirectionLock
           dragElastic={0.55}
           dragConstraints={{ left: 0, right: 0 }}
           style={{ x, rotate }}
@@ -147,10 +148,12 @@ export default function SwipeDeck({
                   src={`/watches/${current.id}.jpg`}
                   alt={current.model}
                   draggable={false}
-                  className="h-[232px] w-[232px] rounded-2xl object-cover shadow-gold ring-1 ring-hairline"
+                  className="aspect-square w-[min(232px,40vh)] rounded-2xl object-cover shadow-gold ring-1 ring-hairline"
                 />
               ) : (
-                <WatchVisual watch={current} size={224} />
+                <div className="grid aspect-square w-[min(224px,40vh)] place-items-center">
+                  <WatchVisual watch={current} size={210} forceSvg className="h-full w-full" />
+                </div>
               )}
 
               <div className="text-center">
@@ -248,7 +251,7 @@ export default function SwipeDeck({
       </div>
 
       {/* nut dieu khien + tien do */}
-      <div className="mt-5 flex items-center justify-center gap-5">
+      <div className="mt-4 flex shrink-0 items-center justify-center gap-5">
         <button
           onClick={() => fling(-1)}
           aria-label="Ôn lại"

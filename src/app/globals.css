@@ -19,9 +19,11 @@ body {
 
 body {
   @apply bg-ink text-ivory font-sans;
-  background-image: radial-gradient(120% 80% at 50% -10%, #1b1726 0%, #0b0a0f 58%);
+  background-image: radial-gradient(120% 80% at 50% -10%, #123524 0%, #0a0f0c 58%);
   background-attachment: fixed;
-  overscroll-behavior-y: none;
+  height: 100dvh;
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 /* Hat ben (grain) tinh te phu toan trang */

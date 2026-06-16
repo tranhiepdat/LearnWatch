@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import SwipeDeck from "@/components/SwipeDeck";
-import { watches } from "@/data/watches";
+import { visibleWatches as watches } from "@/data/watches";
 import { shuffle } from "@/lib/quiz";
 import { getProgress, toggleLearned } from "@/lib/progress";
 import { playTap } from "@/lib/sound";
@@ -37,11 +37,11 @@ export default function FlashcardsPage() {
   );
 
   return (
-    <div className="space-y-5">
+    <div className="flex h-full flex-col gap-3">
       <div className="flex items-end justify-between">
         <div>
           <p className="label-luxe">Flashcard</p>
-          <h1 className="font-display text-3xl font-semibold text-ivory">Lật &amp; vuốt thẻ</h1>
+          <h1 className="font-display text-2xl font-semibold text-ivory">Lật &amp; vuốt thẻ</h1>
         </div>
       </div>
 
@@ -62,17 +62,19 @@ export default function FlashcardsPage() {
         ))}
       </div>
 
-      {deck.length > 0 ? (
-        <SwipeDeck
-          key={deckKey}
-          deck={deck}
-          learned={learned}
-          onToggleLearned={(id) => setLearned(toggleLearned(id).learned)}
-          onReshuffle={() => rebuild(base)}
-        />
-      ) : (
-        <p className="text-center text-taupe">Không có thẻ nào.</p>
-      )}
+      <div className="min-h-0 flex-1">
+        {deck.length > 0 ? (
+          <SwipeDeck
+            key={deckKey}
+            deck={deck}
+            learned={learned}
+            onToggleLearned={(id) => setLearned(toggleLearned(id).learned)}
+            onReshuffle={() => rebuild(base)}
+          />
+        ) : (
+          <p className="text-center text-taupe">Không có thẻ nào.</p>
+        )}
+      </div>
     </div>
   );
 }

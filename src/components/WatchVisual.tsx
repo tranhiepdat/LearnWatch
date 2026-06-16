@@ -30,15 +30,17 @@ export default function WatchVisual({
   watch,
   size = 200,
   className = "",
+  forceSvg = false,
 }: {
   watch: Watch;
   size?: number;
   className?: string;
+  forceSvg?: boolean;
 }) {
   const [imgFailed, setImgFailed] = useState(false);
   const src = watch.image ?? `/watches/${watch.id}.jpg`;
 
-  if (!imgFailed) {
+  if (!forceSvg && !imgFailed) {
     // Thu tai anh that; neu khong co file se tu chuyen sang ve SVG.
     // eslint-disable-next-line @next/next/no-img-element
     return (

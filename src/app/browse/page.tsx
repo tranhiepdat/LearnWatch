@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import WatchVisual from "@/components/WatchVisual";
-import { watches } from "@/data/watches";
+import { visibleWatches as watches } from "@/data/watches";
 import { terms } from "@/data/terms";
 import { playTap } from "@/lib/sound";
 
