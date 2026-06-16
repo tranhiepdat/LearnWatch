@@ -3,17 +3,72 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
 }
 
 html,
 body {
+  height: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  @apply bg-slate-50 text-slate-900;
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
-    "Noto Sans", sans-serif;
+  @apply bg-ink text-ivory font-sans;
+  background-image: radial-gradient(120% 80% at 50% -10%, #1b1726 0%, #0b0a0f 58%);
+  background-attachment: fixed;
+  overscroll-behavior-y: none;
+}
+
+/* Hat ben (grain) tinh te phu toan trang */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background: rgba(212, 185, 120, 0.28);
+  color: #fff;
+}
+
+/* Scrollbar manh mai */
+::-webkit-scrollbar { width: 0px; height: 0px; }
+* { scrollbar-width: none; }
+
+@layer components {
+  .gold-text {
+    @apply bg-gold-foil bg-clip-text text-transparent;
+    background-size: 200% auto;
+  }
+  .hairline {
+    @apply border border-hairline;
+  }
+  .label-luxe {
+    @apply text-[10px] font-semibold uppercase tracking-luxe text-gold-400/80;
+  }
+  .card-lux {
+    @apply rounded-[26px] border border-hairline bg-surface shadow-lux;
+  }
+  /* khung "app" tren man hinh lon */
+  .app-frame {
+    @apply mx-auto w-full max-w-[480px];
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
 }

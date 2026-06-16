@@ -14,6 +14,8 @@ export interface QuizQuestion {
   options: string[];
   correctIndex: number;
   explanation: string;
+  /** Mau dong ho cau hoi nhac toi (de hien info chi tiet khi tra loi) */
+  watchId?: string;
   /** Duong dan anh /watches/<id>.jpg cho cau hoi nhin hinh */
   image?: string;
 }
@@ -40,12 +42,13 @@ function assemble(
   correct: string,
   pool: string[],
   explanation: string,
+  watchId?: string,
   image?: string,
 ): QuizQuestion | null {
   const distractors = pickDistractors(pool, correct);
   if (distractors.length < 3) return null;
   const options = shuffle([correct, ...distractors]);
-  return { id, brand, category, prompt, options, correctIndex: options.indexOf(correct), explanation, image };
+  return { id, brand, category, prompt, options, correctIndex: options.indexOf(correct), explanation, watchId, image };
 }
 
 /** Sinh toan bo kho cau hoi co the co tu data. */
@@ -66,6 +69,7 @@ export function buildPool(): QuizQuestion[] {
         w.nickname,
         [...sameBrandNicks, ...allNicknames],
         `${w.model}${w.nicknameMeaning ? `: ${w.nicknameMeaning}` : ""}`,
+        w.id,
       );
       if (q1) out.push(q1);
 
@@ -80,6 +84,7 @@ export function buildPool(): QuizQuestion[] {
         w.reference,
         sameBrandRefs,
         `${w.nickname} = ${w.brand} ${w.collection}, ref ${w.reference}.`,
+        w.id,
       );
       if (q2) out.push(q2);
     }
@@ -94,6 +99,7 @@ export function buildPool(): QuizQuestion[] {
         w.nicknameMeaning,
         pool,
         `${w.model}.`,
+        w.id,
       );
       if (q5) out.push(q5);
     }
@@ -146,6 +152,7 @@ export function buildPool(): QuizQuestion[] {
       labelOf(w),
       idPool,
       `${w.brand} ${w.model}${w.reference ? ` — ref ${w.reference}` : ""}.`,
+      w.id,
       img,
     );
     if (qImg) out.push(qImg);
@@ -161,6 +168,7 @@ export function buildPool(): QuizQuestion[] {
         w.nickname,
         nickPool,
         `${w.model}${w.nicknameMeaning ? `: ${w.nicknameMeaning}` : ""}`,
+        w.id,
         img,
       );
       if (qNick) out.push(qNick);

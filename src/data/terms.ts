@@ -225,6 +225,221 @@ export const terms: Term[] = [
     detail:
       "Hợp chất phát quang an toàn (không phóng xạ như Radium/Tritium xưa). 'Sạc' bằng ánh sáng rồi tự phát sáng. Omega dùng rộng rãi; Rolex phát triển bản riêng tên Chromalight (ánh xanh).",
   },
+
+  // ===================== TÊN MÀU / MẶT SỐ (tiếng Anh) =====================
+  {
+    id: "en-mop",
+    brand: "Chung",
+    term: "Mother of Pearl (MOP)",
+    category: "Tên màu (EN)",
+    short: "Mặt xà cừ — ánh ngũ sắc, mỗi mặt độc nhất.",
+    detail:
+      "MOP = lớp xà cừ (vỏ trai) cắt lát làm mặt số, ánh lấp lánh chuyển màu theo góc nhìn. Có white/black/blue/pink MOP. Sale nói: 'mother of pearl dial'.",
+  },
+  {
+    id: "en-meteorite",
+    brand: "Chung",
+    term: "Meteorite dial",
+    category: "Tên màu (EN)",
+    short: "Mặt làm từ lát thiên thạch — vân Widmanstätten độc nhất.",
+    detail:
+      "Cắt từ thiên thạch sắt-niken (thường Gibeon), ăn mòn axit để lộ vân kim loại đan chéo. Mỗi mặt khác nhau, không cái nào giống cái nào.",
+  },
+  {
+    id: "en-tropical",
+    brand: "Chung",
+    term: "Tropical dial",
+    category: "Tên màu (EN)",
+    short: "Mặt đen ngả nâu theo thời gian — vintage rất được giá.",
+    detail:
+      "Do tia UV, mặt số đen vintage phai thành nâu ('tropical'). Đồng đều đẹp thì cộng giá mạnh. Omega NTTD cố tình làm tông 'tropical brown'.",
+  },
+  {
+    id: "en-sundust",
+    brand: "Rolex",
+    term: "Sundust / Champagne",
+    category: "Tên màu (EN)",
+    short: "Mặt ánh vàng hồng nhạt (Everose) / vàng champagne.",
+    detail:
+      "'Sundust' là mặt ánh hồng-champagne của Rolex Everose; 'Champagne' là tông vàng nhạt. Khác 'gold' đậm. Dùng cho Daytona/Datejust vàng.",
+  },
+  {
+    id: "en-slate",
+    brand: "Chung",
+    term: "Slate / Rhodium / Anthracite",
+    category: "Tên màu (EN)",
+    short: "Các sắc xám: slate (xám đá), rhodium (xám ánh bạc), anthracite (xám than).",
+    detail:
+      "Ba từ chỉ mặt xám ở các độ đậm khác nhau. Wimbledon dùng nền slate. Khách hỏi 'grey dial' thì phân biệt 3 sắc này cho sang.",
+  },
+  {
+    id: "en-panda",
+    brand: "Chung",
+    term: "Panda / Reverse Panda",
+    category: "Tên màu (EN)",
+    short: "Chrono: mặt trắng + mắt đen (Panda) hoặc mặt đen + mắt trắng (Reverse).",
+    detail:
+      "Mô tả tương phản mặt số bấm giờ. 'Panda' = nền trắng, 3 mặt phụ đen. 'Reverse/Black Panda' = nền đen, mặt phụ trắng/bạc.",
+  },
+
+  // ===================== THUẬT NGỮ CHẤT LIỆU / KỸ THUẬT (tiếng Anh) =====================
+  {
+    id: "en-white-gold",
+    brand: "Chung",
+    term: "White gold",
+    category: "Thuật ngữ EN",
+    short: "Vàng trắng 18k — nhìn như thép nhưng nặng & quý hơn nhiều.",
+    detail:
+      "Hợp kim vàng + palladium/bạch kim. Trông giống Oystersteel nên là món 'stealth wealth'. Đừng nhầm với thép khi báo giá! Rolex: 'white gold'; Omega: Canopus gold.",
+  },
+  {
+    id: "en-rose-gold",
+    brand: "Chung",
+    term: "Rose / Everose / Sedna gold",
+    category: "Thuật ngữ EN",
+    short: "Vàng hồng 18k — Rolex gọi Everose, Omega gọi Sedna.",
+    detail:
+      "Vàng hồng pha platinum/palladium để giữ màu không phai. 'Rose gold' là tên chung; Everose (Rolex) và Sedna (Omega) là tên độc quyền.",
+  },
+  {
+    id: "en-two-tone",
+    brand: "Chung",
+    term: "Two-tone (Rolesor)",
+    category: "Thuật ngữ EN",
+    short: "Kết hợp thép + vàng; Rolex gọi Rolesor.",
+    detail:
+      "'Two-tone' = steel + gold. Rolex: Yellow/Everose/White Rolesor. Khách Tây quen từ 'two-tone'. Full vàng thì nói 'solid gold' / 'full gold'.",
+  },
+  {
+    id: "en-oystersteel",
+    brand: "Rolex",
+    term: "Oystersteel (904L)",
+    category: "Thuật ngữ EN",
+    short: "Thép 904L của Rolex — chống ăn mòn & giữ bóng tốt hơn 316L.",
+    detail:
+      "Sale tip: nhấn 'this is 904L Oystersteel, not the 316L most brands use' để tạo giá trị. Bóng và bền hơn thép thường.",
+  },
+  {
+    id: "en-oysterflex",
+    brand: "Rolex",
+    term: "Oysterflex strap",
+    category: "Thuật ngữ EN",
+    short: "Dây 'cao su' nhưng lõi lá kim loại — bền, thể thao, sang.",
+    detail:
+      "Bên trong là lá kim loại đàn hồi phủ cao su cao cấp (elastomer). Đeo như rubber nhưng chắc như bracelet. Hay đi với Daytona/Yacht-Master vàng.",
+  },
+  {
+    id: "en-bracelets",
+    brand: "Chung",
+    term: "Oyster / Jubilee / President / Mesh / NATO",
+    category: "Thuật ngữ EN",
+    short: "Các loại dây phổ biến — biết tên tiếng Anh để tư vấn nhanh.",
+    detail:
+      "Oyster (3 mắt thể thao) · Jubilee (5 mắt mềm) · President (3 mắt bán nguyệt, kim loại quý) · Mesh (lưới, Omega NTTD) · NATO (vải luồn).",
+  },
+  {
+    id: "en-chronograph",
+    brand: "Chung",
+    term: "Chronograph",
+    category: "Thuật ngữ EN",
+    short: "Đồng hồ bấm giờ (Daytona, Speedmaster).",
+    detail:
+      "'Chronograph' = bấm giờ thể thao với mặt số phụ + nút bấm. Đừng nhầm 'chronometer' (chứng nhận độ chính xác). Daytona & Speedmaster là chronograph.",
+  },
+  {
+    id: "en-caliber",
+    brand: "Chung",
+    term: "Caliber (Cal.) / Movement",
+    category: "Thuật ngữ EN",
+    short: "Bộ máy bên trong — vd Cal. 3135, 4130, 3861.",
+    detail:
+      "'Movement' / 'caliber' = cỗ máy. Rolex 3135/3235 (auto), 4130/4131 (Daytona). Omega 3861 (Moonwatch), 8800/8900 (Master Chronometer).",
+  },
+
+  // ===================== THỊ TRƯỜNG & GIÁ (sale tiếng Anh) =====================
+  {
+    id: "mk-fullset",
+    brand: "Chung",
+    term: "Full Set / Box & Papers",
+    category: "Thị trường & giá",
+    short: "Đủ hộp, thẻ bảo hành, phụ kiện — cộng giá & dễ bán.",
+    detail:
+      "'Full set' = watch + box + papers (warranty card) + phụ kiện. 'B&P' = box & papers. Thiếu giấy gọi 'watch only' (giá thấp hơn).",
+  },
+  {
+    id: "mk-spread",
+    brand: "Chung",
+    term: "Spread / Premium",
+    category: "Thị trường & giá",
+    short: "Chênh lệch giữa giá niêm yết (retail) và giá chợ (market).",
+    detail:
+      "Mẫu hot bán trên retail → 'trading at a premium'. 'Spread' là khoảng chênh. Pepsi/Daytona thép thường premium cao; nhiều mẫu vàng bán dưới retail.",
+  },
+  {
+    id: "mk-grey",
+    brand: "Chung",
+    term: "Grey market / AD / Waitlist",
+    category: "Thị trường & giá",
+    short: "AD = đại lý chính hãng; grey = chợ ngoài; waitlist = danh sách chờ.",
+    detail:
+      "AD (Authorized Dealer) bán giá retail nhưng mẫu hot phải 'waitlist'. Grey market mua bán tự do, giá theo cung-cầu, thường cao hơn retail với mẫu hype.",
+  },
+  {
+    id: "mk-hype",
+    brand: "Chung",
+    term: "Hype / Discontinued premium",
+    category: "Thị trường & giá",
+    short: "Mẫu được săn hoặc ngừng sản xuất → giá leo.",
+    detail:
+      "'Hype' = nhu cầu nóng (Hulk, Pepsi, Snoopy). 'Discontinued' = ngừng SX, khan hàng đẩy giá lên (Hulk, Milgauss). Sale tip: nhấn 'discontinued, prices only going up'.",
+  },
+  {
+    id: "mk-condition",
+    brand: "Chung",
+    term: "LNIB / NOS / Patina",
+    category: "Thị trường & giá",
+    short: "Thuật ngữ tình trạng: như mới / tồn kho cũ / lên màu thời gian.",
+    detail:
+      "LNIB = Like New In Box. NOS = New Old Stock (mới nhưng đời cũ). Patina = vết lên màu/oxi hoá tự nhiên (vintage, đôi khi cộng giá). 'Unpolished' = chưa đánh bóng (được chuộng).",
+  },
+  {
+    id: "mk-disclaimer",
+    brand: "Chung",
+    term: "Lưu ý về giá resale",
+    category: "Thị trường & giá",
+    short: "Giá trong app là tham khảo thị trường genuine, biến động mạnh.",
+    detail:
+      "Các con số resale chỉ mang tính tham khảo cho hàng chính hãng (genuine) và thay đổi theo thời điểm, tình trạng, full set. Luôn kiểm tra giá thực tế trước khi chốt.",
+  },
+
+  // ===================== PHÂN LOẠI XƯỞNG & MÁY (kiến thức thị trường) =====================
+  {
+    id: "fac-superclone",
+    brand: "Chung",
+    term: "Super clone / 1:1",
+    category: "Xưởng & Máy",
+    short: "Thuật ngữ chỉ bản sao chép sát bản gốc về kích thước & chi tiết.",
+    detail:
+      "Trong thị trường, 'super clone' / '1:1' chỉ mức độ sao chép cao về cân nặng, vật liệu và bố cục mặt số so với bản chính hãng. Đây là kiến thức nhận diện thị trường.",
+  },
+  {
+    id: "fac-factories",
+    brand: "Chung",
+    term: "VSF / Clean / BT / EWF",
+    category: "Xưởng & Máy",
+    short: "Tên các 'factory' thường được nhắc trong thị trường.",
+    detail:
+      "VSF (VS Factory), Clean Factory (CF), BT/BTF, EWF, ARF, ZF... là các tên xưởng thường được nhắc tới gắn với từng dòng (vd CF/VSF cho Sub-GMT, EWF cho Daytona). Biết tên giúp hiểu khách đang nói gì.",
+  },
+  {
+    id: "fac-clone-movement",
+    brand: "Chung",
+    term: "Clone movement (VR3135 / SH3135 / Clone 4130)",
+    category: "Xưởng & Máy",
+    short: "Máy được chế tạo mô phỏng kết cấu của bộ máy chính hãng.",
+    detail:
+      "VR3135/SH3135 mô phỏng Rolex 3135; 'Clone 4130/4131' mô phỏng máy Daytona. Khác 'Asian/ETA movement' là máy nền phổ thông. Đây là thuật ngữ kỹ thuật thị trường.",
+  },
 ];
 
 export const getTerm = (id: string) => terms.find((t) => t.id === id);

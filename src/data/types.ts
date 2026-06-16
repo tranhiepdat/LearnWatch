@@ -33,9 +33,24 @@ export interface Watch {
   funFact?: string;
   /** Ghi de duong dan anh neu khac mac dinh */
   image?: string;
+  /** Ten mau dac biet trong tieng Anh (vd "Wimbledon", "Tiffany", "Stelline") */
+  colorEn?: string;
+  /** Khoang gia resale tham khao (de sale tieng Anh) */
+  resale?: string;
+  /** Thuat ngu thi truong / tieng Anh lien quan */
+  marketTerms?: string;
 }
 
-export type TermCategory = "Chất liệu" | "Công nghệ" | "Dây đeo & khóa" | "Bộ máy" | "Chứng nhận";
+export type TermCategory =
+  | "Chất liệu"
+  | "Công nghệ"
+  | "Dây đeo & khóa"
+  | "Bộ máy"
+  | "Chứng nhận"
+  | "Tên màu (EN)"
+  | "Thuật ngữ EN"
+  | "Thị trường & giá"
+  | "Xưởng & Máy";
 
 export interface Term {
   id: string;

@@ -1,42 +1,63 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { motion, AnimatePresence, useAnimationControls, animate } from "framer-motion";
 import type { QuizQuestion } from "@/lib/quiz";
+import { getWatch } from "@/data/watches";
+import { hasPhoto } from "@/data/photos";
 import { recordQuiz } from "@/lib/progress";
+import { playTap, playCorrect, playWrong, playComplete } from "@/lib/sound";
+import GoldBurst from "./GoldBurst";
+import { IconCheck, IconClose, IconFlame, IconGem } from "./icons";
 
 const CAT_COLOR: Record<string, string> = {
-  "Biệt danh": "bg-amber-100 text-amber-800",
-  "Mẫu mã": "bg-sky-100 text-sky-800",
-  "Chất liệu": "bg-violet-100 text-violet-800",
-  "Nhìn hình": "bg-rose-100 text-rose-800",
+  "Biệt danh": "text-gold-300",
+  "Mẫu mã": "text-sage",
+  "Chất liệu": "text-champagne",
+  "Nhìn hình": "text-bordeaux",
 };
 
-export default function QuizRunner({
-  questions,
-  onRestart,
-}: {
-  questions: QuizQuestion[];
-  onRestart: () => void;
-}) {
+function Counter({ to }: { to: number }) {
+  const [v, setV] = useState(0);
+  useEffect(() => {
+    const c = animate(0, to, { duration: 0.9, ease: "easeOut", onUpdate: (x) => setV(Math.round(x)) });
+    return () => c.stop();
+  }, [to]);
+  return <>{v}</>;
+}
+
+export default function QuizRunner({ questions, onRestart }: { questions: QuizQuestion[]; onRestart: () => void }) {
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
   const [finished, setFinished] = useState(false);
   const [savedXp, setSavedXp] = useState(0);
   const [streak, setStreak] = useState(0);
+  const [burstKey, setBurstKey] = useState(0);
+  const shake = useAnimationControls();
 
   const q = questions[index];
   const total = questions.length;
   const answered = selected !== null;
+  const watch = q?.watchId ? getWatch(q.watchId) : undefined;
+  const pct = useMemo(() => Math.round((correctCount / Math.max(total, 1)) * 100), [correctCount, total]);
 
   function choose(i: number) {
     if (answered) return;
     setSelected(i);
-    if (i === q.correctIndex) setCorrectCount((c) => c + 1);
+    if (i === q.correctIndex) {
+      setCorrectCount((c) => c + 1);
+      setBurstKey((k) => k + 1);
+      playCorrect();
+    } else {
+      playWrong();
+      shake.start({ x: [0, -10, 10, -7, 7, 0], transition: { duration: 0.42 } });
+    }
   }
 
   function next() {
+    playTap();
     if (index + 1 < total) {
       setIndex((i) => i + 1);
       setSelected(null);
@@ -45,16 +66,15 @@ export default function QuizRunner({
       setSavedXp(correctCount * 10);
       setStreak(p.streak);
       setFinished(true);
+      playComplete();
     }
   }
 
-  const pct = useMemo(() => Math.round((correctCount / Math.max(total, 1)) * 100), [correctCount, total]);
-
   if (total === 0) {
     return (
-      <div className="rounded-2xl bg-white p-8 text-center shadow">
-        <p className="text-slate-600">Chưa có câu hỏi cho bộ lọc này.</p>
-        <button onClick={onRestart} className="mt-4 rounded-xl bg-slate-900 px-5 py-2 text-white">
+      <div className="card-lux p-8 text-center">
+        <p className="text-taupe">Chưa có câu hỏi cho bộ lọc này.</p>
+        <button onClick={onRestart} className="mt-4 rounded-2xl bg-gold-foil px-5 py-2.5 font-bold text-ink">
           Chọn lại
         </button>
       </div>
@@ -64,117 +84,170 @@ export default function QuizRunner({
   if (finished) {
     const passed = pct >= 70;
     return (
-      <div className="rounded-3xl bg-white p-8 text-center shadow-xl">
-        <div className="text-6xl">{passed ? "🎉" : "💪"}</div>
-        <h2 className="mt-3 text-2xl font-extrabold text-slate-900">
-          {passed ? "Tuyệt vời!" : "Cố thêm chút nữa!"}
+      <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="card-lux p-8 text-center">
+        <p className="label-luxe">{passed ? "Xuất sắc" : "Tiếp tục cố gắng"}</p>
+        <h2 className="mt-1 font-display text-4xl font-semibold gold-text">
+          {correctCount}/{total}
         </h2>
-        <p className="mt-1 text-slate-600">
-          Đúng <span className="font-bold text-slate-900">{correctCount}</span>/{total} câu ({pct}%)
-        </p>
+        <p className="mt-1 text-taupe">{pct}% chính xác</p>
 
-        <div className="mx-auto mt-5 grid max-w-xs grid-cols-2 gap-3">
-          <div className="rounded-2xl bg-amber-50 p-4">
-            <p className="text-2xl font-extrabold text-amber-600">+{savedXp}</p>
-            <p className="text-xs text-amber-700">XP nhận được</p>
+        <div className="mx-auto mt-6 grid max-w-xs grid-cols-2 gap-3">
+          <div className="rounded-2xl border border-hairline p-4">
+            <IconGem className="mx-auto h-5 w-5 text-gold-300" />
+            <p className="mt-1 font-display text-2xl font-semibold text-gold-300">
+              +<Counter to={savedXp} />
+            </p>
+            <p className="text-[11px] text-taupe">XP</p>
           </div>
-          <div className="rounded-2xl bg-orange-50 p-4">
-            <p className="text-2xl font-extrabold text-orange-600">🔥 {streak}</p>
-            <p className="text-xs text-orange-700">Chuỗi ngày học</p>
+          <div className="rounded-2xl border border-hairline p-4">
+            <IconFlame className="mx-auto h-5 w-5 text-gold-300" />
+            <p className="mt-1 font-display text-2xl font-semibold text-gold-300">{streak}</p>
+            <p className="text-[11px] text-taupe">chuỗi ngày</p>
           </div>
         </div>
 
         <div className="mt-6 flex flex-col gap-2 sm:flex-row">
-          <button
-            onClick={onRestart}
-            className="flex-1 rounded-xl bg-rolex py-3 font-bold text-white transition hover:opacity-90"
-          >
-            Làm bộ mới
+          <button onClick={onRestart} className="flex-1 rounded-2xl bg-gold-foil py-3 font-bold text-ink shadow-glow active:scale-95">
+            Bộ câu mới
           </button>
-          <Link
-            href="/"
-            className="flex-1 rounded-xl bg-slate-100 py-3 font-bold text-slate-700 transition hover:bg-slate-200"
-          >
+          <Link href="/" className="flex-1 rounded-2xl border border-hairline py-3 font-bold text-ivory active:scale-95">
             Về trang chủ
           </Link>
         </div>
-      </div>
+      </motion.div>
     );
   }
 
   return (
     <div>
-      {/* thanh tien do */}
       <div className="mb-4 flex items-center gap-3">
-        <div className="h-3 flex-1 overflow-hidden rounded-full bg-slate-200">
-          <div
-            className="h-full rounded-full bg-rolex transition-all duration-300"
-            style={{ width: `${(index / total) * 100}%` }}
+        <div className="h-2 flex-1 overflow-hidden rounded-full bg-surface-2">
+          <motion.div
+            className="h-full rounded-full bg-gold-foil"
+            animate={{ width: `${(index / total) * 100}%` }}
+            transition={{ type: "spring", stiffness: 200, damping: 30 }}
           />
         </div>
-        <span className="text-sm font-semibold text-slate-500">
+        <span className="font-mono text-xs text-taupe">
           {index + 1}/{total}
         </span>
       </div>
 
-      <div className="rounded-3xl bg-white p-6 shadow-xl">
-        <span className={`inline-block rounded-full px-3 py-1 text-xs font-bold ${CAT_COLOR[q.category] ?? "bg-slate-100 text-slate-700"}`}>
-          {q.category}
-        </span>
-        <h2 className="mt-3 text-lg font-bold leading-snug text-slate-900">{q.prompt}</h2>
-
-        {q.image && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={q.image}
-            alt="Đồng hồ cần nhận diện"
-            className="mx-auto mt-3 h-60 w-60 rounded-2xl object-cover shadow-md"
-          />
-        )}
-
-        <div className="mt-4 grid gap-2.5">
-          {q.options.map((opt, i) => {
-            const isCorrect = i === q.correctIndex;
-            const isSelected = i === selected;
-            let style = "border-slate-200 bg-white hover:border-slate-400";
-            if (answered) {
-              if (isCorrect) style = "border-emerald-500 bg-emerald-50 text-emerald-900";
-              else if (isSelected) style = "border-red-400 bg-red-50 text-red-900";
-              else style = "border-slate-200 bg-white opacity-60";
-            }
-            return (
-              <button
-                key={i}
-                onClick={() => choose(i)}
-                disabled={answered}
-                className={`flex items-center justify-between rounded-2xl border-2 px-4 py-3 text-left text-sm font-medium transition ${style}`}
-              >
-                <span>{opt}</span>
-                {answered && isCorrect && <span>✓</span>}
-                {answered && isSelected && !isCorrect && <span>✕</span>}
-              </button>
-            );
-          })}
-        </div>
-
-        {answered && (
-          <div className="mt-4 rounded-2xl bg-slate-50 p-4 text-sm text-slate-700">
-            <p className="font-semibold text-slate-900">
-              {selected === q.correctIndex ? "✅ Chính xác!" : "❌ Chưa đúng"}
-            </p>
-            <p className="mt-1">{q.explanation}</p>
-          </div>
-        )}
-      </div>
-
-      {answered && (
-        <button
-          onClick={next}
-          className="mt-4 w-full rounded-2xl bg-rolex py-3.5 font-bold text-white transition hover:opacity-90"
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -40 }}
+          transition={{ duration: 0.25 }}
         >
-          {index + 1 < total ? "Câu tiếp theo →" : "Xem kết quả"}
-        </button>
-      )}
+          <motion.div animate={shake} className="card-lux relative overflow-hidden p-6">
+            {burstKey > 0 && answered && selected === q.correctIndex && <GoldBurst key={burstKey} />}
+
+            <span className={`label-luxe ${CAT_COLOR[q.category] ?? "text-taupe"}`}>{q.category}</span>
+            <h2 className="mt-2 text-lg font-bold leading-snug text-ivory">{q.prompt}</h2>
+
+            {q.image && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <motion.img
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                src={q.image}
+                alt="Đồng hồ cần nhận diện"
+                className="mx-auto mt-3 h-60 w-60 rounded-2xl object-cover shadow-gold ring-1 ring-hairline"
+              />
+            )}
+
+            <div className="mt-4 grid gap-2.5">
+              {q.options.map((opt, i) => {
+                const isCorrect = i === q.correctIndex;
+                const isSelected = i === selected;
+                let cls = "border-hairline text-ivory";
+                if (answered) {
+                  if (isCorrect) cls = "border-gold-400 bg-gold-500/12 text-champagne";
+                  else if (isSelected) cls = "border-bordeaux bg-bordeaux/10 text-ivory";
+                  else cls = "border-hairline text-taupe opacity-55";
+                }
+                return (
+                  <motion.button
+                    key={i}
+                    onClick={() => choose(i)}
+                    disabled={answered}
+                    whileTap={{ scale: answered ? 1 : 0.97 }}
+                    className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-left text-sm font-medium transition ${cls}`}
+                  >
+                    <span>{opt}</span>
+                    {answered && isCorrect && <IconCheck className="h-5 w-5 text-gold-300" />}
+                    {answered && isSelected && !isCorrect && <IconClose className="h-5 w-5 text-bordeaux" />}
+                  </motion.button>
+                );
+              })}
+            </div>
+
+            <AnimatePresence>
+              {answered && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  className="mt-4 overflow-hidden"
+                >
+                  <div className="rounded-2xl border border-hairline bg-surface-2 p-4 text-sm">
+                    <p className={`font-semibold ${selected === q.correctIndex ? "text-gold-300" : "text-bordeaux"}`}>
+                      {selected === q.correctIndex ? "Chính xác" : "Chưa đúng"}
+                    </p>
+
+                    {watch ? (
+                      <div className="mt-2.5">
+                        <div className="flex gap-3">
+                          {hasPhoto(watch.id) && !q.image && (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={`/watches/${watch.id}.jpg`}
+                              alt={watch.model}
+                              className="h-16 w-16 shrink-0 rounded-xl object-cover ring-1 ring-hairline"
+                            />
+                          )}
+                          <div className="min-w-0">
+                            <p className="font-display text-base font-semibold leading-tight text-ivory">{watch.model}</p>
+                            {watch.reference && <p className="font-mono text-[11px] text-taupe">Ref. {watch.reference}</p>}
+                            {watch.colorEn && <p className="text-[11px] text-gold-300">EN: {watch.colorEn}</p>}
+                          </div>
+                        </div>
+                        <p className="mt-2 text-ivory/85">
+                          {watch.nickname && watch.nicknameMeaning
+                            ? `“${watch.nickname}” — ${watch.nicknameMeaning}`
+                            : "Mẫu này không có biệt danh dân chơi phổ biến — dân trong nghề gọi theo cấu hình (chất liệu + màu mặt số), vd “Daytona vàng vàng mặt champagne”."}
+                        </p>
+                        <p className="mt-1.5 text-champagne">✦ {watch.funFact ?? watch.facts[0]}</p>
+                        {watch.resale && (
+                          <p className="mt-1.5 text-xs text-taupe">
+                            Giá resale tham khảo: <span className="text-gold-300">{watch.resale}</span>
+                          </p>
+                        )}
+                      </div>
+                    ) : (
+                      <p className="mt-1 text-ivory/85">{q.explanation}</p>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </motion.div>
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {answered && (
+          <motion.button
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            onClick={next}
+            className="mt-4 w-full rounded-2xl bg-gold-foil py-3.5 font-bold text-ink shadow-glow active:scale-[0.98]"
+          >
+            {index + 1 < total ? "Câu tiếp theo" : "Xem kết quả"}
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

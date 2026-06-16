@@ -1330,6 +1330,64 @@ export const watches: Watch[] = [
   },
 ];
 
+/**
+ * Bo sung thuat ngu tieng Anh (ten mau) + gia resale tham khao (thi truong genuine,
+ * USD, mang tinh tham khao va bien dong). Gan vao tung mau qua id de khoi sua tay.
+ */
+const enrich: Record<string, { colorEn?: string; resale?: string; marketTerms?: string }> = {
+  "rolex-gmt-pepsi": { colorEn: "Pepsi · red & blue ('BLRO')", resale: "~$18–24k" },
+  "rolex-gmt-batman": { colorEn: "Batman / Batgirl · black & blue ('BLNR')", resale: "~$15–19k" },
+  "rolex-gmt-rootbeer": { colorEn: "Root Beer · brown & black", resale: "~$15–18k" },
+  "rolex-gmt-sprite": { colorEn: "Sprite · black & green · left-hand 'destro'", resale: "~$18–22k" },
+  "rolex-gmt-coke": { colorEn: "Coke · red & black", resale: "~$10–16k (vintage)" },
+  "rolex-gmt-twotone": { colorEn: "Two-tone / Yellow Rolesor", resale: "~$16–19k" },
+  "rolex-gmt-black": { colorEn: "Black bezel · steel", resale: "~$16–20k" },
+  "rolex-sub-hulk": { colorEn: "Hulk · green dial + green bezel", resale: "~$20–26k" },
+  "rolex-sub-starbucks": { colorEn: "Starbucks / Cermit · green bezel, black dial", resale: "~$14–17k" },
+  "rolex-sub-kermit": { colorEn: "Kermit · green bezel (aluminium)", resale: "~$16–22k" },
+  "rolex-sub-smurf": { colorEn: "Smurf · blue (white gold)", resale: "~$38–46k" },
+  "rolex-sub-bluesy": { colorEn: "Bluesy · blue (two-tone gold)", resale: "~$17–21k" },
+  "rolex-sub-date": { colorEn: "Black ('LN' = lunette noire)", resale: "~$13–15k" },
+  "rolex-sub-nodate": { colorEn: "No-date · black", resale: "~$10–12k" },
+  "rolex-sub-yellowgold": { colorEn: "Full yellow gold · black", resale: "~$38–46k" },
+  "rolex-deepsea-jamescameron": { colorEn: "D-Blue · 'James Cameron'", resale: "~$13–16k" },
+  "rolex-seadweller": { colorEn: "Black · Sea-Dweller", resale: "~$12–14k" },
+  "rolex-daytona-panda": { colorEn: "White 'Panda' dial", resale: "~$30–40k" },
+  "rolex-daytona-blackceramic": { colorEn: "Black dial · ceramic bezel", resale: "~$30–38k" },
+  "rolex-daytona-platinum": { colorEn: "Ice Blue (platinum-only) · chestnut bezel", resale: "~$80–110k" },
+  "rolex-daytona-yellowgold": { colorEn: "Champagne / Sundust · yellow gold", resale: "~$40–50k" },
+  "rolex-daytona-everose": { colorEn: "Everose (rose gold)", resale: "~$40–48k" },
+  "rolex-daytona-twotone": { colorEn: "Two-tone / Yellow Rolesor", resale: "~$22–28k" },
+  "rolex-daytona-whitegold": { colorEn: "White gold · MOP / blue / diamond", resale: "~$45–65k" },
+  "rolex-daytona-steel-vintage": { colorEn: "Steel bezel (pre-ceramic '116520')", resale: "~$22–30k" },
+  "rolex-daytona-rainbow": { colorEn: "Rainbow · sapphire gradient bezel", resale: "~$300–500k" },
+  "rolex-daytona-lemans": { colorEn: "Le Mans · reverse panda, red 100", resale: "~$80–120k" },
+  "rolex-datejust-wimbledon": { colorEn: "Wimbledon · slate dial, green Roman", resale: "~$9–12k" },
+  "rolex-daydate-president": { colorEn: "President · champagne, yellow gold", resale: "~$36–48k" },
+  "rolex-daydate-platinum": { colorEn: "Ice Blue (platinum-only)", resale: "~$75–95k" },
+  "rolex-explorer1": { colorEn: "Black · 3-6-9", resale: "~$7.5–9k" },
+  "rolex-explorer2-polar": { colorEn: "Polar · white dial", resale: "~$9–11k" },
+  "rolex-airking": { colorEn: "Black · green seconds", resale: "~$6.5–8k" },
+  "rolex-milgauss-gv": { colorEn: "Z-Green sapphire · lightning hand", resale: "~$9–12k (discontinued)" },
+  "rolex-op-celebration": { colorEn: "Celebration · turquoise 'bubbles'", resale: "~$18–28k (hype)" },
+  "rolex-yachtmaster-rolesium": { colorEn: "Rolesium · platinum bezel, rhodium dial", resale: "~$12–14k" },
+  "rolex-yachtmaster42": { colorEn: "White gold · matte black, Oysterflex", resale: "~$28–34k" },
+  "rolex-yachtmaster2": { colorEn: "Regatta · blue Ring Command", resale: "~$19–24k" },
+  "rolex-skydweller": { colorEn: "Annual calendar · dual time", resale: "~$16–20k" },
+  "omega-speedmaster-moonwatch": { colorEn: "Moonwatch · black, Hesalite", resale: "~$6–7k" },
+  "omega-speedmaster-snoopy": { colorEn: "Snoopy · blue (Silver Snoopy)", resale: "~$25–40k (hype)" },
+  "omega-speedmaster-darkside": { colorEn: "Dark Side · black ceramic", resale: "~$10–13k" },
+  "omega-seamaster-bond": { colorEn: "Bond · blue ceramic wave dial", resale: "~$5.5–6.5k" },
+  "omega-aquaterra": { colorEn: "Teak · vertical-line dial", resale: "~$5–6k" },
+  "omega-planetocean": { colorEn: "Black & orange", resale: "~$6–7k" },
+  "omega-seamaster-nttd": { colorEn: "No Time To Die · titanium, tropical brown", resale: "~$9–12k" },
+  "omega-speedmaster-ultraman": { colorEn: "Ultraman · orange chrono hand", resale: "~$12–18k" },
+};
+for (const w of watches) {
+  const e = enrich[w.id];
+  if (e) Object.assign(w, e);
+}
+
 export const getWatch = (id: string) => watches.find((w) => w.id === id);
 export const rolexWatches = watches.filter((w) => w.brand === "Rolex");
 export const omegaWatches = watches.filter((w) => w.brand === "Omega");

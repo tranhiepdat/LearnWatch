@@ -1,44 +1,43 @@
 import type { Metadata, Viewport } from "next";
-import Link from "next/link";
+import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
+import TopBar from "@/components/TopBar";
+import BottomNav from "@/components/BottomNav";
+
+const display = Playfair_Display({
+  subsets: ["latin", "vietnamese"],
+  weight: ["500", "600", "700", "800"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const sans = Inter({
+  subsets: ["latin", "vietnamese"],
+  variable: "--font-sans",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "LearnWatch — Học đồng hồ cho Sale",
   description:
-    "App học đồng hồ kiểu Duolingo: mẫu mã, biệt danh dân chơi, chất liệu. Tập trung Rolex & Omega.",
+    "Học mẫu mã, biệt danh, chất liệu & thuật ngữ đồng hồ cao cấp. Flashcard, trắc nghiệm nhìn hình. Rolex & Omega.",
 };
 
 export const viewport: Viewport = {
-  themeColor: "#006039",
+  themeColor: "#0B0A0F",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="vi">
+    <html lang="vi" className={`${display.variable} ${sans.variable}`}>
       <body>
-        <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/80 backdrop-blur">
-          <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
-            <Link href="/" className="flex items-center gap-2 font-extrabold text-slate-900">
-              <span className="text-xl">⌚</span>
-              <span>LearnWatch</span>
-            </Link>
-            <nav className="flex gap-1 text-sm font-semibold">
-              <Link href="/flashcards" className="rounded-lg px-3 py-1.5 text-slate-600 hover:bg-slate-100">
-                Flashcard
-              </Link>
-              <Link href="/quiz" className="rounded-lg px-3 py-1.5 text-slate-600 hover:bg-slate-100">
-                Trắc nghiệm
-              </Link>
-              <Link href="/browse" className="rounded-lg px-3 py-1.5 text-slate-600 hover:bg-slate-100">
-                Tra cứu
-              </Link>
-            </nav>
-          </div>
-        </header>
-        <main className="mx-auto max-w-3xl px-4 py-6">{children}</main>
-        <footer className="mx-auto max-w-3xl px-4 py-10 text-center text-xs text-slate-400">
-          LearnWatch · Công cụ đào tạo sale đồng hồ · Rolex &amp; Omega
-        </footer>
+        <div className="app-frame relative flex min-h-[100dvh] flex-col">
+          <TopBar />
+          <main className="relative z-10 flex-1 px-5 pb-28 pt-1">{children}</main>
+          <BottomNav />
+        </div>
       </body>
     </html>
   );

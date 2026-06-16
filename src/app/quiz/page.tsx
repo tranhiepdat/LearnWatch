@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import QuizRunner from "@/components/QuizRunner";
 import { generateQuiz, type QuizCategory, type QuizQuestion } from "@/lib/quiz";
+import { playTap } from "@/lib/sound";
 import type { Brand } from "@/data/types";
 
 type BrandOpt = "Tất cả" | Brand;
@@ -19,55 +21,73 @@ export default function QuizPage() {
   const [questions, setQuestions] = useState<QuizQuestion[] | null>(null);
 
   function start() {
-    const qs = generateQuiz(count, {
-      brand: brand === "Tất cả" ? undefined : brand,
-      category: cat === "Tất cả" ? undefined : cat,
-    });
-    setQuestions(qs);
-  }
-
-  if (questions) {
-    return (
-      <div className="space-y-4">
-        <QuizRunner questions={questions} onRestart={() => setQuestions(null)} />
-      </div>
+    playTap();
+    setQuestions(
+      generateQuiz(count, {
+        brand: brand === "Tất cả" ? undefined : brand,
+        category: cat === "Tất cả" ? undefined : cat,
+      }),
     );
   }
 
+  if (questions) {
+    return <QuizRunner questions={questions} onRestart={() => setQuestions(null)} />;
+  }
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-7">
       <div>
-        <h1 className="text-2xl font-extrabold text-slate-900">Trắc nghiệm 🎯</h1>
-        <p className="mt-1 text-slate-600">Chọn phạm vi rồi bắt đầu. Mỗi câu đúng +10 XP.</p>
+        <p className="label-luxe">Trắc nghiệm</p>
+        <h1 className="font-display text-3xl font-semibold text-ivory">Thử tài nhận diện</h1>
+        <p className="mt-1 text-sm text-taupe">Có cả câu nhìn hình. Mỗi câu đúng +10 XP.</p>
       </div>
 
       <Picker label="Hãng" options={BRANDS} value={brand} onChange={setBrand} />
       <Picker label="Chủ đề" options={CATS} value={cat} onChange={setCat} />
 
       <div>
-        <p className="mb-2 text-sm font-bold uppercase tracking-wide text-slate-400">Số câu</p>
+        <p className="label-luxe mb-2">Số câu</p>
         <div className="flex gap-2">
           {LENGTHS.map((n) => (
-            <button
-              key={n}
-              onClick={() => setCount(n)}
-              className={`rounded-full px-5 py-1.5 text-sm font-semibold transition ${
-                count === n ? "bg-slate-900 text-white" : "bg-white text-slate-600 hover:bg-slate-100"
-              }`}
-            >
+            <Chip key={n} active={count === n} onClick={() => setCount(n)}>
               {n} câu
-            </button>
+            </Chip>
           ))}
         </div>
       </div>
 
-      <button
+      <motion.button
+        whileTap={{ scale: 0.97 }}
         onClick={start}
-        className="w-full rounded-2xl bg-gradient-to-r from-amber-500 to-orange-600 py-4 text-lg font-extrabold text-white shadow-lg transition hover:opacity-95"
+        className="w-full rounded-2xl bg-gold-foil py-4 font-display text-lg font-semibold text-ink shadow-glow"
       >
-        Bắt đầu →
-      </button>
+        Bắt đầu
+      </motion.button>
     </div>
+  );
+}
+
+function Chip({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      onClick={() => {
+        onClick();
+        playTap();
+      }}
+      className={`rounded-full px-4 py-1.5 text-sm font-semibold transition active:scale-95 ${
+        active ? "bg-gold-foil text-ink shadow-glow" : "border border-hairline text-taupe"
+      }`}
+    >
+      {children}
+    </button>
   );
 }
 
@@ -84,18 +104,12 @@ function Picker<T extends string>({
 }) {
   return (
     <div>
-      <p className="mb-2 text-sm font-bold uppercase tracking-wide text-slate-400">{label}</p>
+      <p className="label-luxe mb-2">{label}</p>
       <div className="flex flex-wrap gap-2">
         {options.map((o) => (
-          <button
-            key={o}
-            onClick={() => onChange(o)}
-            className={`rounded-full px-4 py-1.5 text-sm font-semibold transition ${
-              value === o ? "bg-slate-900 text-white" : "bg-white text-slate-600 hover:bg-slate-100"
-            }`}
-          >
+          <Chip key={o} active={value === o} onClick={() => onChange(o)}>
             {o}
-          </button>
+          </Chip>
         ))}
       </div>
     </div>
