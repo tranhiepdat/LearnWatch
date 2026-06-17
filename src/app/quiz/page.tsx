@@ -10,7 +10,7 @@ import type { Brand } from "@/data/types";
 type BrandOpt = "Tất cả" | Brand;
 type CatOpt = "Tất cả" | QuizCategory;
 
-const BRANDS: BrandOpt[] = ["Tất cả", "Rolex", "Omega"];
+const BRANDS: BrandOpt[] = ["Tất cả", "Rolex", "TAG Heuer", "Omega"];
 const CATS: CatOpt[] = ["Tất cả", "Nhìn hình", "Biệt danh", "Mẫu mã", "Chất liệu"];
 const LENGTHS = [5, 10, 15];
 
@@ -31,7 +31,11 @@ export default function QuizPage() {
   }
 
   if (questions) {
-    return <QuizRunner questions={questions} onRestart={() => setQuestions(null)} />;
+    return (
+      <div className="h-full">
+        <QuizRunner questions={questions} onRestart={() => setQuestions(null)} />
+      </div>
+    );
   }
 
   return (

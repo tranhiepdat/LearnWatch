@@ -9,7 +9,7 @@ import { playTap } from "@/lib/sound";
 import type { Brand } from "@/data/types";
 
 type Filter = "Tất cả" | Brand;
-const FILTERS: Filter[] = ["Tất cả", "Rolex", "Omega"];
+const FILTERS: Filter[] = ["Tất cả", "Rolex", "TAG Heuer"];
 
 export default function FlashcardsPage() {
   const [filter, setFilter] = useState<Filter>("Tất cả");

@@ -43,6 +43,17 @@ export default function SwipeDeck({
     if (done) playComplete();
   }, [done]);
 
+  // Tai truoc anh cac the sap toi -> khong bi "chop" khi swipe
+  useEffect(() => {
+    [0, 1, 2, 3].forEach((d) => {
+      const w = deck[index + d];
+      if (w && hasPhoto(w.id) && typeof window !== "undefined") {
+        const im = new window.Image();
+        im.src = `/watches/${w.id}.jpg`;
+      }
+    });
+  }, [index, deck]);
+
   function fling(dir: 1 | -1) {
     if (busy.current || !current) return;
     busy.current = true;
@@ -103,8 +114,18 @@ export default function SwipeDeck({
       <div className="relative min-h-0 flex-1">
         {/* the nen phia sau (chieu sau) */}
         {next && (
-          <div className="absolute inset-x-4 top-3 h-full origin-top scale-[0.94] opacity-50">
-            <div className="card-lux h-full" />
+          <div className="absolute inset-x-3 top-3 h-full origin-top scale-[0.94] opacity-40">
+            <div className="card-lux flex h-full items-center justify-center overflow-hidden">
+              {hasPhoto(next.id) ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={`/watches/${next.id}.jpg`}
+                  alt=""
+                  aria-hidden
+                  className="h-[55%] w-auto rounded-2xl object-cover blur-[1px]"
+                />
+              ) : null}
+            </div>
           </div>
         )}
 
@@ -227,9 +248,16 @@ export default function SwipeDeck({
                 </p>
               )}
 
-              <div className="mt-auto grid grid-cols-2 gap-2 pt-3 text-xs text-taupe">
+              {current.tip && (
+                <p className="mt-3 rounded-xl border border-gold-700/40 bg-gold-500/10 p-2.5 text-xs text-gold-300">
+                  💡 {current.tip}
+                </p>
+              )}
+
+              <div className="mt-auto grid grid-cols-2 gap-y-1 pt-3 text-xs text-taupe">
+                {current.year && <span className="text-gold-300">📅 {current.year}</span>}
                 {current.caseSize && <span>◷ {current.caseSize}</span>}
-                {current.movement && <span>⚙ {current.movement}</span>}
+                {current.movement && <span className="col-span-2">⚙ {current.movement}</span>}
               </div>
             </div>
           </motion.div>

@@ -21,6 +21,13 @@ const flakes = Array.from({ length: FLAKES }).map((_, i) => ({
 export default function GoldBurst() {
   return (
     <div className="pointer-events-none absolute inset-0 z-30 grid place-items-center overflow-hidden">
+      {/* flash neon trung tam */}
+      <motion.div
+        initial={{ opacity: 0.55, scale: 0.2 }}
+        animate={{ opacity: 0, scale: 2.3 }}
+        transition={{ duration: 0.45, ease: "easeOut" }}
+        className="absolute h-36 w-36 rounded-full bg-gold-300 blur-2xl"
+      />
       {/* vong song vang */}
       <motion.div
         initial={{ scale: 0, opacity: 0.7 }}

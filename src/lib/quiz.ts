@@ -70,6 +70,7 @@ export function buildPool(): QuizQuestion[] {
         [...sameBrandNicks, ...allNicknames],
         `${w.model}${w.nicknameMeaning ? `: ${w.nicknameMeaning}` : ""}`,
         w.id,
+        `/watches/${w.id}.jpg`,
       );
       if (q1) out.push(q1);
 
@@ -85,6 +86,7 @@ export function buildPool(): QuizQuestion[] {
         sameBrandRefs,
         `${w.nickname} = ${w.brand} ${w.collection}, ref ${w.reference}.`,
         w.id,
+        `/watches/${w.id}.jpg`,
       );
       if (q2) out.push(q2);
     }
@@ -100,6 +102,7 @@ export function buildPool(): QuizQuestion[] {
         pool,
         `${w.model}.`,
         w.id,
+        `/watches/${w.id}.jpg`,
       );
       if (q5) out.push(q5);
     }

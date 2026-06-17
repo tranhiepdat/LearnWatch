@@ -1,12 +1,13 @@
 import type { Watch } from "./types";
 import { watchPhotos } from "./photos";
+import { extraWatches } from "./watchesExtra";
 
 /**
  * Thu vien dong ho - tap trung Rolex & Omega.
  * Moi mau co: ma tham chieu, bien danh dan choi, chat lieu, mau bezel/dial de ve visual.
  * De them anh that: dat file vao /public/watches/<id>.jpg (vd rolex-gmt-pepsi.jpg)
  */
-export const watches: Watch[] = [
+const coreWatches: Watch[] = [
   // ============================ ROLEX ============================
   {
     id: "rolex-gmt-pepsi",
@@ -1330,6 +1331,8 @@ export const watches: Watch[] = [
     ],
   },
 ];
+
+export const watches: Watch[] = [...coreWatches, ...extraWatches];
 
 /**
  * Bo sung thuat ngu tieng Anh (ten mau) + gia resale tham khao (thi truong genuine,

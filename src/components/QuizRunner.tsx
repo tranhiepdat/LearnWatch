@@ -119,8 +119,8 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
   }
 
   return (
-    <div>
-      <div className="mb-4 flex items-center gap-3">
+    <div className="flex h-full flex-col">
+      <div className="mb-3 flex shrink-0 items-center gap-3">
         <div className="h-2 flex-1 overflow-hidden rounded-full bg-surface-2">
           <motion.div
             className="h-full rounded-full bg-gold-foil"
@@ -133,6 +133,7 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
         </span>
       </div>
 
+      <div className="-mx-1 min-h-0 flex-1 overflow-y-auto px-1">
       <AnimatePresence mode="wait">
         <motion.div
           key={index}
@@ -154,7 +155,7 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
                 animate={{ opacity: 1, scale: 1 }}
                 src={q.image}
                 alt="Đồng hồ cần nhận diện"
-                className="mx-auto mt-3 h-60 w-60 rounded-2xl object-cover shadow-gold ring-1 ring-hairline"
+                className="mx-auto mt-3 aspect-square w-[min(280px,56vw)] rounded-2xl object-cover shadow-gold ring-1 ring-hairline"
               />
             )}
 
@@ -164,7 +165,7 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
                 const isSelected = i === selected;
                 let cls = "border-hairline text-ivory";
                 if (answered) {
-                  if (isCorrect) cls = "border-gold-400 bg-gold-500/12 text-champagne";
+                  if (isCorrect) cls = "border-gold-400 bg-gold-500/12 text-champagne neon-correct";
                   else if (isSelected) cls = "border-bordeaux bg-bordeaux/10 text-ivory";
                   else cls = "border-hairline text-taupe opacity-55";
                 }
@@ -209,7 +210,10 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
                           )}
                           <div className="min-w-0">
                             <p className="font-display text-base font-semibold leading-tight text-ivory">{watch.model}</p>
-                            {watch.reference && <p className="font-mono text-[11px] text-taupe">Ref. {watch.reference}</p>}
+                            <p className="text-[11px] text-taupe">
+                              {watch.reference && <span className="font-mono">Ref. {watch.reference} · </span>}
+                              {watch.year && <span className="text-gold-300">Năm {watch.year}</span>}
+                            </p>
                             {watch.colorEn && <p className="text-[11px] text-gold-300">EN: {watch.colorEn}</p>}
                           </div>
                         </div>
@@ -224,6 +228,7 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
                             Giá resale tham khảo: <span className="text-gold-300">{watch.resale}</span>
                           </p>
                         )}
+                        {watch.tip && <p className="mt-1.5 text-xs text-gold-300">💡 {watch.tip}</p>}
                       </div>
                     ) : (
                       <p className="mt-1 text-ivory/85">{q.explanation}</p>
@@ -235,6 +240,7 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
           </motion.div>
         </motion.div>
       </AnimatePresence>
+      </div>
 
       <AnimatePresence>
         {answered && (
@@ -242,7 +248,7 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             onClick={next}
-            className="mt-4 w-full rounded-2xl bg-gold-foil py-3.5 font-bold text-ink shadow-glow active:scale-[0.98]"
+            className="mt-3 w-full shrink-0 rounded-2xl bg-gold-foil py-3.5 font-bold text-ink shadow-glow active:scale-[0.98]"
           >
             {index + 1 < total ? "Câu tiếp theo" : "Xem kết quả"}
           </motion.button>

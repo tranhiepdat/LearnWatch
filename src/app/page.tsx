@@ -12,7 +12,7 @@ const MODES = [
 
 export default function Home() {
   const rx = visibleWatches.filter((w) => w.brand === "Rolex").length;
-  const om = visibleWatches.filter((w) => w.brand === "Omega").length;
+  const tag = visibleWatches.filter((w) => w.brand === "TAG Heuer").length;
 
   return (
     <div className="space-y-6 pt-2">
@@ -42,7 +42,7 @@ export default function Home() {
         <div className="mt-3 grid grid-cols-4 gap-3 text-center">
           <Stat n={visibleWatches.length} label="Mẫu" />
           <Stat n={rx} label="Rolex" />
-          <Stat n={om} label="Omega" />
+          <Stat n={tag} label="TAG" />
           <Stat n={terms.length} label="Thuật ngữ" />
         </div>
       </section>

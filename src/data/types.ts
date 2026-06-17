@@ -1,4 +1,4 @@
-export type Brand = "Rolex" | "Omega";
+export type Brand = "Rolex" | "Omega" | "TAG Heuer";
 
 export type Topic = "nickname" | "material" | "model";
 
@@ -39,6 +39,8 @@ export interface Watch {
   resale?: string;
   /** Thuat ngu thi truong / tieng Anh lien quan */
   marketTerms?: string;
+  /** Meo nho nhanh (de hoc/ban) */
+  tip?: string;
 }
 
 export type TermCategory =
