@@ -5,12 +5,18 @@ import { motion } from "framer-motion";
 import QuizRunner from "@/components/QuizRunner";
 import { generateQuiz, type QuizCategory, type QuizQuestion } from "@/lib/quiz";
 import { playTap } from "@/lib/sound";
+import { visibleWatches } from "@/data/watches";
 import type { Brand } from "@/data/types";
 
 type BrandOpt = "Tất cả" | Brand;
 type CatOpt = "Tất cả" | QuizCategory;
 
-const BRANDS: BrandOpt[] = ["Tất cả", "Rolex", "TAG Heuer", "Omega"];
+const _qCounts = new Map<Brand, number>();
+visibleWatches.forEach((w) => _qCounts.set(w.brand, (_qCounts.get(w.brand) ?? 0) + 1));
+const BRANDS: BrandOpt[] = [
+  "Tất cả",
+  ...Array.from(_qCounts.keys()).sort((a, b) => (_qCounts.get(b) ?? 0) - (_qCounts.get(a) ?? 0)),
+];
 const CATS: CatOpt[] = ["Tất cả", "Nhìn hình", "Biệt danh", "Mẫu mã", "Chất liệu"];
 const LENGTHS = [5, 10, 15];
 
@@ -63,7 +69,7 @@ export default function QuizPage() {
       <motion.button
         whileTap={{ scale: 0.97 }}
         onClick={start}
-        className="w-full rounded-2xl bg-gold-foil py-4 font-display text-lg font-semibold text-ink shadow-glow"
+        className="w-full rounded-[6px] bg-gold-foil py-4 font-display text-lg font-semibold text-ink shadow-glow"
       >
         Bắt đầu
       </motion.button>
@@ -86,7 +92,7 @@ function Chip({
         onClick();
         playTap();
       }}
-      className={`rounded-full px-4 py-1.5 text-sm font-semibold transition active:scale-95 ${
+      className={`rounded-[5px] px-4 py-1.5 text-sm font-semibold transition active:scale-95 ${
         active ? "bg-gold-foil text-ink shadow-glow" : "border border-hairline text-taupe"
       }`}
     >

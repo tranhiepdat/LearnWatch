@@ -9,7 +9,12 @@ import { playTap } from "@/lib/sound";
 import type { Brand } from "@/data/types";
 
 type Filter = "Tất cả" | Brand;
-const FILTERS: Filter[] = ["Tất cả", "Rolex", "TAG Heuer"];
+const _fcCounts = new Map<Brand, number>();
+watches.forEach((w) => _fcCounts.set(w.brand, (_fcCounts.get(w.brand) ?? 0) + 1));
+const FILTERS: Filter[] = [
+  "Tất cả",
+  ...Array.from(_fcCounts.keys()).sort((a, b) => (_fcCounts.get(b) ?? 0) - (_fcCounts.get(a) ?? 0)),
+];
 
 export default function FlashcardsPage() {
   const [filter, setFilter] = useState<Filter>("Tất cả");
@@ -53,7 +58,7 @@ export default function FlashcardsPage() {
               setFilter(f);
               playTap();
             }}
-            className={`rounded-full px-4 py-1.5 text-sm font-semibold transition active:scale-95 ${
+            className={`rounded-[5px] px-4 py-1.5 text-sm font-semibold transition active:scale-95 ${
               filter === f ? "bg-gold-foil text-ink shadow-glow" : "border border-hairline text-taupe"
             }`}
           >

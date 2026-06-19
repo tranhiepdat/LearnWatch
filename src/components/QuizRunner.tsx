@@ -74,7 +74,7 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
     return (
       <div className="card-lux p-8 text-center">
         <p className="text-taupe">Chưa có câu hỏi cho bộ lọc này.</p>
-        <button onClick={onRestart} className="mt-4 rounded-2xl bg-gold-foil px-5 py-2.5 font-bold text-ink">
+        <button onClick={onRestart} className="mt-4 rounded-[6px] bg-gold-foil px-5 py-2.5 font-bold text-ink">
           Chọn lại
         </button>
       </div>
@@ -86,31 +86,31 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
     return (
       <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="card-lux p-8 text-center">
         <p className="label-luxe">{passed ? "Xuất sắc" : "Tiếp tục cố gắng"}</p>
-        <h2 className="mt-1 font-display text-4xl font-semibold gold-text">
+        <h2 className="mt-1 font-tech text-4xl font-semibold gold-text">
           {correctCount}/{total}
         </h2>
         <p className="mt-1 text-taupe">{pct}% chính xác</p>
 
         <div className="mx-auto mt-6 grid max-w-xs grid-cols-2 gap-3">
-          <div className="rounded-2xl border border-hairline p-4">
+          <div className="rounded-[6px] border border-hairline p-4">
             <IconGem className="mx-auto h-5 w-5 text-gold-300" />
-            <p className="mt-1 font-display text-2xl font-semibold text-gold-300">
+            <p className="mt-1 font-tech text-2xl font-semibold text-gold-300">
               +<Counter to={savedXp} />
             </p>
             <p className="text-[11px] text-taupe">XP</p>
           </div>
-          <div className="rounded-2xl border border-hairline p-4">
+          <div className="rounded-[6px] border border-hairline p-4">
             <IconFlame className="mx-auto h-5 w-5 text-gold-300" />
-            <p className="mt-1 font-display text-2xl font-semibold text-gold-300">{streak}</p>
+            <p className="mt-1 font-tech text-2xl font-semibold text-gold-300">{streak}</p>
             <p className="text-[11px] text-taupe">chuỗi ngày</p>
           </div>
         </div>
 
         <div className="mt-6 flex flex-col gap-2 sm:flex-row">
-          <button onClick={onRestart} className="flex-1 rounded-2xl bg-gold-foil py-3 font-bold text-ink shadow-glow active:scale-95">
+          <button onClick={onRestart} className="flex-1 rounded-[6px] bg-gold-foil py-3 font-bold text-ink shadow-glow active:scale-95">
             Bộ câu mới
           </button>
-          <Link href="/" className="flex-1 rounded-2xl border border-hairline py-3 font-bold text-ivory active:scale-95">
+          <Link href="/" className="flex-1 rounded-[6px] border border-hairline py-3 font-bold text-ivory active:scale-95">
             Về trang chủ
           </Link>
         </div>
@@ -128,7 +128,7 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
             transition={{ type: "spring", stiffness: 200, damping: 30 }}
           />
         </div>
-        <span className="font-mono text-xs text-taupe">
+        <span className="font-tech text-xs text-gold-300">
           {index + 1}/{total}
         </span>
       </div>
@@ -155,7 +155,7 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
                 animate={{ opacity: 1, scale: 1 }}
                 src={q.image}
                 alt="Đồng hồ cần nhận diện"
-                className="mx-auto mt-3 aspect-square w-[min(280px,56vw)] rounded-2xl object-cover shadow-gold ring-1 ring-hairline"
+                className="mx-auto mt-3 aspect-square w-[min(280px,56vw)] rounded-[6px] object-cover shadow-gold ring-1 ring-hairline"
               />
             )}
 
@@ -175,7 +175,7 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
                     onClick={() => choose(i)}
                     disabled={answered}
                     whileTap={{ scale: answered ? 1 : 0.97 }}
-                    className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-left text-sm font-medium transition ${cls}`}
+                    className={`flex items-center justify-between rounded-[6px] border px-4 py-3 text-left text-sm font-medium transition ${cls}`}
                   >
                     <span>{opt}</span>
                     {answered && isCorrect && <IconCheck className="h-5 w-5 text-gold-300" />}
@@ -192,7 +192,7 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
                   animate={{ opacity: 1, height: "auto" }}
                   className="mt-4 overflow-hidden"
                 >
-                  <div className="rounded-2xl border border-hairline bg-surface-2 p-4 text-sm">
+                  <div className="rounded-[6px] border border-hairline bg-surface-2 p-4 text-sm">
                     <p className={`font-semibold ${selected === q.correctIndex ? "text-gold-300" : "text-bordeaux"}`}>
                       {selected === q.correctIndex ? "Chính xác" : "Chưa đúng"}
                     </p>
@@ -205,7 +205,7 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
                             <img
                               src={`/watches/${watch.id}.jpg`}
                               alt={watch.model}
-                              className="h-16 w-16 shrink-0 rounded-xl object-cover ring-1 ring-hairline"
+                              className="h-16 w-16 shrink-0 rounded-[6px] object-cover ring-1 ring-hairline"
                             />
                           )}
                           <div className="min-w-0">
@@ -248,7 +248,7 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             onClick={next}
-            className="mt-3 w-full shrink-0 rounded-2xl bg-gold-foil py-3.5 font-bold text-ink shadow-glow active:scale-[0.98]"
+            className="mt-3 w-full shrink-0 rounded-[6px] bg-gold-foil py-3.5 font-bold text-ink shadow-glow active:scale-[0.98]"
           >
             {index + 1 < total ? "Câu tiếp theo" : "Xem kết quả"}
           </motion.button>

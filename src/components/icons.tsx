@@ -5,86 +5,94 @@ const base = (p: P) => ({
   viewBox: "0 0 24 24",
   fill: "none",
   stroke: "currentColor",
-  strokeWidth: 1.6,
+  strokeWidth: 1.7,
   strokeLinecap: "round" as const,
   strokeLinejoin: "round" as const,
   ...p,
 });
 
-/** Logo: vuong mien toi gian (old-money crest) */
+/** Logo: vương miện tối giản (old-money crest, góc cạnh) */
 export const IconCrest = (p: P) => (
   <svg {...base(p)}>
     <path d="M4 8l3.5 2.5L12 5l4.5 5.5L20 8l-1.5 9.5h-13L4 8Z" />
     <path d="M6 20h12" />
-    <circle cx="12" cy="12.5" r="1.1" fill="currentColor" stroke="none" />
+    <rect x="11" y="11.4" width="2" height="2" fill="currentColor" stroke="none" />
   </svg>
 );
 
+/** HOME — nhà góc cạnh + cửa */
 export const IconHome = (p: P) => (
   <svg {...base(p)}>
-    <path d="M4 11.5 12 4l8 7.5" />
-    <path d="M6 10.5V20h12v-9.5" />
+    <path d="M3.5 11 12 4l8.5 7" />
+    <path d="M6 9.6V20h12V9.6" />
+    <path d="M10 20v-4.5h4V20" />
   </svg>
 );
 
-/** The bai (flashcard) chong nhau */
+/** HỌC — chồng thẻ có góc vát (notch HUD) */
 export const IconCards = (p: P) => (
   <svg {...base(p)}>
-    <rect x="6.5" y="5" width="11" height="14" rx="2.5" />
-    <path d="M4 8.5v8.5A2.5 2.5 0 0 0 6.5 19.5" opacity="0.5" />
+    <path d="M7.5 5H16l2 2v12H7.5V5Z" />
+    <path d="M16 5v2h2" />
+    <path d="M4.5 8v9A2 2 0 0 0 6.5 19" opacity="0.55" />
+    <path d="M10 9.5h4M10 12.5h4.5" opacity="0.8" />
   </svg>
 );
 
-/** Trac nghiem: kim cuong / muc tieu */
+/** ĐỐ — tâm ngắm crosshair (HUD sci-fi) */
 export const IconQuiz = (p: P) => (
   <svg {...base(p)}>
-    <path d="M12 3.5 19 9l-7 11.5L5 9l7-5.5Z" />
-    <path d="M5 9h14M9.5 9 12 3.6 14.5 9 12 20" opacity="0.55" />
+    <circle cx="12" cy="12" r="6.5" />
+    <path d="M12 2.2v3.3M12 18.5v3.3M2.2 12h3.3M18.5 12h3.3" />
+    <rect x="10.6" y="10.6" width="2.8" height="2.8" fill="currentColor" stroke="none" />
   </svg>
 );
 
+/** TRA CỨU — data-pad / tài liệu kẻ dòng */
 export const IconBook = (p: P) => (
   <svg {...base(p)}>
-    <path d="M5 5.5A2 2 0 0 1 7 4h11v14.5H7a2 2 0 0 0-2 2V5.5Z" />
-    <path d="M5 18.5A2 2 0 0 1 7 16.5h11" opacity="0.55" />
+    <path d="M6 3.5h10l2 2V20.5H6V3.5Z" />
+    <path d="M9 8h6M9 11.5h6M9 15h3.5" opacity="0.85" />
+    <path d="M16 3.5v2h2" />
   </svg>
 );
 
 export const IconSound = (p: P) => (
   <svg {...base(p)}>
-    <path d="M5 9.5h3l4-3.5v12l-4-3.5H5v-5Z" />
-    <path d="M15.5 8.5a4 4 0 0 1 0 7M17.8 6a7 7 0 0 1 0 12" />
+    <path d="M4.5 9h3L11 6v12L7.5 15h-3V9Z" />
+    <path d="M14.5 8.6a4 4 0 0 1 0 6.8M17 6.2a7 7 0 0 1 0 11.6" />
   </svg>
 );
 
 export const IconMute = (p: P) => (
   <svg {...base(p)}>
-    <path d="M5 9.5h3l4-3.5v12l-4-3.5H5v-5Z" />
-    <path d="M16 9.5l5 5M21 9.5l-5 5" />
+    <path d="M4.5 9h3L11 6v12L7.5 15h-3V9Z" />
+    <path d="M15.5 9.5l5 5M20.5 9.5l-5 5" />
   </svg>
 );
 
 export const IconFlame = (p: P) => (
   <svg {...base(p)}>
-    <path d="M12 3.5c2.5 3 4.5 4.8 4.5 8.2A4.5 4.5 0 0 1 12 20.5a4.5 4.5 0 0 1-4.5-4.8c0-1.6.7-2.7 1.6-3.7.3 1 .9 1.6 1.6 1.9-.2-2.4.5-4.4 1.8-5.9Z" />
+    <path d="M12 3.2c2.6 3 4.6 4.9 4.6 8.3A4.6 4.6 0 0 1 12 20.6a4.6 4.6 0 0 1-4.6-4.9c0-1.6.7-2.8 1.7-3.8.3 1 .9 1.6 1.6 1.9-.2-2.5.5-4.5 1.9-6Z" />
   </svg>
 );
 
+/** Kim cương lục giác (XP) */
 export const IconGem = (p: P) => (
   <svg {...base(p)}>
-    <path d="M7 4h10l3 5-8 11L4 9l3-5Z" />
-    <path d="M4 9h16M9 4l-2 5 5 11 5-11-2-5" opacity="0.55" />
+    <path d="M7 4h10l3.2 5L12 20.5 3.8 9 7 4Z" />
+    <path d="M3.8 9h16.4M8.5 4l-1.2 5L12 20.5 16.7 9 15.5 4" opacity="0.6" />
   </svg>
 );
 
 export const IconCheck = (p: P) => (
-  <svg {...base(p)} strokeWidth={2.2}>
+  <svg {...base(p)} strokeWidth={2.3}>
     <path d="M5 12.5 10 17l9-10" />
   </svg>
 );
 
 export const IconClose = (p: P) => (
-  <svg {...base(p)} strokeWidth={2.2}>
+  <svg {...base(p)} strokeWidth={2.3}>
     <path d="M6 6l12 12M18 6 6 18" />
   </svg>
 );
@@ -108,8 +116,9 @@ export const IconSwipe = (p: P) => (
   </svg>
 );
 
+/** Tia sáng 4 cánh sắc (sci-fi) */
 export const IconSparkle = (p: P) => (
-  <svg {...base(p)} strokeWidth={1.4}>
-    <path d="M12 4c.6 3.4 1.6 4.4 5 5-3.4.6-4.4 1.6-5 5-.6-3.4-1.6-4.4-5-5 3.4-.6 4.4-1.6 5-5Z" />
+  <svg {...base(p)}>
+    <path d="M12 3l1.8 6.2L20 11l-6.2 1.8L12 19l-1.8-6.2L4 11l6.2-1.8L12 3Z" />
   </svg>
 );

@@ -38,7 +38,7 @@ body::before {
 }
 
 ::selection {
-  background: rgba(212, 185, 120, 0.28);
+  background: rgba(52, 211, 153, 0.3);
   color: #fff;
 }
 
@@ -58,7 +58,7 @@ body::before {
     @apply text-[10px] font-semibold uppercase tracking-luxe text-gold-400/80;
   }
   .card-lux {
-    @apply rounded-[26px] border border-hairline bg-surface shadow-lux;
+    @apply relative rounded-[5px] border border-hairline bg-surface shadow-lux;
   }
   /* khung "app" tren man hinh lon */
   .app-frame {
@@ -66,7 +66,62 @@ body::before {
   }
 }
 
-/* Sci-fi neon glow cho dap an dung */
+/* ===== Sci-fi: lưới nền + ngoặc HUD góc card + scanline ===== */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(52, 211, 153, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(52, 211, 153, 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.card-lux::before,
+.card-lux::after {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border: 1.5px solid rgba(52, 211, 153, 0.7);
+  pointer-events: none;
+  z-index: 2;
+}
+.card-lux::before {
+  top: 6px;
+  left: 6px;
+  border-right: 0;
+  border-bottom: 0;
+}
+.card-lux::after {
+  bottom: 6px;
+  right: 6px;
+  border-left: 0;
+  border-top: 0;
+}
+
+.scanline {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 140px;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, rgba(52, 211, 153, 0.06), transparent);
+  animation: scan 7.5s linear infinite;
+}
+@keyframes scan {
+  0% {
+    transform: translateY(-150px);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+/* ===== Sci-fi neon glow cho đáp án đúng ===== */
 @keyframes neonpulse {
   0%,
   100% {

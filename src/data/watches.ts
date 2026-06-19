@@ -1,6 +1,7 @@
 import type { Watch } from "./types";
 import { watchPhotos } from "./photos";
 import { extraWatches } from "./watchesExtra";
+import { extraWatches2 } from "./watchesExtra2";
 
 /**
  * Thu vien dong ho - tap trung Rolex & Omega.
@@ -1332,7 +1333,7 @@ const coreWatches: Watch[] = [
   },
 ];
 
-export const watches: Watch[] = [...coreWatches, ...extraWatches];
+export const watches: Watch[] = [...coreWatches, ...extraWatches, ...extraWatches2];
 
 /**
  * Bo sung thuat ngu tieng Anh (ten mau) + gia resale tham khao (thi truong genuine,

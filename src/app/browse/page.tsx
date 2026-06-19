@@ -40,7 +40,7 @@ export default function BrowsePage() {
         value={q}
         onChange={(e) => setQ(e.target.value)}
         placeholder="Pepsi · Cerachrom · 126710 · Wimbledon · VSF…"
-        className="w-full rounded-2xl border border-hairline bg-surface px-4 py-3 text-sm text-ivory outline-none placeholder:text-taupe focus:border-gold-600"
+        className="w-full rounded-[6px] border border-hairline bg-surface px-4 py-3 text-sm text-ivory outline-none placeholder:text-taupe focus:border-gold-600"
       />
 
       <div className="flex gap-2">
@@ -51,7 +51,7 @@ export default function BrowsePage() {
               setTab(t);
               playTap();
             }}
-            className={`rounded-full px-4 py-1.5 text-sm font-semibold transition active:scale-95 ${
+            className={`rounded-[5px] px-4 py-1.5 text-sm font-semibold transition active:scale-95 ${
               tab === t ? "bg-gold-foil text-ink shadow-glow" : "border border-hairline text-taupe"
             }`}
           >
@@ -96,7 +96,7 @@ export default function BrowsePage() {
             <details key={t.id} className="card-lux p-4">
               <summary className="flex cursor-pointer items-center justify-between gap-2">
                 <span className="font-display text-base font-semibold text-ivory">{t.term}</span>
-                <span className="rounded-full border border-hairline px-2 py-0.5 text-[10px] text-taupe">
+                <span className="rounded-[5px] border border-hairline px-2 py-0.5 text-[10px] text-taupe">
                   {t.brand} · {t.category}
                 </span>
               </summary>

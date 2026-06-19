@@ -31,6 +31,7 @@ const config: Config = {
       fontFamily: {
         display: ["var(--font-sans)", "system-ui", "sans-serif"],
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        tech: ["var(--font-tech)", "ui-monospace", "SFMono-Regular", "monospace"],
       },
       letterSpacing: {
         luxe: "0.22em",

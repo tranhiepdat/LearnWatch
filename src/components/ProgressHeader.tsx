@@ -19,7 +19,7 @@ export default function ProgressHeader() {
       {items.map(({ Icon, v, l }, i) => (
         <div key={i} className="card-lux flex flex-col items-center gap-1 py-4">
           <Icon className="h-5 w-5 text-gold-300" />
-          <p className="font-display text-2xl font-semibold text-ivory">{v}</p>
+          <p className="font-tech text-2xl font-semibold text-gold-300">{v}</p>
           <p className="text-[11px] text-taupe">{l}</p>
         </div>
       ))}

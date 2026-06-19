@@ -12,7 +12,7 @@ const MODES = [
 
 export default function Home() {
   const rx = visibleWatches.filter((w) => w.brand === "Rolex").length;
-  const tag = visibleWatches.filter((w) => w.brand === "TAG Heuer").length;
+  const brandCount = new Set(visibleWatches.map((w) => w.brand)).size;
 
   return (
     <div className="space-y-6 pt-2">
@@ -23,9 +23,9 @@ export default function Home() {
           <Link
             key={m.href}
             href={m.href}
-            className="group flex items-center gap-4 rounded-[22px] border border-hairline bg-surface p-4 transition active:scale-[0.98]"
+            className="group flex items-center gap-4 rounded-[6px] border border-hairline bg-surface p-4 transition active:scale-[0.98]"
           >
-            <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-hairline text-gold-300">
+            <div className="grid h-12 w-12 shrink-0 place-items-center rounded-[6px] border border-hairline text-gold-300">
               <m.Icon className="h-6 w-6" />
             </div>
             <div className="flex-1">
@@ -41,8 +41,8 @@ export default function Home() {
         <p className="label-luxe">Thư viện</p>
         <div className="mt-3 grid grid-cols-4 gap-3 text-center">
           <Stat n={visibleWatches.length} label="Mẫu" />
+          <Stat n={brandCount} label="Hãng" />
           <Stat n={rx} label="Rolex" />
-          <Stat n={tag} label="TAG" />
           <Stat n={terms.length} label="Thuật ngữ" />
         </div>
       </section>
@@ -53,7 +53,7 @@ export default function Home() {
 function Stat({ n, label }: { n: number; label: string }) {
   return (
     <div>
-      <p className="text-2xl font-extrabold gold-text">{n}</p>
+      <p className="font-tech text-2xl font-extrabold gold-text">{n}</p>
       <p className="text-[11px] text-taupe">{label}</p>
     </div>
   );
