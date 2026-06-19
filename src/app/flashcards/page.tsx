@@ -50,7 +50,7 @@ export default function FlashcardsPage() {
         </div>
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         {FILTERS.map((f) => (
           <button
             key={f}
@@ -58,7 +58,7 @@ export default function FlashcardsPage() {
               setFilter(f);
               playTap();
             }}
-            className={`rounded-[5px] px-4 py-1.5 text-sm font-semibold transition active:scale-95 ${
+            className={`cyber rounded-[5px] px-4 py-1.5 text-sm font-semibold transition active:scale-95 ${
               filter === f ? "bg-gold-foil text-ink shadow-glow" : "border border-hairline text-taupe"
             }`}
           >

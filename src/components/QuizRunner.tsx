@@ -74,7 +74,7 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
     return (
       <div className="card-lux p-8 text-center">
         <p className="text-taupe">Chưa có câu hỏi cho bộ lọc này.</p>
-        <button onClick={onRestart} className="mt-4 rounded-[6px] bg-gold-foil px-5 py-2.5 font-bold text-ink">
+        <button onClick={onRestart} className="cyber mt-4 rounded-[6px] bg-gold-foil px-5 py-2.5 font-bold text-ink">
           Chọn lại
         </button>
       </div>
@@ -107,10 +107,10 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
         </div>
 
         <div className="mt-6 flex flex-col gap-2 sm:flex-row">
-          <button onClick={onRestart} className="flex-1 rounded-[6px] bg-gold-foil py-3 font-bold text-ink shadow-glow active:scale-95">
+          <button onClick={onRestart} className="cyber flex-1 rounded-[6px] bg-gold-foil py-3 font-bold text-ink shadow-glow active:scale-95">
             Bộ câu mới
           </button>
-          <Link href="/" className="flex-1 rounded-[6px] border border-hairline py-3 font-bold text-ivory active:scale-95">
+          <Link href="/" className="cyber flex-1 rounded-[6px] border border-hairline py-3 font-bold text-ivory active:scale-95">
             Về trang chủ
           </Link>
         </div>
@@ -175,7 +175,7 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
                     onClick={() => choose(i)}
                     disabled={answered}
                     whileTap={{ scale: answered ? 1 : 0.97 }}
-                    className={`flex items-center justify-between rounded-[6px] border px-4 py-3 text-left text-sm font-medium transition ${cls}`}
+                    className={`cyber flex items-center justify-between rounded-[6px] border px-4 py-3 text-left text-sm font-medium transition ${cls}`}
                   >
                     <span>{opt}</span>
                     {answered && isCorrect && <IconCheck className="h-5 w-5 text-gold-300" />}
@@ -248,7 +248,7 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             onClick={next}
-            className="mt-3 w-full shrink-0 rounded-[6px] bg-gold-foil py-3.5 font-bold text-ink shadow-glow active:scale-[0.98]"
+            className="cyber mt-3 w-full shrink-0 rounded-[6px] bg-gold-foil py-3.5 font-bold text-ink shadow-glow active:scale-[0.98]"
           >
             {index + 1 < total ? "Câu tiếp theo" : "Xem kết quả"}
           </motion.button>

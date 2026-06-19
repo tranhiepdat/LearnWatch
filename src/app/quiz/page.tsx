@@ -69,7 +69,7 @@ export default function QuizPage() {
       <motion.button
         whileTap={{ scale: 0.97 }}
         onClick={start}
-        className="w-full rounded-[6px] bg-gold-foil py-4 font-display text-lg font-semibold text-ink shadow-glow"
+        className="cyber w-full rounded-[6px] bg-gold-foil py-4 font-display text-lg font-semibold text-ink shadow-glow"
       >
         Bắt đầu
       </motion.button>
@@ -92,7 +92,7 @@ function Chip({
         onClick();
         playTap();
       }}
-      className={`rounded-[5px] px-4 py-1.5 text-sm font-semibold transition active:scale-95 ${
+      className={`cyber rounded-[5px] px-4 py-1.5 text-sm font-semibold transition active:scale-95 ${
         active ? "bg-gold-foil text-ink shadow-glow" : "border border-hairline text-taupe"
       }`}
     >

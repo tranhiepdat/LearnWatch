@@ -51,7 +51,7 @@ export default function BrowsePage() {
               setTab(t);
               playTap();
             }}
-            className={`rounded-[5px] px-4 py-1.5 text-sm font-semibold transition active:scale-95 ${
+            className={`cyber rounded-[5px] px-4 py-1.5 text-sm font-semibold transition active:scale-95 ${
               tab === t ? "bg-gold-foil text-ink shadow-glow" : "border border-hairline text-taupe"
             }`}
           >

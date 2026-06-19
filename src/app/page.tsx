@@ -23,7 +23,7 @@ export default function Home() {
           <Link
             key={m.href}
             href={m.href}
-            className="group flex items-center gap-4 rounded-[6px] border border-hairline bg-surface p-4 transition active:scale-[0.98]"
+            className="cyber group flex items-center gap-4 rounded-[6px] border border-hairline bg-surface p-4 transition active:scale-[0.98]"
           >
             <div className="grid h-12 w-12 shrink-0 place-items-center rounded-[6px] border border-hairline text-gold-300">
               <m.Icon className="h-6 w-6" />

@@ -38,7 +38,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div aria-hidden className="scanline" />
         <div className="app-frame relative flex h-[100dvh] flex-col">
           <TopBar />
-          <main className="relative z-10 min-h-0 flex-1 overflow-y-auto px-4 pb-28 pt-1">{children}</main>
+          <main className="relative z-10 min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-4 pb-28 pt-1">
+            {children}
+          </main>
           <BottomNav />
         </div>
       </body>

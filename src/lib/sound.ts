@@ -1,6 +1,6 @@
 /**
- * Engine am thanh tong hop bang Web Audio (khong can file nhac, khong lo ban quyen).
- * Tat ca phat ra trong su kien cham/keo cua nguoi dung nen duoc phep tu dong.
+ * Engine âm thanh SCI-FI / FUTURISTIC tổng hợp 100% bằng Web Audio (không file, không bản quyền).
+ * Đặc trưng: sóng cưa/vuông, quét tần số (laser), filter cộng hưởng, lớp detune.
  */
 
 let ctx: AudioContext | null = null;
@@ -13,11 +13,9 @@ function muted(): boolean {
   }
   return _muted;
 }
-
 export function isMuted(): boolean {
   return muted();
 }
-
 export function setMuted(m: boolean): void {
   _muted = m;
   if (typeof window !== "undefined") window.localStorage.setItem("lw_muted", m ? "1" : "0");
@@ -30,32 +28,61 @@ function ac(): AudioContext | null {
     const AC = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
     if (!AC) return null;
     ctx = new AC();
+    const comp = ctx.createDynamicsCompressor();
+    comp.threshold.value = -14;
+    comp.ratio.value = 4;
     master = ctx.createGain();
     master.gain.value = muted() ? 0 : 0.5;
-    master.connect(ctx.destination);
+    master.connect(comp);
+    comp.connect(ctx.destination);
   }
   if (ctx.state === "suspended") void ctx.resume();
   return ctx;
 }
 
-function osc(freq: number, t: number, dur: number, peak: number, type: OscillatorType, glideTo?: number) {
+interface ToneOpts {
+  type?: OscillatorType;
+  peak?: number;
+  glide?: number; // tan so cuoi (quet)
+  detune?: number;
+  filterStart?: number;
+  filterEnd?: number;
+  q?: number;
+  attack?: number;
+}
+function tone(freq: number, t: number, dur: number, o: ToneOpts = {}) {
   const c = ac();
   if (!c || !master) return;
-  const o = c.createOscillator();
+  const osc = c.createOscillator();
+  osc.type = o.type ?? "sawtooth";
+  osc.frequency.setValueAtTime(freq, t);
+  if (o.glide) osc.frequency.exponentialRampToValueAtTime(Math.max(20, o.glide), t + dur);
+  if (o.detune) osc.detune.setValueAtTime(o.detune, t);
+
   const g = c.createGain();
-  o.type = type;
-  o.frequency.setValueAtTime(freq, t);
-  if (glideTo) o.frequency.exponentialRampToValueAtTime(glideTo, t + dur);
+  const peak = o.peak ?? 0.12;
+  const atk = o.attack ?? Math.min(0.012, dur * 0.25);
   g.gain.setValueAtTime(0.0001, t);
-  g.gain.exponentialRampToValueAtTime(peak, t + Math.min(0.02, dur * 0.3));
+  g.gain.exponentialRampToValueAtTime(peak, t + atk);
   g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-  o.connect(g);
+
+  let node: AudioNode = osc;
+  if (o.filterStart) {
+    const f = c.createBiquadFilter();
+    f.type = "lowpass";
+    f.frequency.setValueAtTime(o.filterStart, t);
+    if (o.filterEnd) f.frequency.exponentialRampToValueAtTime(Math.max(80, o.filterEnd), t + dur);
+    f.Q.value = o.q ?? 4;
+    osc.connect(f);
+    node = f;
+  }
+  node.connect(g);
   g.connect(master);
-  o.start(t);
-  o.stop(t + dur + 0.03);
+  osc.start(t);
+  osc.stop(t + dur + 0.04);
 }
 
-function noise(t: number, dur: number, peak: number, freq: number, q: number, sweepTo?: number) {
+function noiseHit(t: number, dur: number, peak: number, fStart: number, fEnd: number, q = 1) {
   const c = ac();
   if (!c || !master) return;
   const n = Math.floor(c.sampleRate * dur);
@@ -66,12 +93,12 @@ function noise(t: number, dur: number, peak: number, freq: number, q: number, sw
   src.buffer = buf;
   const bp = c.createBiquadFilter();
   bp.type = "bandpass";
-  bp.frequency.setValueAtTime(freq, t);
+  bp.frequency.setValueAtTime(fStart, t);
+  bp.frequency.exponentialRampToValueAtTime(Math.max(80, fEnd), t + dur);
   bp.Q.value = q;
-  if (sweepTo) bp.frequency.exponentialRampToValueAtTime(sweepTo, t + dur);
   const g = c.createGain();
   g.gain.setValueAtTime(0.0001, t);
-  g.gain.exponentialRampToValueAtTime(peak, t + 0.01);
+  g.gain.exponentialRampToValueAtTime(peak, t + 0.008);
   g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
   src.connect(bp);
   bp.connect(g);
@@ -80,10 +107,12 @@ function noise(t: number, dur: number, peak: number, freq: number, q: number, sw
   src.stop(t + dur + 0.02);
 }
 
+/** Tick UI số hoá ngắn gọn */
 export function playTap() {
   if (muted()) return;
   const c = ac();
-  if (c) osc(660, c.currentTime, 0.05, 0.06, "sine");
+  if (!c) return;
+  tone(1280, c.currentTime, 0.045, { type: "square", peak: 0.05, glide: 720, filterStart: 3000 });
 }
 
 export function playFlip() {
@@ -91,45 +120,60 @@ export function playFlip() {
   const c = ac();
   if (!c) return;
   const t = c.currentTime;
-  noise(t, 0.12, 0.05, 1200, 1.2, 500);
-  osc(900, t, 0.08, 0.05, "triangle", 520);
+  noiseHit(t, 0.1, 0.045, 1600, 500, 1.2);
+  tone(1500, t, 0.07, { type: "square", peak: 0.04, glide: 700 });
 }
 
+/** Laser swipe sci-fi */
 export function playSwipe() {
   if (muted()) return;
   const c = ac();
-  if (c) noise(c.currentTime, 0.22, 0.09, 720, 0.8, 260);
+  if (!c) return;
+  const t = c.currentTime;
+  noiseHit(t, 0.2, 0.07, 1100, 200, 1.4);
+  tone(1000, t, 0.2, { type: "sawtooth", peak: 0.06, glide: 150, filterStart: 2400, filterEnd: 300, q: 7 });
 }
 
-/** Tieng "vang" thoa man khi chon dung: arpeggio C-E-G-C + lap lanh */
+/** "Power-up confirm" futuristic: sub đập + quét lên + hợp âm vuông + lấp lánh */
 export function playCorrect() {
   if (muted()) return;
   const c = ac();
   if (!c) return;
   const t = c.currentTime;
-  const notes = [523.25, 659.25, 783.99, 1046.5];
-  notes.forEach((f, i) => {
-    osc(f, t + i * 0.07, 0.5, 0.15, "sine");
-    osc(f * 2, t + i * 0.07, 0.3, 0.045, "triangle");
-  });
-  osc(1567.98, t + 0.3, 0.5, 0.06, "sine");
+  tone(120, t, 0.12, { type: "sine", peak: 0.13, glide: 190 });
+  tone(300, t, 0.18, { type: "sawtooth", peak: 0.15, glide: 1500, filterStart: 700, filterEnd: 4000, q: 7 });
+  tone(1046.5, t + 0.13, 0.28, { type: "square", peak: 0.08, detune: 8 });
+  tone(1318.5, t + 0.13, 0.28, { type: "square", peak: 0.07, detune: -8 });
+  tone(2637, t + 0.22, 0.22, { type: "sine", peak: 0.06 });
 }
 
+/** Lỗi số hoá: quét xuống + glitch vuông */
 export function playWrong() {
   if (muted()) return;
   const c = ac();
   if (!c) return;
   const t = c.currentTime;
-  osc(196, t, 0.18, 0.15, "sawtooth", 150);
-  osc(146.83, t + 0.1, 0.22, 0.13, "sawtooth", 110);
+  tone(340, t, 0.24, { type: "sawtooth", peak: 0.16, glide: 90, filterStart: 1400, filterEnd: 180, q: 9 });
+  tone(150, t + 0.05, 0.16, { type: "square", peak: 0.12, glide: 70 });
+  noiseHit(t + 0.02, 0.12, 0.05, 600, 140, 2);
 }
 
-/** Hoan thanh man: hop am vang + chuoi lap lanh di len */
+/** Hoàn thành: arpeggio sóng cưa đi lên + shimmer (level-up) */
 export function playComplete() {
   if (muted()) return;
   const c = ac();
   if (!c) return;
   const t = c.currentTime;
-  [523.25, 659.25, 783.99, 1046.5].forEach((f) => osc(f, t, 0.7, 0.12, "sine"));
-  [1046.5, 1318.5, 1568, 2093].forEach((f, i) => osc(f, t + 0.18 + i * 0.06, 0.4, 0.06, "triangle"));
+  tone(110, t, 0.16, { type: "sine", peak: 0.13, glide: 165 });
+  [392, 523.25, 659.25, 783.99, 1046.5, 1318.5].forEach((f, i) => {
+    tone(f, t + i * 0.075, 0.34, {
+      type: "sawtooth",
+      peak: 0.1,
+      detune: i % 2 ? 7 : -7,
+      filterStart: 900 + i * 500,
+      filterEnd: 2600,
+      q: 5,
+    });
+  });
+  [2093, 2637, 3136].forEach((f, i) => tone(f, t + 0.34 + i * 0.05, 0.3, { type: "sine", peak: 0.05 }));
 }

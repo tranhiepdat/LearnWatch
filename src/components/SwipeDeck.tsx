@@ -101,7 +101,7 @@ export default function SwipeDeck({
             x.set(0);
             onReshuffle();
           }}
-          className="mt-2 rounded-[6px] bg-gold-foil px-6 py-3 font-bold text-ink shadow-glow active:scale-95"
+          className="cyber mt-2 rounded-[6px] bg-gold-foil px-6 py-3 font-bold text-ink shadow-glow active:scale-95"
         >
           Học lại (xáo trộn)
         </button>
@@ -133,9 +133,9 @@ export default function SwipeDeck({
         <motion.div
           key={current.id}
           drag="x"
-          dragDirectionLock
-          dragElastic={0.55}
+          dragElastic={0.5}
           dragConstraints={{ left: 0, right: 0 }}
+          dragMomentum={false}
           style={{ x, rotate }}
           onDragEnd={onDragEnd}
           onTap={() => {
@@ -283,21 +283,21 @@ export default function SwipeDeck({
         <button
           onClick={() => fling(-1)}
           aria-label="Ôn lại"
-          className="grid h-14 w-14 place-items-center rounded-[9px] border border-hairline text-taupe transition active:scale-90"
+          className="grid h-14 w-14 cyber place-items-center rounded-[9px] border border-hairline text-taupe transition active:scale-90"
         >
           <IconClose className="h-6 w-6" />
         </button>
         <button
           onClick={onReshuffle}
           aria-label="Xáo trộn"
-          className="grid h-11 w-11 place-items-center rounded-[9px] border border-hairline text-gold-300 transition active:scale-90"
+          className="grid h-11 w-11 cyber place-items-center rounded-[9px] border border-hairline text-gold-300 transition active:scale-90"
         >
           <IconShuffle className="h-5 w-5" />
         </button>
         <button
           onClick={() => fling(1)}
           aria-label="Đã thuộc"
-          className="grid h-14 w-14 place-items-center rounded-[9px] bg-gold-foil text-ink shadow-glow transition active:scale-90"
+          className="grid h-14 w-14 cyber place-items-center rounded-[9px] bg-gold-foil text-ink shadow-glow transition active:scale-90"
         >
           <IconCheck className="h-6 w-6" />
         </button>

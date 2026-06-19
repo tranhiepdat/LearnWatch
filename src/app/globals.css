@@ -137,6 +137,27 @@ body::after {
   color: #d7f7e6 !important;
 }
 
+/* ===== Cyberpunk tap: chớp khối màu đặc emerald (lingering) ===== */
+.cyber {
+  position: relative;
+  overflow: hidden;
+}
+.cyber::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: #34d399;
+  mix-blend-mode: plus-lighter;
+  opacity: 0;
+  transition: opacity 0.32s ease-out;
+}
+.cyber:active::after {
+  opacity: 0.6;
+  transition: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
