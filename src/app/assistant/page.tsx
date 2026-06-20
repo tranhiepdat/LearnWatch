@@ -45,6 +45,13 @@ export default function AssistantPage() {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
+  // Tu dong hoi khi vao tu nut "Hoi AI ve mau nay" (?q=...)
+  useEffect(() => {
+    const q = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("q") : null;
+    if (q && q.trim()) ask(q.trim());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   async function ask(text: string) {
     const q = text.trim();
     if (!q || loading) return;

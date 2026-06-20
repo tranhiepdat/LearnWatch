@@ -5,9 +5,10 @@ import { motion, useMotionValue, useTransform, animate, type PanInfo } from "fra
 import type { Watch } from "@/data/types";
 import { hasPhoto } from "@/data/photos";
 import WatchVisual from "./WatchVisual";
-import GoldBurst from "./GoldBurst";
-import { IconCheck, IconClose, IconShuffle, IconSparkle } from "./icons";
-import { playFlip, playSwipe, playCorrect, playComplete } from "@/lib/sound";
+import FlipBurst from "./FlipBurst";
+import Link from "next/link";
+import { IconCheck, IconClose, IconShuffle, IconSparkle, IconChat } from "./icons";
+import { playFlip, playSwipe, playCorrect, playComplete, playTap } from "@/lib/sound";
 
 function BrandTag({ brand }: { brand: Watch["brand"] }) {
   return (
@@ -287,8 +288,16 @@ export default function SwipeDeck({
           </motion.div>
         </motion.div>
 
-        {flipBurst > 0 && <GoldBurst small key={flipBurst} />}
+        {flipBurst > 0 && <FlipBurst key={flipBurst} />}
       </div>
+
+      <Link
+        href={`/assistant?q=${encodeURIComponent(`${current.brand} ${current.nickname ?? ""} ${current.collection}`)}`}
+        onClick={() => playTap()}
+        className="cyber mt-3 flex shrink-0 items-center justify-center gap-1.5 rounded-[6px] border border-gold-700/50 bg-gold-500/10 py-2 text-xs font-semibold text-gold-300 active:scale-95"
+      >
+        <IconChat className="h-4 w-4" /> Hỏi AI về mẫu này
+      </Link>
 
       {/* nut dieu khien + tien do */}
       <div className="mt-4 flex shrink-0 items-center justify-center gap-5">

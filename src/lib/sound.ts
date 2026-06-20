@@ -107,22 +107,26 @@ function noiseHit(t: number, dur: number, peak: number, fStart: number, fEnd: nu
   src.stop(t + dur + 0.02);
 }
 
-/** Tick UI số hoá ngắn gọn */
+/** Tick UI ấm (cozy) + sci-fi: thân triangle ấm + chút lấp lánh sine */
 export function playTap() {
   if (muted()) return;
   const c = ac();
   if (!c) return;
-  tone(1280, c.currentTime, 0.045, { type: "square", peak: 0.05, glide: 720, filterStart: 3000 });
+  const t = c.currentTime;
+  tone(440, t, 0.085, { type: "triangle", peak: 0.075, glide: 600, filterStart: 2200, q: 2, attack: 0.006 });
+  tone(1100, t, 0.05, { type: "sine", peak: 0.03, glide: 1500 });
 }
 
+/** Lật thẻ: "power-up" thoả mãn (giống correct nhưng nhẹ hơn) */
 export function playFlip() {
   if (muted()) return;
   const c = ac();
   if (!c) return;
   const t = c.currentTime;
-  noiseHit(t, 0.09, 0.04, 1800, 600, 1.3);
-  tone(520, t, 0.1, { type: "square", peak: 0.06, glide: 1500, filterStart: 3200, q: 6 });
-  tone(1568, t + 0.05, 0.13, { type: "sine", peak: 0.05 });
+  tone(160, t, 0.1, { type: "sine", peak: 0.1, glide: 250 });
+  tone(420, t, 0.16, { type: "sawtooth", peak: 0.12, glide: 1300, filterStart: 800, filterEnd: 3600, q: 6 });
+  tone(1046.5, t + 0.1, 0.24, { type: "triangle", peak: 0.08 });
+  tone(1568, t + 0.17, 0.2, { type: "sine", peak: 0.055 });
 }
 
 /** Laser swipe sci-fi */
