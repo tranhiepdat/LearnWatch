@@ -49,6 +49,23 @@ export function localAnswer(qRaw: string): AssistantResult {
     return { text: `${term.term} — ${term.short}\n\n${term.detail}`, watches: related };
   }
 
+  // 1b) Khop dung BIET DANH cu the (vd nut "Hoi AI ve mau nay")
+  const nickHit = visibleWatches.find(
+    (w) => w.nickname && norm(w.nickname).length >= 3 && q.includes(norm(w.nickname)),
+  );
+  if (nickHit) {
+    const more = all.filter((w) => w.collection === nickHit.collection && w.id !== nickHit.id).slice(0, 5);
+    return {
+      text:
+        `${nickHit.brand} ${nickHit.model}` +
+        (nickHit.tier ? ` — ${nickHit.tier}.` : ".") +
+        (nickHit.resale ? ` Giá tham khảo ${nickHit.resale}.` : "") +
+        (nickHit.nicknameMeaning ? `\n“${nickHit.nickname}”: ${nickHit.nicknameMeaning}` : "") +
+        (nickHit.tip ? `\n💡 ${nickHit.tip}` : ""),
+      watches: [nickHit, ...more],
+    };
+  }
+
   // 2) Calibre / may dung chung
   const cal = q.match(/\b(\d{3,4})\b/);
   if (cal && /(may|calibre|cal|movement|dung chung)/.test(q)) {
