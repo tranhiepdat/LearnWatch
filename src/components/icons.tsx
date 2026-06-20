@@ -122,3 +122,18 @@ export const IconSparkle = (p: P) => (
     <path d="M12 3l1.8 6.2L20 11l-6.2 1.8L12 19l-1.8-6.2L4 11l6.2-1.8L12 3Z" />
   </svg>
 );
+
+/** Trợ lý AI — bong bóng chat + tia */
+export const IconChat = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M4.5 6A1.8 1.8 0 0 1 6.3 4.2h11.4A1.8 1.8 0 0 1 19.5 6v8a1.8 1.8 0 0 1-1.8 1.8H9.2L5 19.4V15.8h-.3A1.8 1.8 0 0 1 4.5 14V6Z" />
+    <path d="M9 9.2h6M9 12h3.5" opacity="0.85" />
+  </svg>
+);
+
+export const IconSend = (p: P) => (
+  <svg {...base(p)} strokeWidth={1.9}>
+    <path d="M4 11.5 19 5l-4.5 14-3.2-5.6L4 11.5Z" />
+    <path d="M11.3 13.4 19 5" opacity="0.6" />
+  </svg>
+);

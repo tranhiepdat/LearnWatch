@@ -5,6 +5,7 @@ import { motion, useMotionValue, useTransform, animate, type PanInfo } from "fra
 import type { Watch } from "@/data/types";
 import { hasPhoto } from "@/data/photos";
 import WatchVisual from "./WatchVisual";
+import GoldBurst from "./GoldBurst";
 import { IconCheck, IconClose, IconShuffle, IconSparkle } from "./icons";
 import { playFlip, playSwipe, playCorrect, playComplete } from "@/lib/sound";
 
@@ -13,6 +14,16 @@ function BrandTag({ brand }: { brand: Watch["brand"] }) {
     <span className="rounded-[9px] border border-hairline px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-luxe text-gold-300">
       {brand}
     </span>
+  );
+}
+
+function Spec({ label, value, accent }: { label: string; value?: string; accent?: boolean }) {
+  if (!value) return null;
+  return (
+    <div className="rounded-[4px] border border-hairline px-2 py-1 leading-tight">
+      <span className="label-luxe block text-[9px]">{label}</span>
+      <span className={accent ? "text-gold-300" : "text-ivory"}>{value}</span>
+    </div>
   );
 }
 
@@ -29,6 +40,7 @@ export default function SwipeDeck({
 }) {
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
+  const [flipBurst, setFlipBurst] = useState(0);
   const busy = useRef(false);
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-220, 220], [-13, 13]);
@@ -142,6 +154,7 @@ export default function SwipeDeck({
             if (busy.current) return;
             if (Math.abs(x.get()) < 8) {
               setFlipped((f) => !f);
+              setFlipBurst((k) => k + 1);
               playFlip();
             }
           }}
@@ -151,8 +164,8 @@ export default function SwipeDeck({
           className="absolute inset-0 cursor-grab touch-pan-y active:cursor-grabbing [perspective:1600px]"
         >
           <motion.div
-            animate={{ rotateY: flipped ? 180 : 0 }}
-            transition={{ duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }}
+            animate={{ rotateY: flipped ? 180 : 0, scale: [1, 1.05, 1] }}
+            transition={{ duration: 0.5, ease: [0.2, 0.8, 0.2, 1], scale: { duration: 0.45, ease: "easeOut" } }}
             className="relative h-full w-full [transform-style:preserve-3d]"
           >
             {/* MAT TRUOC */}
@@ -202,27 +215,28 @@ export default function SwipeDeck({
               </div>
               <h3 className="font-display text-xl font-semibold leading-tight text-ivory">{current.model}</h3>
 
+              {current.tier && (
+                <p className="mt-1.5 text-xs font-semibold text-gold-300">▸ {current.tier}</p>
+              )}
+
               {current.nickname && current.nicknameMeaning && (
                 <p className="mt-2 rounded-[6px] border border-hairline bg-surface-2 p-3 text-sm text-champagne">
                   <span className="font-bold">“{current.nickname}”</span> — {current.nicknameMeaning}
                 </p>
               )}
 
-              {(current.colorEn || current.resale) && (
-                <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
-                  {current.colorEn && (
-                    <div className="rounded-lg border border-hairline px-2.5 py-1.5">
-                      <span className="label-luxe block">Color name</span>
-                      <span className="text-ivory">{current.colorEn}</span>
-                    </div>
-                  )}
-                  {current.resale && (
-                    <div className="rounded-lg border border-hairline px-2.5 py-1.5">
-                      <span className="label-luxe block">Resale</span>
-                      <span className="text-gold-300">{current.resale}</span>
-                    </div>
-                  )}
-                </div>
+              {/* Spec sheet (thuật ngữ tiếng Anh) */}
+              <div className="mt-3 grid grid-cols-2 gap-1.5 text-[11px]">
+                <Spec label="Năm · Year" value={current.year} accent />
+                <Spec label="Cỡ · Size" value={current.caseSize} />
+                <Spec label="Máy · Movement" value={current.movement} accent />
+                <Spec label="Bezel" value={current.bezelEn} />
+                <Spec label="Dây · Strap" value={current.strapEn} />
+                <Spec label="Màu · Color (EN)" value={current.colorEn} />
+                <Spec label="Giá · Resale" value={current.resale} accent />
+              </div>
+              {current.movementNote && (
+                <p className="mt-2 text-[11px] text-taupe">⚙ {current.movementNote}</p>
               )}
 
               <div className="mt-3 flex flex-wrap gap-1.5">
@@ -254,11 +268,7 @@ export default function SwipeDeck({
                 </p>
               )}
 
-              <div className="mt-auto grid grid-cols-2 gap-y-1 pt-3 text-xs text-taupe">
-                {current.year && <span className="text-gold-300">📅 {current.year}</span>}
-                {current.caseSize && <span>◷ {current.caseSize}</span>}
-                {current.movement && <span className="col-span-2">⚙ {current.movement}</span>}
-              </div>
+              <div className="h-2 shrink-0" />
             </div>
           </motion.div>
 
@@ -276,6 +286,8 @@ export default function SwipeDeck({
             Ôn lại
           </motion.div>
         </motion.div>
+
+        {flipBurst > 0 && <GoldBurst small key={flipBurst} />}
       </div>
 
       {/* nut dieu khien + tien do */}

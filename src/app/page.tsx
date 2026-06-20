@@ -1,10 +1,11 @@
 import Link from "next/link";
 import ProgressHeader from "@/components/ProgressHeader";
-import { IconCards, IconQuiz, IconBook, IconChevron } from "@/components/icons";
+import { IconCards, IconQuiz, IconBook, IconChat, IconChevron } from "@/components/icons";
 import { visibleWatches } from "@/data/watches";
 import { terms } from "@/data/terms";
 
 const MODES = [
+  { href: "/assistant", Icon: IconChat, title: "Trợ lý AI", desc: "Hỏi gì về đồng hồ — tìm mẫu, giá, thuật ngữ, máy/calibre." },
   { href: "/flashcards", Icon: IconCards, title: "Flashcard", desc: "Vuốt & lật thẻ học mẫu mã, biệt danh, chất liệu." },
   { href: "/quiz", Icon: IconQuiz, title: "Trắc nghiệm", desc: "Nhìn hình đoán mẫu, có giải thích sâu & giá resale." },
   { href: "/browse", Icon: IconBook, title: "Tra cứu", desc: "Tìm nhanh mẫu & thuật ngữ khi đang tư vấn khách." },

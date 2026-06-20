@@ -2,6 +2,7 @@ import type { Watch } from "./types";
 import { watchPhotos } from "./photos";
 import { extraWatches } from "./watchesExtra";
 import { extraWatches2 } from "./watchesExtra2";
+import { applyCollectionSpecs } from "./specs";
 
 /**
  * Thu vien dong ho - tap trung Rolex & Omega.
@@ -1392,6 +1393,9 @@ for (const w of watches) {
   const e = enrich[w.id];
   if (e) Object.assign(w, e);
 }
+
+// Dien thong so theo dong (tier, calibre, bezel/strap tieng Anh) cho moi mau
+applyCollectionSpecs(watches);
 
 export const getWatch = (id: string) => watches.find((w) => w.id === id);
 export const rolexWatches = watches.filter((w) => w.brand === "Rolex");

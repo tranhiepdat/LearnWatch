@@ -151,11 +151,14 @@ body::after {
   background: #34d399;
   mix-blend-mode: plus-lighter;
   opacity: 0;
-  transition: opacity 0.32s ease-out;
+  transform: translateX(-100%) skewX(-8deg);
+  transition: transform 0.45s ease-out, opacity 0.45s ease-out;
 }
+/* bam: khoi mau dac TRUOT vao (ease-out); tha ra: truot tiep & mo dan */
 .cyber:active::after {
-  opacity: 0.6;
-  transition: none;
+  opacity: 0.72;
+  transform: translateX(0) skewX(-8deg);
+  transition: transform 0.18s ease-out, opacity 0s;
 }
 
 @media (prefers-reduced-motion: reduce) {

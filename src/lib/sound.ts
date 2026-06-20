@@ -120,8 +120,9 @@ export function playFlip() {
   const c = ac();
   if (!c) return;
   const t = c.currentTime;
-  noiseHit(t, 0.1, 0.045, 1600, 500, 1.2);
-  tone(1500, t, 0.07, { type: "square", peak: 0.04, glide: 700 });
+  noiseHit(t, 0.09, 0.04, 1800, 600, 1.3);
+  tone(520, t, 0.1, { type: "square", peak: 0.06, glide: 1500, filterStart: 3200, q: 6 });
+  tone(1568, t + 0.05, 0.13, { type: "sine", peak: 0.05 });
 }
 
 /** Laser swipe sci-fi */

@@ -41,6 +41,14 @@ export interface Watch {
   marketTerms?: string;
   /** Meo nho nhanh (de hoc/ban) */
   tip?: string;
+  /** Phan khuc / dinh vi: vd "Nhap mon", "Pho thong", "Cao cap", "Grail" */
+  tier?: string;
+  /** Loai vanh (bezel) - tieng Anh */
+  bezelEn?: string;
+  /** Loai + chat lieu day - tieng Anh */
+  strapEn?: string;
+  /** Ghi chu may / dung chung movement */
+  movementNote?: string;
 }
 
 export type TermCategory =
