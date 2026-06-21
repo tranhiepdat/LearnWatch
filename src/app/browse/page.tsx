@@ -61,7 +61,7 @@ export default function BrowsePage() {
       </div>
 
       {tab === "Đồng hồ" ? (
-        <div className="space-y-2.5">
+        <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
           {fWatches.map((w) => (
             <div key={w.id} className="card-lux p-4">
               <div className="flex gap-3">
@@ -91,7 +91,7 @@ export default function BrowsePage() {
           {fWatches.length === 0 && <Empty />}
         </div>
       ) : (
-        <div className="space-y-2.5">
+        <div className="grid gap-2.5 sm:grid-cols-2">
           {fTerms.map((t) => (
             <details key={t.id} className="card-lux p-4">
               <summary className="flex cursor-pointer items-center justify-between gap-2">

@@ -16,10 +16,10 @@ export default function Home() {
   const brandCount = new Set(visibleWatches.map((w) => w.brand)).size;
 
   return (
-    <div className="space-y-6 pt-2">
+    <div className="mx-auto max-w-4xl space-y-6 pt-2">
       <ProgressHeader />
 
-      <section className="space-y-3">
+      <section className="grid gap-3 md:grid-cols-2">
         {MODES.map((m) => (
           <Link
             key={m.href}

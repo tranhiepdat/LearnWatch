@@ -199,11 +199,13 @@ export default function SwipeDeck({
                     <p className="font-display text-4xl font-semibold gold-text">{current.nickname}</p>
                   </>
                 ) : (
-                  <p className="font-display text-2xl font-semibold text-ivory">{current.collection}</p>
+                  <p className="font-display text-2xl font-semibold leading-tight text-ivory">{current.collection}</p>
                 )}
-                {current.reference && (
-                  <p className="mt-1 font-mono text-xs text-taupe">Ref. {current.reference}</p>
-                )}
+                {current.colorEn && <p className="mt-0.5 text-sm font-medium text-champagne">{current.colorEn}</p>}
+                <p className="mt-0.5 font-tech text-[11px] text-taupe">
+                  {englishName(current)}
+                  {current.reference ? ` · ${current.reference}` : ""}
+                </p>
               </div>
 
               <p className="text-[11px] text-taupe">Chạm để lật · Vuốt phải nếu đã thuộc</p>
@@ -299,7 +301,7 @@ export default function SwipeDeck({
       </div>
 
       <Link
-        href={`/assistant?q=${encodeURIComponent(`${current.brand} ${current.nickname ?? ""} ${current.collection}`)}`}
+        href={`/assistant?id=${current.id}`}
         onClick={() => playTap()}
         className="cyber mt-3 flex shrink-0 items-center justify-center gap-1.5 rounded-[6px] border border-gold-700/50 bg-gold-500/10 py-2 text-xs font-semibold text-gold-300 active:scale-95"
       >

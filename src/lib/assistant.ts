@@ -1,5 +1,6 @@
 import { visibleWatches, getWatch } from "@/data/watches";
 import { terms } from "@/data/terms";
+import { englishName } from "./name";
 import type { Watch } from "@/data/types";
 
 export interface AssistantResult {
@@ -155,6 +156,26 @@ export function localAnswer(qRaw: string): AssistantResult {
     text: "Mình chưa rõ câu hỏi 😅 Thử: 'mẫu nhập môn', 'Rolex xanh lá', 'Cerachrom là gì', 'Daytona giá bao nhiêu', 'máy 3235 dùng cho mẫu nào'.",
     watches: [],
   };
+}
+
+/** Mô tả CHI TIẾT 1 mẫu cụ thể (cho nút "Hỏi AI về mẫu này"). */
+export function watchDetail(w: Watch): AssistantResult {
+  const lines: string[] = [`${englishName(w)}${w.colorEn ? ` · ${w.colorEn}` : ""}`];
+  if (w.tier) lines.push(`▸ Phân khúc: ${w.tier}`);
+  const specs: string[] = [];
+  if (w.year) specs.push(`Năm ${w.year}`);
+  if (w.caseSize) specs.push(w.caseSize);
+  if (w.movement) specs.push(`Máy ${w.movement}`);
+  if (specs.length) lines.push(specs.join(" · "));
+  if (w.bezelEn) lines.push(`Bezel: ${w.bezelEn}`);
+  if (w.strapEn) lines.push(`Dây: ${w.strapEn}`);
+  if (w.resale) lines.push(`Giá tham khảo: ${w.resale}`);
+  if (w.movementNote) lines.push(`⚙ ${w.movementNote}`);
+  if (w.nickname && w.nicknameMeaning) lines.push(`“${w.nickname}”: ${w.nicknameMeaning}`);
+  if (w.facts?.length) lines.push("\n" + w.facts.join(" "));
+  if (w.funFact) lines.push(`✦ ${w.funFact}`);
+  if (w.tip) lines.push(`💡 ${w.tip}`);
+  return { text: lines.join("\n"), watches: [w] };
 }
 
 export { getWatch };

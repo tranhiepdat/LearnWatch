@@ -38,14 +38,14 @@ export default function QuizPage() {
 
   if (questions) {
     return (
-      <div className="h-full">
+      <div className="mx-auto h-full w-full max-w-2xl">
         <QuizRunner questions={questions} onRestart={() => setQuestions(null)} />
       </div>
     );
   }
 
   return (
-    <div className="space-y-7">
+    <div className="mx-auto max-w-xl space-y-7">
       <div>
         <p className="label-luxe">Trắc nghiệm</p>
         <h1 className="font-display text-3xl font-semibold text-ivory">Thử tài nhận diện</h1>

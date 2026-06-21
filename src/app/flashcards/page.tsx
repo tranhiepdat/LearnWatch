@@ -67,18 +67,39 @@ export default function FlashcardsPage() {
         ))}
       </div>
 
-      <div className="min-h-0 flex-1">
-        {deck.length > 0 ? (
-          <SwipeDeck
-            key={deckKey}
-            deck={deck}
-            learned={learned}
-            onToggleLearned={(id) => setLearned(toggleLearned(id).learned)}
-            onReshuffle={() => rebuild(base)}
-          />
-        ) : (
-          <p className="text-center text-taupe">Không có thẻ nào.</p>
-        )}
+      <div className="min-h-0 flex-1 lg:flex lg:items-stretch lg:justify-center lg:gap-8">
+        <div className="mx-auto h-full w-full max-w-md lg:mx-0">
+          {deck.length > 0 ? (
+            <SwipeDeck
+              key={deckKey}
+              deck={deck}
+              learned={learned}
+              onToggleLearned={(id) => setLearned(toggleLearned(id).learned)}
+              onReshuffle={() => rebuild(base)}
+            />
+          ) : (
+            <p className="text-center text-taupe">Không có thẻ nào.</p>
+          )}
+        </div>
+        <aside className="hidden lg:flex lg:w-72 lg:flex-col lg:justify-center">
+          <div className="card-lux p-5">
+            <p className="label-luxe">Cách dùng</p>
+            <ul className="mt-3 space-y-2.5 text-sm text-ivory/90">
+              <li className="flex gap-2">
+                <span className="text-gold-300">→</span> Vuốt PHẢI = đã thuộc (+XP)
+              </li>
+              <li className="flex gap-2">
+                <span className="text-taupe">←</span> Vuốt TRÁI = ôn lại sau
+              </li>
+              <li className="flex gap-2">
+                <span className="text-gold-300">⟳</span> Chạm thẻ = lật xem chi tiết
+              </li>
+              <li className="flex gap-2">
+                <span className="text-gold-300">✦</span> Nút &quot;Hỏi AI&quot; để hỏi nhanh về mẫu đang xem
+              </li>
+            </ul>
+          </div>
+        </aside>
       </div>
     </div>
   );

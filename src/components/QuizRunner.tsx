@@ -159,7 +159,7 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
               />
             )}
 
-            <div className="mt-4 grid gap-2.5">
+            <div className="mt-4 grid gap-2.5 sm:grid-cols-2">
               {q.options.map((opt, i) => {
                 const isCorrect = i === q.correctIndex;
                 const isSelected = i === selected;

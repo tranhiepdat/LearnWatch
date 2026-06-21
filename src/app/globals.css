@@ -60,9 +60,9 @@ body::before {
   .card-lux {
     @apply relative rounded-[5px] border border-hairline bg-surface shadow-lux;
   }
-  /* khung "app" tren man hinh lon */
+  /* khung "app": hẹp trên mobile, rộng ra trên desktop để tận dụng không gian */
   .app-frame {
-    @apply mx-auto w-full max-w-[480px];
+    @apply mx-auto w-full max-w-[480px] lg:max-w-5xl;
   }
 }
 
@@ -142,23 +142,23 @@ body::after {
   position: relative;
   overflow: hidden;
 }
-.cyber::after {
-  content: "";
+/* gợn sóng (ripple) lan ra TỪ ĐIỂM CHẠM — tạo bởi RippleProvider */
+.ripple {
   position: absolute;
-  inset: 0;
-  z-index: 5;
-  pointer-events: none;
+  z-index: 6;
+  border-radius: 9999px;
   background: #34d399;
   mix-blend-mode: plus-lighter;
-  opacity: 0;
-  transform: translateX(-100%) skewX(-8deg);
-  transition: transform 0.45s ease-out, opacity 0.45s ease-out;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0.5;
+  animation: ripple 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
 }
-/* bam: khoi mau dac TRUOT vao (ease-out); tha ra: truot tiep & mo dan */
-.cyber:active::after {
-  opacity: 0.72;
-  transform: translateX(0) skewX(-8deg);
-  transition: transform 0.18s ease-out, opacity 0s;
+@keyframes ripple {
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

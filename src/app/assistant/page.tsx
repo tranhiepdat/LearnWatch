@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { localAnswer, suggestions, type AssistantResult } from "@/lib/assistant";
+import { localAnswer, suggestions, watchDetail, getWatch, type AssistantResult } from "@/lib/assistant";
+import { englishName } from "@/lib/name";
 import type { Watch } from "@/data/types";
 import { playTap, playFlip } from "@/lib/sound";
 import { IconSend, IconChat } from "@/components/icons";
@@ -45,9 +46,19 @@ export default function AssistantPage() {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
-  // Tu dong hoi khi vao tu nut "Hoi AI ve mau nay" (?q=...)
+  // Tu dong hoi khi vao tu nut "Hoi AI ve mau nay" (?id=...) hoac tim (?q=...)
   useEffect(() => {
-    const q = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("q") : null;
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    if (id) {
+      const w = getWatch(id);
+      if (w) {
+        askWatch(w);
+        return;
+      }
+    }
+    const q = params.get("q");
     if (q && q.trim()) ask(q.trim());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -82,8 +93,37 @@ export default function AssistantPage() {
     playFlip();
   }
 
+  async function askWatch(w: Watch) {
+    if (loading) return;
+    playTap();
+    setMessages((m) => [...m, { role: "user", text: `Mẫu này là gì? · ${englishName(w)}` }]);
+    setLoading(true);
+    const local = watchDetail(w);
+    let answer = local.text;
+    let via: "ai" | "local" = "local";
+    try {
+      const r = await fetch("/api/ask", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          question: `Tư vấn bán mẫu ${englishName(w)}${w.colorEn ? ` (${w.colorEn})` : ""} cho khách: điểm nổi bật, hợp đối tượng nào, mẹo chốt sale. Ngắn gọn, tiếng Việt.`,
+        }),
+      });
+      const d = (await r.json()) as { configured?: boolean; answer?: string };
+      if (d.configured && d.answer) {
+        answer = d.answer;
+        via = "ai";
+      }
+    } catch {
+      /* fallback local */
+    }
+    setMessages((m) => [...m, { role: "assistant", text: answer, watches: local.watches, via }]);
+    setLoading(false);
+    playFlip();
+  }
+
   return (
-    <div className="flex h-full flex-col gap-3">
+    <div className="mx-auto flex h-full w-full max-w-3xl flex-col gap-3">
       <div className="shrink-0">
         <p className="label-luxe">Trợ lý đồng hồ</p>
         <h1 className="font-display text-2xl font-semibold text-ivory">Hỏi gì về đồng hồ?</h1>
@@ -136,7 +176,7 @@ export default function AssistantPage() {
                     <p className="whitespace-pre-line text-sm text-ivory/90">{m.text}</p>
                   </div>
                   {m.watches && m.watches.length > 0 && (
-                    <div className="grid gap-2">
+                    <div className="grid gap-2 sm:grid-cols-2">
                       {m.watches.slice(0, 8).map((w) => (
                         <ResultCard key={w.id} w={w} />
                       ))}
