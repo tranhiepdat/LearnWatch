@@ -9,6 +9,7 @@ import FlipBurst from "./FlipBurst";
 import Link from "next/link";
 import { IconCheck, IconClose, IconShuffle, IconSparkle, IconChat } from "./icons";
 import { playFlip, playSwipe, playCorrect, playComplete, playTap } from "@/lib/sound";
+import { englishName } from "@/lib/name";
 
 function BrandTag({ brand }: { brand: Watch["brand"] }) {
   return (
@@ -219,6 +220,12 @@ export default function SwipeDeck({
               {current.tier && (
                 <p className="mt-1.5 text-xs font-semibold text-gold-300">▸ {current.tier}</p>
               )}
+
+              <div className="mt-2 rounded-[6px] border border-gold-700/50 bg-gold-500/10 px-3 py-2">
+                <span className="label-luxe block text-[9px]">Tên tiếng Anh · English name</span>
+                <span className="text-sm font-semibold text-gold-200">{englishName(current)}</span>
+                {current.colorEn && <span className="text-[11px] text-taupe"> · {current.colorEn}</span>}
+              </div>
 
               {current.nickname && current.nicknameMeaning && (
                 <p className="mt-2 rounded-[6px] border border-hairline bg-surface-2 p-3 text-sm text-champagne">
