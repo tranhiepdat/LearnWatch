@@ -11,7 +11,8 @@ function buildContext(): string {
       (x) =>
         `- ${x.brand} ${x.collection} "${x.model}"${x.nickname ? ` [biệt danh: ${x.nickname}]` : ""}` +
         ` · ${x.year ?? "?"} · ${x.tier ?? ""} · màu: ${x.colorEn ?? ""} · giá: ${x.resale ?? "?"}` +
-        ` · ${x.movement ?? ""}${x.bezelEn ? ` · bezel: ${x.bezelEn}` : ""}${x.strapEn ? ` · dây: ${x.strapEn}` : ""}`,
+        ` · ${x.movement ?? ""}${x.bezelEn ? ` · bezel: ${x.bezelEn}` : ""}${x.strapEn ? ` · dây: ${x.strapEn}` : ""}` +
+        (x.subdials ? ` · mặt số: ${x.subdials.replace(/ \| /g, "; ")}` : ""),
     )
     .join("\n");
   const t = terms.map((x) => `- ${x.term}: ${x.short}`).join("\n");

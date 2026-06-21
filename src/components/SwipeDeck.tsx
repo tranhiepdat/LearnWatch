@@ -250,6 +250,20 @@ export default function SwipeDeck({
                 <p className="mt-2 text-[11px] text-taupe">⚙ {current.movementNote}</p>
               )}
 
+              {current.subdials && (
+                <div className="mt-3 rounded-[6px] border border-gold-700/40 bg-surface-2 p-3">
+                  <p className="label-luxe text-[9px]">Mặt số &amp; cách dùng · Dials</p>
+                  <ul className="mt-1.5 space-y-1 text-[11.5px] leading-snug text-ivory/90">
+                    {current.subdials.split(" | ").map((line, i) => (
+                      <li key={i} className="flex gap-2">
+                        <span className="text-gold-400">•</span>
+                        <span>{line}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               <div className="mt-3 flex flex-wrap gap-1.5">
                 {current.materials.map((m) => (
                   <span key={m} className="rounded-[9px] border border-hairline px-2.5 py-1 text-xs text-taupe">

@@ -60,6 +60,8 @@ export interface Watch {
   strapEn?: string;
   /** Ghi chu may / dung chung movement */
   movementNote?: string;
+  /** Mat phu (sub-dials) / cua so lich: dial nao de lam gi + cach dung. Cac dong ngan cach bang " | ". */
+  subdials?: string;
 }
 
 export type TermCategory =

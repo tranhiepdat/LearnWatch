@@ -4,6 +4,7 @@ import { extraWatches } from "./watchesExtra";
 import { extraWatches2 } from "./watchesExtra2";
 import { extraWatches3 } from "./watchesExtra3";
 import { applyCollectionSpecs } from "./specs";
+import { applySubdials } from "./subdials";
 
 /**
  * Thu vien dong ho - tap trung Rolex & Omega.
@@ -1397,6 +1398,8 @@ for (const w of watches) {
 
 // Dien thong so theo dong (tier, calibre, bezel/strap tieng Anh) cho moi mau
 applyCollectionSpecs(watches);
+// Dien mo ta mat phu (sub-dials) / cua so lich: dial nao de lam gi + cach dung
+applySubdials(watches);
 
 export const getWatch = (id: string) => watches.find((w) => w.id === id);
 export const rolexWatches = watches.filter((w) => w.brand === "Rolex");

@@ -171,6 +171,7 @@ export function watchDetail(w: Watch): AssistantResult {
   if (w.strapEn) lines.push(`Dây: ${w.strapEn}`);
   if (w.resale) lines.push(`Giá tham khảo: ${w.resale}`);
   if (w.movementNote) lines.push(`⚙ ${w.movementNote}`);
+  if (w.subdials) lines.push(`\nMặt số & cách dùng:\n• ${w.subdials.split(" | ").join("\n• ")}`);
   if (w.nickname && w.nicknameMeaning) lines.push(`“${w.nickname}”: ${w.nicknameMeaning}`);
   if (w.facts?.length) lines.push("\n" + w.facts.join(" "));
   if (w.funFact) lines.push(`✦ ${w.funFact}`);
