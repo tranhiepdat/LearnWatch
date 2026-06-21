@@ -1,4 +1,15 @@
-export type Brand = "Rolex" | "Omega" | "TAG Heuer" | "Cartier" | "Hublot" | "Diesel" | "Movado";
+export type Brand =
+  | "Rolex"
+  | "Omega"
+  | "TAG Heuer"
+  | "Cartier"
+  | "Hublot"
+  | "Tudor"
+  | "IWC"
+  | "Audemars Piguet"
+  | "Patek Philippe"
+  | "Diesel"
+  | "Movado";
 
 export type Topic = "nickname" | "material" | "model";
 

@@ -214,6 +214,76 @@ export const COLLECTION_SPECS: Record<string, Spec> = {
     bezelEn: "Smooth slim bezel",
     strapEn: "Leather strap / mesh",
   },
+
+  // ---------- TUDOR ----------
+  "Black Bay": {
+    tier: "Lặn cổ điển · GIÁ TRỊ/TIỀN tuyệt vời ('em ruột' Rolex)",
+    movement: "Cal. MT5602 (in-house, trữ cót 70h, COSC)",
+    movementNote: "Tudor = thương hiệu em của Rolex, máy in-house riêng",
+    bezelEn: "Aluminium / ceramic dive bezel",
+    strapEn: "Steel bracelet / leather / fabric (NATO)",
+  },
+  "Black Bay Chrono": {
+    tier: "Chronograph thể thao · giá tốt bất ngờ",
+    movement: "Cal. MT5813 (nền Breitling B01, COSC)",
+    bezelEn: "Tachymeter bezel",
+    strapEn: "Steel bracelet / fabric",
+  },
+
+  // ---------- IWC ----------
+  "Pilot's Watch": {
+    tier: "Đồng hồ PHI CÔNG · kỹ thuật chắc chắn (Thuỵ Sĩ)",
+    movement: "Cal. 69385 (chrono) / dòng 32xxx",
+    bezelEn: "Smooth bezel",
+    strapEn: "Rubber / leather / steel (EasX-CHANGE)",
+  },
+  Ingenieur: {
+    tier: "Thể thao sang dây liền khối · chống từ",
+    movement: "Cal. 32111 (in-house, 120h)",
+    movementNote: "Thiết kế bởi Gérald Genta (cùng cha đẻ Royal Oak & Nautilus)",
+    bezelEn: "Smooth bezel có 5 ốc",
+    strapEn: "Integrated steel bracelet (liền khối)",
+  },
+
+  // ---------- AUDEMARS PIGUET ----------
+  "Royal Oak": {
+    tier: "Grail thể thao xa xỉ · PREMIUM cực cao, khó mua",
+    movement: "Cal. 4302 / 7121 (in-house)",
+    movementNote: "Gérald Genta thiết kế 1972 — khai sinh dòng 'luxury sports watch'",
+    bezelEn: "Octagonal bezel + 8 ốc lục giác lộ",
+    strapEn: "Integrated steel bracelet (liền khối)",
+  },
+  "Royal Oak Offshore": {
+    tier: "Bản LỚN & hầm hố hơn Royal Oak · thể thao mạnh",
+    movement: "Cal. 4401 (chronograph in-house)",
+    bezelEn: "Octagonal bezel + ốc, 'Méga Tapisserie'",
+    strapEn: "Rubber strap / integrated bracelet",
+  },
+
+  // ---------- PATEK PHILIPPE ----------
+  Nautilus: {
+    tier: "GRAIL đỉnh cao · huyền thoại cực khó mua",
+    movement: "Cal. 26-330 / 324 (in-house)",
+    movementNote: "Gérald Genta thiết kế 1976; Patek là 'vua' chế tác Thuỵ Sĩ",
+    bezelEn: "Bezel dáng 'lỗ tàu' (rounded octagon)",
+    strapEn: "Integrated steel bracelet (liền khối)",
+  },
+
+  // ---------- CARTIER (bổ sung) ----------
+  Santos: {
+    tier: "Icon VUÔNG phi công · thanh lịch thể thao (từ 1904)",
+    movement: "Cal. 1847 MC (in-house, automatic)",
+    bezelEn: "Square bezel với ốc vít lộ",
+    strapEn: "Steel bracelet (QuickSwitch) / leather (SmartLink)",
+  },
+
+  // ---------- ROLEX (bổ sung) ----------
+  "Perpetual 1908": {
+    tier: "Dress watch MỎNG mới · đeo dây da (khác chất thể thao)",
+    movement: "Cal. 7140 (in-house, đáy lộ máy, 66h)",
+    bezelEn: "Slim domed bezel",
+    strapEn: "Leather strap (khoá Dualclasp)",
+  },
 };
 
 /** Dien thong so theo dong vao cac mau (chi dien truong con trong). */

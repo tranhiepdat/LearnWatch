@@ -107,14 +107,14 @@ function noiseHit(t: number, dur: number, peak: number, fStart: number, fEnd: nu
   src.stop(t + dur + 0.02);
 }
 
-/** Tick UI ấm (cozy) + sci-fi: thân triangle ấm + chút lấp lánh sine */
+/** Tick UI CYBERPUNK: zap sáng đi lên + lấp lánh cao (không còn trầm) */
 export function playTap() {
   if (muted()) return;
   const c = ac();
   if (!c) return;
   const t = c.currentTime;
-  tone(440, t, 0.085, { type: "triangle", peak: 0.075, glide: 600, filterStart: 2200, q: 2, attack: 0.006 });
-  tone(1100, t, 0.05, { type: "sine", peak: 0.03, glide: 1500 });
+  tone(740, t, 0.055, { type: "square", peak: 0.055, glide: 1950, filterStart: 1800, filterEnd: 7000, q: 4, attack: 0.003 });
+  tone(2637, t + 0.004, 0.05, { type: "sine", peak: 0.045, glide: 3520 });
 }
 
 /** Lật thẻ: "power-up" thoả mãn (giống correct nhưng nhẹ hơn) */
@@ -129,14 +129,15 @@ export function playFlip() {
   tone(1568, t + 0.17, 0.2, { type: "sine", peak: 0.055 });
 }
 
-/** Laser swipe sci-fi */
+/** Laser swipe CYBERPUNK (sáng, zap cao, cộng hưởng) */
 export function playSwipe() {
   if (muted()) return;
   const c = ac();
   if (!c) return;
   const t = c.currentTime;
-  noiseHit(t, 0.2, 0.07, 1100, 200, 1.4);
-  tone(1000, t, 0.2, { type: "sawtooth", peak: 0.06, glide: 150, filterStart: 2400, filterEnd: 300, q: 7 });
+  tone(2200, t, 0.2, { type: "sawtooth", peak: 0.11, glide: 380, filterStart: 6500, filterEnd: 800, q: 12 });
+  tone(1100, t, 0.13, { type: "square", peak: 0.05, glide: 2600 });
+  noiseHit(t, 0.12, 0.045, 3500, 900, 1.6);
 }
 
 /** "Power-up confirm" futuristic: sub đập + quét lên + hợp âm vuông + lấp lánh */

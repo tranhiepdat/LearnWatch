@@ -2,6 +2,7 @@ import type { Watch } from "./types";
 import { watchPhotos } from "./photos";
 import { extraWatches } from "./watchesExtra";
 import { extraWatches2 } from "./watchesExtra2";
+import { extraWatches3 } from "./watchesExtra3";
 import { applyCollectionSpecs } from "./specs";
 
 /**
@@ -1334,7 +1335,7 @@ const coreWatches: Watch[] = [
   },
 ];
 
-export const watches: Watch[] = [...coreWatches, ...extraWatches, ...extraWatches2];
+export const watches: Watch[] = [...coreWatches, ...extraWatches, ...extraWatches2, ...extraWatches3];
 
 /**
  * Bo sung thuat ngu tieng Anh (ten mau) + gia resale tham khao (thi truong genuine,
