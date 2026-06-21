@@ -360,8 +360,10 @@ const coreWatches: Watch[] = [
     id: "rolex-seadweller",
     brand: "Rolex",
     collection: "Sea-Dweller",
-    model: "Sea-Dweller 43",
-    nickname: undefined,
+    model: "Sea-Dweller 43 'Single Red'",
+    nickname: "Single Red",
+    nicknameMeaning:
+      "Bản 43mm kỷ niệm 50 năm (2017) đưa lại dòng chữ 'SEA-DWELLER' màu ĐỎ một hàng (single red) như ref 1665 cổ điển — dân chơi gọi 'Single Red'.",
     reference: "126600",
     materials: ["Oystersteel", "Cerachrom"],
     bezelColors: ["#0a0a0a"],
