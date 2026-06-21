@@ -1,6 +1,7 @@
 import { visibleWatches, getWatch } from "@/data/watches";
 import { terms } from "@/data/terms";
 import { englishName } from "./name";
+import { colorBreakdown } from "./colorParts";
 import type { Watch } from "@/data/types";
 
 export interface AssistantResult {
@@ -169,6 +170,8 @@ export function watchDetail(w: Watch): AssistantResult {
   if (specs.length) lines.push(specs.join(" · "));
   if (w.bezelEn) lines.push(`Bezel: ${w.bezelEn}`);
   if (w.strapEn) lines.push(`Dây: ${w.strapEn}`);
+  const cb = colorBreakdown(w);
+  if (cb.length) lines.push("Màu nằm ở đâu:\n" + cb.map((c) => `• [${c.part}] ${c.display} — ${c.note}`).join("\n"));
   if (w.resale) lines.push(`Giá tham khảo: ${w.resale}`);
   if (w.movementNote) lines.push(`⚙ ${w.movementNote}`);
   if (w.subdials) lines.push(`\nMặt số & cách dùng:\n• ${w.subdials.split(" | ").join("\n• ")}`);
