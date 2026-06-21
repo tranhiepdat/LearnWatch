@@ -6,6 +6,7 @@ import type { Watch } from "@/data/types";
 import { hasPhoto } from "@/data/photos";
 import WatchVisual from "./WatchVisual";
 import FlipBurst from "./FlipBurst";
+import GoldBurst from "./GoldBurst";
 import Link from "next/link";
 import { IconCheck, IconClose, IconShuffle, IconSparkle, IconChat } from "./icons";
 import { playFlip, playSwipe, playCorrect, playComplete, playTap } from "@/lib/sound";
@@ -43,11 +44,12 @@ export default function SwipeDeck({
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [flipBurst, setFlipBurst] = useState(0);
+  const [swipeBurst, setSwipeBurst] = useState<{ k: number; dir: 1 | -1 }>({ k: 0, dir: 1 });
   const busy = useRef(false);
   const x = useMotionValue(0);
-  const rotate = useTransform(x, [-220, 220], [-13, 13]);
-  const likeOpacity = useTransform(x, [30, 130], [0, 1]);
-  const nopeOpacity = useTransform(x, [-130, -30], [1, 0]);
+  const rotate = useTransform(x, [-200, 200], [-16, 16]);
+  const likeOpacity = useTransform(x, [15, 90], [0, 1]);
+  const nopeOpacity = useTransform(x, [-90, -15], [1, 0]);
 
   const current = deck[index];
   const next = deck[index + 1];
@@ -71,14 +73,15 @@ export default function SwipeDeck({
   function fling(dir: 1 | -1) {
     if (busy.current || !current) return;
     busy.current = true;
+    setSwipeBurst((s) => ({ k: s.k + 1, dir }));
     if (dir > 0) {
       playCorrect();
       if (!learned.includes(current.id)) onToggleLearned(current.id);
     } else {
       playSwipe();
     }
-    animate(x, dir * 660, {
-      duration: 0.28,
+    animate(x, dir * 680, {
+      duration: 0.24,
       ease: "easeIn",
       onComplete: () => {
         setFlipped(false);
@@ -90,9 +93,9 @@ export default function SwipeDeck({
   }
 
   function onDragEnd(_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) {
-    if (info.offset.x > 110 || info.velocity.x > 600) fling(1);
-    else if (info.offset.x < -110 || info.velocity.x < -600) fling(-1);
-    else animate(x, 0, { type: "spring", stiffness: 420, damping: 34 });
+    if (info.offset.x > 75 || info.velocity.x > 300) fling(1);
+    else if (info.offset.x < -75 || info.velocity.x < -300) fling(-1);
+    else animate(x, 0, { type: "spring", stiffness: 520, damping: 30 });
   }
 
   if (done) {
@@ -147,8 +150,6 @@ export default function SwipeDeck({
         <motion.div
           key={current.id}
           drag="x"
-          dragElastic={0.5}
-          dragConstraints={{ left: 0, right: 0 }}
           dragMomentum={false}
           style={{ x, rotate }}
           onDragEnd={onDragEnd}
@@ -163,7 +164,7 @@ export default function SwipeDeck({
           initial={{ scale: 0.96, opacity: 0, y: 12 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           transition={{ type: "spring", stiffness: 320, damping: 30 }}
-          className="absolute inset-0 cursor-grab touch-pan-y active:cursor-grabbing [perspective:1600px]"
+          className="absolute inset-0 cursor-grab touch-none select-none active:cursor-grabbing [perspective:1600px]"
         >
           <motion.div
             animate={{ rotateY: flipped ? 180 : 0, scale: [1, 1.05, 1] }}
@@ -298,6 +299,7 @@ export default function SwipeDeck({
         </motion.div>
 
         {flipBurst > 0 && <FlipBurst key={flipBurst} />}
+        {swipeBurst.k > 0 && <GoldBurst key={`sw${swipeBurst.k}`} small={swipeBurst.dir < 0} />}
       </div>
 
       <Link

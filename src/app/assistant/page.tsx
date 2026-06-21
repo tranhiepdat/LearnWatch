@@ -75,10 +75,11 @@ export default function AssistantPage() {
     let answer = local.text;
     let via: "ai" | "local" = "local";
     try {
+      const history = messages.map((m) => ({ role: m.role, content: m.text }));
       const r = await fetch("/api/ask", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ question: q }),
+        body: JSON.stringify({ question: q, history }),
       });
       const d = (await r.json()) as { configured?: boolean; answer?: string };
       if (d.configured && d.answer) {
@@ -102,11 +103,13 @@ export default function AssistantPage() {
     let answer = local.text;
     let via: "ai" | "local" = "local";
     try {
+      const history = messages.map((m) => ({ role: m.role, content: m.text }));
       const r = await fetch("/api/ask", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
-          question: `Tư vấn bán mẫu ${englishName(w)}${w.colorEn ? ` (${w.colorEn})` : ""} cho khách: điểm nổi bật, hợp đối tượng nào, mẹo chốt sale. Ngắn gọn, tiếng Việt.`,
+          question: `Tư vấn bán mẫu ${englishName(w)}${w.colorEn ? ` (${w.colorEn})` : ""} cho khách: điểm nổi bật, hợp đối tượng nào, mẹo chốt sale.`,
+          history,
         }),
       });
       const d = (await r.json()) as { configured?: boolean; answer?: string };

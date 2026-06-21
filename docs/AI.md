@@ -1,20 +1,29 @@
 # Bật "Hỏi AI thật" (Claude) cho tab Trợ lý
 
-Tab **Trợ lý** hoạt động ngay mà KHÔNG cần cấu hình gì: nó tìm kiếm + trả lời tức thì
-từ dữ liệu 98 mẫu + thuật ngữ trong app (miễn phí, offline).
+Tab **Trợ lý** chạy ngay không cần cấu hình: tìm kiếm + trả lời từ dữ liệu 98 mẫu (local).
+Muốn **AI thật, hỏi sâu nhiều lượt** thì gắn **API key**.
 
-Muốn câu trả lời **thông minh hơn (AI thật của Claude)** thì thêm API key:
+## ⚠️ Quan trọng: Gói Max ≠ API
+- **Claude Max / Pro** (bạn mua) là để dùng **claude.ai** và **Claude Code**. Nó **KHÔNG**
+  cho phép gọi **API** từ app của bạn.
+- **API** là dịch vụ **riêng**, tính tiền **theo token**, lấy key ở **console.anthropic.com**
+  (nạp credit riêng, không liên quan gói Max).
 
-## Cách bật
-1. Lấy API key tại **console.anthropic.com** (Anthropic / Claude).
-2. Trên **Vercel** → project LearnWatch → **Settings → Environment Variables** → thêm:
-   - `ANTHROPIC_API_KEY` = `sk-ant-...` (key của bạn)
-   - (tuỳ chọn) `ANTHROPIC_MODEL` = `claude-haiku-4-5-20251001` (mặc định, rẻ & nhanh)
-3. **Redeploy**. Xong — tab Trợ lý sẽ tự dùng Claude (thấy nhãn "✦ Claude AI").
+## Cách gắn API (1 lần)
+1. Vào **console.anthropic.com** → **API Keys** → tạo key `sk-ant-...` (và nạp ít credit).
+2. Trên **Vercel** → project LearnWatch → **Settings → Environment Variables**, thêm:
+   - `ANTHROPIC_API_KEY` = `sk-ant-...`
+   - (tuỳ chọn) `ANTHROPIC_MODEL`:
+     - `claude-sonnet-4-6` — **mặc định**, thông minh + cân đối (khuyên dùng)
+     - `claude-opus-4-8` — thông minh nhất (đắt hơn), hợp hỏi sâu/khó
+     - `claude-haiku-4-5-20251001` — rẻ & nhanh nhất
+3. **Redeploy**. Xong — Trợ lý dùng Claude (nhãn "✦ Claude AI"), nhớ hội thoại nhiều lượt.
 
-Nếu không có key, app tự dùng bản trợ lý local (nhãn "✦ Trợ lý (dữ liệu app)").
+## Chi phí (rất rẻ cho app này)
+- Mỗi câu hỏi kèm danh mục 98 mẫu (~vài nghìn token). Haiku gần như không đáng kể;
+  Sonnet/Opus nhỉnh hơn nhưng vẫn rất nhỏ cho nhu cầu cá nhân.
 
-## Lưu ý
-- Gọi Claude tốn phí theo token (Haiku rất rẻ). Câu hỏi được kèm danh mục 98 mẫu để
-  trả lời sát dữ liệu của bạn.
-- Route xử lý: `src/app/api/ask/route.ts` (chạy server-side, key không lộ ra client).
+## Kỹ thuật
+- Route: `src/app/api/ask/route.ts` (server-side, key KHÔNG lộ ra client).
+- Gửi kèm lịch sử hội thoại để hỏi nối tiếp (follow-up).
+- Không có key → tự fallback bản local.

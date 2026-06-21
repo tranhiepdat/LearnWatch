@@ -182,3 +182,17 @@ export function playComplete() {
   });
   [2093, 2637, 3136].forEach((f, i) => tone(f, t + 0.34 + i * 0.05, 0.3, { type: "sine", peak: 0.05 }));
 }
+
+// FIX mobile "lúc có lúc không": mở khoá + giữ AudioContext luôn chạy.
+// Lắng nghe ở pha CAPTURE để resume TRƯỚC mọi handler phát tiếng.
+if (typeof window !== "undefined") {
+  const keepAlive = () => {
+    ac(); // tạo nếu chưa có + resume nếu đang suspended
+  };
+  window.addEventListener("pointerdown", keepAlive, { capture: true, passive: true });
+  window.addEventListener("touchstart", keepAlive, { capture: true, passive: true });
+  window.addEventListener("keydown", keepAlive, { capture: true });
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") keepAlive();
+  });
+}

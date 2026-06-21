@@ -19,24 +19,34 @@ function buildContext(): string {
 }
 const CONTEXT = buildContext();
 
+type Turn = { role: "user" | "assistant"; content: string };
+
 export async function POST(req: Request) {
   const key = process.env.ANTHROPIC_API_KEY;
   if (!key) return NextResponse.json({ configured: false });
 
-  let question = "";
+  let body: { question?: string; history?: Turn[] } = {};
   try {
-    question = ((await req.json()) as { question?: string }).question ?? "";
+    body = (await req.json()) as { question?: string; history?: Turn[] };
   } catch {
     /* ignore */
   }
-  if (!question.trim()) return NextResponse.json({ configured: true, answer: "Bạn muốn hỏi về mẫu nào?" });
+  const question = (body.question ?? "").trim();
+  if (!question) return NextResponse.json({ configured: true, answer: "Bạn muốn hỏi về mẫu nào?" });
 
-  const model = process.env.ANTHROPIC_MODEL || "claude-haiku-4-5-20251001";
+  const model = process.env.ANTHROPIC_MODEL || "claude-sonnet-4-6";
   const system =
-    "Bạn là trợ lý chuyên gia đồng hồ cho nhân viên SALE (app LearnWatch). Trả lời bằng TIẾNG VIỆT, " +
-    "ngắn gọn, thực dụng để sale tư vấn khách. Ưu tiên dựa vào DANH MỤC bên dưới; nếu ngoài danh mục thì " +
-    "nói rõ là kiến thức chung. Khi nhắc mẫu hãy kèm hãng + biệt danh + giá (nếu có).\n\n" +
+    "Bạn là CHUYÊN GIA đồng hồ kiêm trợ lý SALE (app LearnWatch). Trả lời bằng TIẾNG VIỆT, thực dụng, " +
+    "đủ chi tiết khi được hỏi kỹ (so sánh, gợi ý theo ngân sách, cách chốt, ưu/nhược). Ưu tiên dựa vào DANH MỤC; " +
+    "nếu ngoài danh mục thì nói rõ là kiến thức chung. Khi nhắc mẫu hãy kèm hãng + biệt danh + giá (nếu có).\n\n" +
     CONTEXT;
+
+  const history: Turn[] = (body.history ?? [])
+    .filter((m) => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string" && m.content.trim())
+    .slice(-10);
+  // dam bao bat dau bang 'user'
+  while (history.length && history[0].role !== "user") history.shift();
+  const messages = [...history, { role: "user" as const, content: question }];
 
   try {
     const r = await fetch("https://api.anthropic.com/v1/messages", {
@@ -46,18 +56,14 @@ export async function POST(req: Request) {
         "x-api-key": key,
         "anthropic-version": "2023-06-01",
       },
-      body: JSON.stringify({
-        model,
-        max_tokens: 800,
-        system,
-        messages: [{ role: "user", content: question }],
-      }),
+      body: JSON.stringify({ model, max_tokens: 1024, system, messages }),
     });
     if (!r.ok) {
-      return NextResponse.json({ configured: true, error: `API ${r.status}`, answer: "" });
+      const detail = await r.text().catch(() => "");
+      return NextResponse.json({ configured: true, error: `API ${r.status}`, detail: detail.slice(0, 300), answer: "" });
     }
     const data = (await r.json()) as { content?: { text?: string }[] };
-    const answer = data.content?.[0]?.text ?? "";
+    const answer = data.content?.map((c) => c.text ?? "").join("") ?? "";
     return NextResponse.json({ configured: true, answer });
   } catch (e) {
     return NextResponse.json({ configured: true, error: String(e), answer: "" });
