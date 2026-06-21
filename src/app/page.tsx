@@ -1,8 +1,12 @@
 import Link from "next/link";
 import ProgressHeader from "@/components/ProgressHeader";
+import CollectionInfo from "@/components/CollectionInfo";
 import { IconCards, IconQuiz, IconBook, IconChat, IconChevron } from "@/components/icons";
 import { visibleWatches } from "@/data/watches";
 import { terms } from "@/data/terms";
+import { collectionInfos } from "@/data/collections";
+
+const FEATURED = ["Submariner", "GMT-Master II", "Cosmograph Daytona", "Speedmaster", "Royal Oak", "Nautilus"];
 
 const MODES = [
   { href: "/assistant", Icon: IconChat, title: "Trợ lý AI", desc: "Hỏi gì về đồng hồ — tìm mẫu, giá, thuật ngữ, máy/calibre." },
@@ -14,6 +18,7 @@ const MODES = [
 export default function Home() {
   const rx = visibleWatches.filter((w) => w.brand === "Rolex").length;
   const brandCount = new Set(visibleWatches.map((w) => w.brand)).size;
+  const collCount = collectionInfos.filter((c) => visibleWatches.some((w) => w.collection === c.collection)).length;
 
   return (
     <div className="mx-auto max-w-4xl space-y-6 pt-2">
@@ -45,6 +50,23 @@ export default function Home() {
           <Stat n={brandCount} label="Hãng" />
           <Stat n={rx} label="Rolex" />
           <Stat n={terms.length} label="Thuật ngữ" />
+        </div>
+      </section>
+
+      <section className="space-y-3">
+        <div className="flex items-end justify-between">
+          <div>
+            <p className="label-luxe">Các dòng đồng hồ</p>
+            <h2 className="font-display text-xl font-semibold text-ivory">Dòng này để làm gì?</h2>
+          </div>
+          <Link href="/browse?tab=dong" className="cyber rounded-[5px] border border-hairline px-3 py-1.5 text-xs font-semibold text-gold-300 active:scale-95">
+            Xem tất cả {collCount} dòng →
+          </Link>
+        </div>
+        <div className="grid gap-2.5 md:grid-cols-2">
+          {FEATURED.map((c) => (
+            <CollectionInfo key={c} collection={c} variant="compact" />
+          ))}
         </div>
       </section>
     </div>

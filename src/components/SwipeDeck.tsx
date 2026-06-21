@@ -12,6 +12,7 @@ import { IconCheck, IconClose, IconShuffle, IconSparkle, IconChat } from "./icon
 import { playFlip, playSwipe, playCorrect, playComplete, playTap } from "@/lib/sound";
 import { englishName } from "@/lib/name";
 import { colorBreakdown } from "@/lib/colorParts";
+import CollectionInfo from "./CollectionInfo";
 
 function BrandTag({ brand }: { brand: Watch["brand"] }) {
   return (
@@ -238,6 +239,8 @@ export default function SwipeDeck({
                   <span className="font-bold">“{current.nickname}”</span> — {current.nicknameMeaning}
                 </p>
               )}
+
+              <CollectionInfo collection={current.collection} variant="full" className="mt-3" />
 
               {/* Spec sheet (thuật ngữ tiếng Anh) */}
               <div className="mt-3 grid grid-cols-2 gap-1.5 text-[11px]">

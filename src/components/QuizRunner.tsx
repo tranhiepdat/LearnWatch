@@ -9,6 +9,7 @@ import { hasPhoto } from "@/data/photos";
 import { recordQuiz } from "@/lib/progress";
 import { playTap, playCorrect, playWrong, playComplete } from "@/lib/sound";
 import GoldBurst from "./GoldBurst";
+import CollectionInfo from "./CollectionInfo";
 import { IconCheck, IconClose, IconFlame, IconGem } from "./icons";
 
 const CAT_COLOR: Record<string, string> = {
@@ -229,6 +230,7 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
                           </p>
                         )}
                         {watch.tip && <p className="mt-1.5 text-xs text-gold-300">💡 {watch.tip}</p>}
+                        <CollectionInfo collection={watch.collection} variant="full" className="mt-3" />
                       </div>
                     ) : (
                       <p className="mt-1 text-ivory/85">{q.explanation}</p>

@@ -69,6 +69,20 @@ const DICT: Entry[] = [
   { ...DIAL, keys: ["snoopy"], display: "Snoopy", note: "đồ hoạ Snoopy ở MẶT SỐ phụ (9h) + đáy nắp" },
   { ...DIAL, keys: ["spectre"], display: "Spectre", note: "MẶT SỐ/họa tiết bản phim 007 'Spectre'" },
 
+  // ----- MẶT SỐ: CHẤT LIỆU ĐÁ / THIÊN THẠCH / MEN (đặc biệt, đắt) -----
+  { ...DIAL, keys: ["meteorite"], display: "Meteorite", note: "MẶT SỐ cắt từ THIÊN THẠCH sắt-niken (thường Gibeon/Muonionalusta) — vân Widmanstätten tự nhiên, MỖI mặt độc nhất; tên gọi vì làm từ thiên thạch thật rơi xuống Trái Đất" },
+  { ...DIAL, keys: ["aventurine"], display: "Aventurine", note: "MẶT SỐ thuỷ tinh aventurine lấp lánh như BẦU TRỜI SAO; tên từ 'a ventura' (tình cờ) tiếng Ý" },
+  { ...DIAL, keys: ["onyx"], display: "Onyx", note: "MẶT SỐ đá ONYX (mã não) ĐEN tuyền bóng — đá quý tự nhiên" },
+  { ...DIAL, keys: ["malachite"], display: "Malachite", note: "MẶT SỐ đá MALACHITE xanh lá vân sọc — đá bán quý" },
+  { ...DIAL, keys: ["lapis", "lapis lazuli"], display: "Lapis Lazuli", note: "MẶT SỐ đá LAPIS LAZULI xanh dương đậm, điểm vàng pyrite" },
+  { ...DIAL, keys: ["tiger eye", "tiger's eye", "tigereye"], display: "Tiger's Eye", note: "MẶT SỐ đá MẮT HỔ vân nâu-vàng óng ánh" },
+  { ...DIAL, keys: ["opal"], display: "Opal", note: "MẶT SỐ đá OPAL ánh cầu vồng nhiều màu" },
+  { ...DIAL, keys: ["turquoise"], display: "Turquoise", note: "MẶT SỐ đá NGỌC LAM (turquoise) xanh ngọc" },
+  { ...DIAL, keys: ["jade"], display: "Jade", note: "MẶT SỐ đá NGỌC BÍCH (jade) xanh" },
+  { ...DIAL, keys: ["grand feu", "grand-feu", "enamel"], display: "Grand Feu enamel", note: "MẶT SỐ men nung LỬA (Grand Feu) — màu bền vĩnh viễn, kỹ thuật thủ công đắt đỏ" },
+  { ...DIAL, keys: ["wood dial", "wooden"], display: "Wood", note: "MẶT SỐ gỗ tự nhiên — vân gỗ độc nhất mỗi chiếc" },
+  { ...DIAL, keys: ["carbon dial", "carbon fiber dial"], display: "Carbon dial", note: "MẶT SỐ sợi carbon vân vằn thể thao" },
+
   // ----- VÀNH (bezel) -----
   { ...BEZEL, keys: ["pepsi"], display: "Pepsi", note: "VÀNH 2 màu ĐỎ-XANH DƯƠNG (như lon Pepsi) — mặt số thường ĐEN" },
   { ...BEZEL, keys: ["batgirl"], display: "Batgirl", note: "VÀNH ĐEN-XANH DƯƠNG + dây Jubilee (cùng ref Batman)" },
@@ -93,6 +107,13 @@ const DICT: Entry[] = [
   { ...CASE, keys: ["pvd", "dlc"], display: "PVD / DLC", note: "lớp phủ ĐEN trên VỎ thép" },
   { ...CASE, keys: ["all black", "dark side", "grey side"], display: "All Black / Side of the Moon", note: "VỎ gốm ĐEN/XÁM toàn thân" },
   { ...CASE, keys: ["titanium", "titan"], display: "Titanium", note: "VỎ titan — nhẹ, ánh xám" },
+  { ...CASE, keys: ["forged carbon", "carbon fiber", "carbon fibre", "tpt"], display: "Forged Carbon / Carbon TPT", note: "VỎ sợi carbon ép — siêu nhẹ, vân vằn độc nhất mỗi chiếc" },
+  { ...CASE, keys: ["tantalum"], display: "Tantalum", note: "VỎ kim loại TANTALUM xám ánh xanh — hiếm, nặng, khó gia công" },
+  { ...CASE, keys: ["bronze"], display: "Bronze", note: "VỎ ĐỒNG (bronze) — lên patina (xỉn màu) đẹp dần theo thời gian" },
+  { ...CASE, keys: ["damascus", "damascene"], display: "Damascus steel", note: "VỎ thép Damascus vân nước (xếp lớp rèn)" },
+  { ...CASE, keys: ["sedna"], display: "Sedna Gold", note: "vàng HỒNG độc quyền Omega (Sedna) — bền màu" },
+  { ...CASE, keys: ["moonshine"], display: "Moonshine Gold", note: "vàng VÀNG nhạt độc quyền Omega (Moonshine)" },
+  { ...CASE, keys: ["canopus"], display: "Canopus Gold", note: "vàng TRẮNG sáng độc quyền Omega (Canopus)" },
 
   // ----- KÍNH / KIM -----
   { ...GLASS, keys: ["z-green", "green sapphire"], display: "Z-Green sapphire", note: "KÍNH sapphire ánh XANH LÁ đặc trưng Milgauss (không phải màu mặt số)" },

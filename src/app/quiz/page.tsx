@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import QuizRunner from "@/components/QuizRunner";
+import FilterSelect from "@/components/FilterSelect";
 import { generateQuiz, type QuizCategory, type QuizQuestion } from "@/lib/quiz";
 import { playTap } from "@/lib/sound";
 import { visibleWatches } from "@/data/watches";
@@ -11,17 +12,19 @@ import type { Brand } from "@/data/types";
 type BrandOpt = "Tất cả" | Brand;
 type CatOpt = "Tất cả" | QuizCategory;
 
-const _qCounts = new Map<Brand, number>();
-visibleWatches.forEach((w) => _qCounts.set(w.brand, (_qCounts.get(w.brand) ?? 0) + 1));
+const QB_COUNTS: Record<string, number> = { "Tất cả": visibleWatches.length };
+visibleWatches.forEach((w) => (QB_COUNTS[w.brand] = (QB_COUNTS[w.brand] ?? 0) + 1));
 const BRANDS: BrandOpt[] = [
   "Tất cả",
-  ...Array.from(_qCounts.keys()).sort((a, b) => (_qCounts.get(b) ?? 0) - (_qCounts.get(a) ?? 0)),
+  ...(Object.keys(QB_COUNTS).filter((b) => b !== "Tất cả") as Brand[]).sort(
+    (a, b) => (QB_COUNTS[b] ?? 0) - (QB_COUNTS[a] ?? 0),
+  ),
 ];
 const CATS: CatOpt[] = ["Tất cả", "Nhìn hình", "Biệt danh", "Mẫu mã", "Chất liệu"];
 const LENGTHS = [5, 10, 15];
 
 export default function QuizPage() {
-  const [brand, setBrand] = useState<BrandOpt>("Tất cả");
+  const [brand, setBrand] = useState<BrandOpt>("Rolex");
   const [cat, setCat] = useState<CatOpt>("Tất cả");
   const [count, setCount] = useState(10);
   const [questions, setQuestions] = useState<QuizQuestion[] | null>(null);
@@ -52,7 +55,10 @@ export default function QuizPage() {
         <p className="mt-1 text-sm text-taupe">Có cả câu nhìn hình. Mỗi câu đúng +10 XP.</p>
       </div>
 
-      <Picker label="Hãng" options={BRANDS} value={brand} onChange={setBrand} />
+      <div>
+        <p className="label-luxe mb-2">Hãng</p>
+        <FilterSelect value={brand} options={BRANDS} counts={QB_COUNTS} onChange={(v) => setBrand(v as BrandOpt)} />
+      </div>
       <Picker label="Chủ đề" options={CATS} value={cat} onChange={setCat} />
 
       <div>

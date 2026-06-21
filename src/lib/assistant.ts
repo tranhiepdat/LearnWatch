@@ -1,8 +1,20 @@
 import { visibleWatches, getWatch } from "@/data/watches";
 import { terms } from "@/data/terms";
+import { collectionInfos, getCollectionInfo } from "@/data/collections";
 import { englishName } from "./name";
 import { colorBreakdown } from "./colorParts";
 import type { Watch } from "@/data/types";
+
+/** Khop ten DONG (collection) trong cau hoi: vd "submariner", "gmt", "dong daytona" */
+function collMatch(q: string, name: string): boolean {
+  const n = norm(name).replace(/-/g, " ");
+  if (q.includes(n)) return true;
+  const skip = new Set(["the", "ii", "oyster", "master", "watch", "side", "s"]);
+  return n
+    .split(/\s+/)
+    .filter((t) => t.length >= 3 && !skip.has(t))
+    .some((t) => new RegExp(`(^|[^a-z0-9])${t}([^a-z0-9]|$)`).test(q));
+}
 
 export interface AssistantResult {
   text: string;
@@ -65,6 +77,22 @@ export function localAnswer(qRaw: string): AssistantResult {
         (nickHit.nicknameMeaning ? `\n“${nickHit.nickname}”: ${nickHit.nicknameMeaning}` : "") +
         (nickHit.tip ? `\n💡 ${nickHit.tip}` : ""),
       watches: [nickHit, ...more],
+    };
+  }
+
+  // 1c) Hoi ve DONG (collection): "submariner la gi", "dong gmt", "daytona de lam gi"
+  const col = collectionInfos.find((c) => collMatch(q, c.collection));
+  if (col) {
+    const cw = all.filter((w) => w.collection === col.collection);
+    return {
+      text:
+        `${col.brand} ${col.collection} — ${col.tagline}.\n` +
+        `Để làm gì: ${col.purpose}\n` +
+        `Đặc trưng: ${col.signature.join("; ")}.\n` +
+        `Lịch sử: ${col.heritage}\n` +
+        `Hợp ai / cách bán: ${col.forWho}` +
+        (col.terms ? `\nThuật ngữ EN: ${col.terms}` : ""),
+      watches: cw.slice(0, 18),
     };
   }
 
@@ -162,6 +190,8 @@ export function localAnswer(qRaw: string): AssistantResult {
 /** Mô tả CHI TIẾT 1 mẫu cụ thể (cho nút "Hỏi AI về mẫu này"). */
 export function watchDetail(w: Watch): AssistantResult {
   const lines: string[] = [`${englishName(w)}${w.colorEn ? ` · ${w.colorEn}` : ""}`];
+  const ci = getCollectionInfo(w.collection);
+  if (ci) lines.push(`Dòng ${ci.collection} — ${ci.tagline}. Để làm gì: ${ci.purpose}`);
   if (w.tier) lines.push(`▸ Phân khúc: ${w.tier}`);
   const specs: string[] = [];
   if (w.year) specs.push(`Năm ${w.year}`);

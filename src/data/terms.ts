@@ -440,6 +440,62 @@ export const terms: Term[] = [
     detail:
       "VR3135/SH3135 mô phỏng Rolex 3135; 'Clone 4130/4131' mô phỏng máy Daytona. Khác 'Asian/ETA movement' là máy nền phổ thông. Đây là thuật ngữ kỹ thuật thị trường.",
   },
+
+  // -------- CHẤT LIỆU MẶT SỐ ĐẶC BIỆT (đá / thiên thạch / men) --------
+  {
+    id: "mat-meteorite",
+    brand: "Chung",
+    term: "Meteorite (mặt số thiên thạch)",
+    category: "Chất liệu",
+    short: "Mặt số cắt từ thiên thạch sắt-niken thật, vân Widmanstätten độc nhất.",
+    detail:
+      "Lát mỏng từ thiên thạch sắt (thường là Gibeon hoặc Muonionalusta) rơi xuống Trái Đất hàng triệu năm trước. Sau khi xử lý axit hiện ra hoa văn tinh thể 'Widmanstätten' đan chéo — KHÔNG mặt nào giống mặt nào nên mỗi chiếc là độc bản. Tên gọi 'meteorite' chính vì làm từ thiên thạch thật. Hay gặp ở Rolex Daytona/Day-Date, Omega, Patek. Điểm bán: hiếm, độc nhất, có tính sưu tầm.",
+  },
+  {
+    id: "mat-aventurine",
+    brand: "Chung",
+    term: "Aventurine (mặt số trời sao)",
+    category: "Chất liệu",
+    short: "Thuỷ tinh lấp lánh như bầu trời đêm đầy sao.",
+    detail:
+      "Thuỷ tinh có vụn đồng/khoáng lấp lánh, nhìn như dải ngân hà. Tên từ tiếng Ý 'a ventura' (tình cờ) vì được phát hiện ngẫu nhiên. Thường màu xanh đen óng ánh — rất hợp mặt số 'bầu trời sao'.",
+  },
+  {
+    id: "mat-stone",
+    brand: "Chung",
+    term: "Stone dial (mặt đá tự nhiên)",
+    category: "Chất liệu",
+    short: "Mặt số làm từ đá quý/bán quý: onyx, malachite, lapis, mắt hổ, ngọc lam…",
+    detail:
+      "Onyx (đen), Malachite (xanh lá vân), Lapis Lazuli (xanh dương điểm vàng), Tiger's Eye (mắt hổ nâu vàng), Turquoise (ngọc lam), Opal (ánh cầu vồng). Đá tự nhiên nên mỗi mặt vân khác nhau, dễ vỡ hơn nên gia công khó → giá cao. Gọi tên theo loại đá.",
+  },
+  {
+    id: "mat-grandfeu",
+    brand: "Chung",
+    term: "Grand Feu Enamel (men nung lửa)",
+    category: "Chất liệu",
+    short: "Mặt số men nung ở nhiệt độ cao, màu bền vĩnh viễn.",
+    detail:
+      "Bột men phủ lên đĩa kim loại rồi nung ~800°C nhiều lần. Cho mặt số bóng sâu, trắng tinh khiết, KHÔNG phai màu theo thời gian. Tỷ lệ hỏng khi nung cao nên rất đắt — dấu hiệu chế tác thủ công cao cấp.",
+  },
+  {
+    id: "mat-bronze",
+    brand: "Chung",
+    term: "Bronze (vỏ đồng)",
+    category: "Chất liệu",
+    short: "Vỏ hợp kim đồng, lên patina (xỉn màu) đẹp dần theo thời gian.",
+    detail:
+      "Hợp kim đồng dùng làm vỏ đồng hồ lặn/quân đội. Tiếp xúc da & không khí sẽ oxi hoá tạo lớp patina nâu-xanh độc nhất theo từng người đeo — chất 'vintage'. Hay gặp ở đồng hồ lặn thể thao.",
+  },
+  {
+    id: "mat-forged-carbon",
+    brand: "Chung",
+    term: "Forged Carbon / Carbon TPT",
+    category: "Chất liệu",
+    short: "Sợi carbon ép — siêu nhẹ, vân vằn không trùng lặp.",
+    detail:
+      "Sợi carbon trộn nhựa ép dưới áp lực/nhiệt thành khối, sau đó cắt gọt. Cực nhẹ, cứng, mỗi vỏ có vân ngẫu nhiên khác nhau. Carbon TPT (xếp lớp mỏng) hay thấy ở Richard Mille/AP — chất thể thao công nghệ cao.",
+  },
 ];
 
 export const getTerm = (id: string) => terms.find((t) => t.id === id);

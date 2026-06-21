@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import SwipeDeck from "@/components/SwipeDeck";
+import FilterSelect from "@/components/FilterSelect";
 import { visibleWatches as watches } from "@/data/watches";
 import { shuffle } from "@/lib/quiz";
 import { getProgress, toggleLearned } from "@/lib/progress";
@@ -12,15 +13,17 @@ type Filter = "Tất cả" | Brand;
 type Mode = "Tất cả" | "Chưa thuộc" | "Đã thuộc";
 const MODES: Mode[] = ["Tất cả", "Chưa thuộc", "Đã thuộc"];
 
-const _fcCounts = new Map<Brand, number>();
-watches.forEach((w) => _fcCounts.set(w.brand, (_fcCounts.get(w.brand) ?? 0) + 1));
+const FC_COUNTS: Record<string, number> = { "Tất cả": watches.length };
+watches.forEach((w) => (FC_COUNTS[w.brand] = (FC_COUNTS[w.brand] ?? 0) + 1));
 const FILTERS: Filter[] = [
   "Tất cả",
-  ...Array.from(_fcCounts.keys()).sort((a, b) => (_fcCounts.get(b) ?? 0) - (_fcCounts.get(a) ?? 0)),
+  ...(Object.keys(FC_COUNTS).filter((b) => b !== "Tất cả") as Brand[]).sort(
+    (a, b) => (FC_COUNTS[b] ?? 0) - (FC_COUNTS[a] ?? 0),
+  ),
 ];
 
 export default function FlashcardsPage() {
-  const [filter, setFilter] = useState<Filter>("Tất cả");
+  const [filter, setFilter] = useState<Filter>("Rolex");
   const [mode, setMode] = useState<Mode>("Tất cả");
   const [order, setOrder] = useState<string[]>([]);
   const [learned, setLearned] = useState<string[]>([]);
@@ -71,25 +74,16 @@ export default function FlashcardsPage() {
         <h1 className="font-display text-2xl font-semibold text-ivory">Lật &amp; vuốt thẻ</h1>
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        {FILTERS.map((f) => (
-          <button
-            key={f}
-            onClick={() => {
-              setFilter(f);
-              playTap();
-            }}
-            className={`cyber rounded-[5px] px-4 py-1.5 text-sm font-semibold transition active:scale-95 ${
-              filter === f ? "bg-gold-foil text-ink shadow-glow" : "border border-hairline text-taupe"
-            }`}
-          >
-            {f}
-          </button>
-        ))}
-      </div>
-
-      {/* Loc theo trang thai thuoc */}
-      <div className="flex items-center gap-2">
+      {/* Hang loc gon: Hang (dropdown, mac dinh Rolex) + trang thai thuoc */}
+      <div className="flex flex-wrap items-center gap-2">
+        <FilterSelect
+          label="Hãng"
+          value={filter}
+          options={FILTERS}
+          counts={FC_COUNTS}
+          onChange={(f) => setFilter(f as Filter)}
+        />
+        <span className="text-hairline">·</span>
         {MODES.map((m) => (
           <button
             key={m}

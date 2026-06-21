@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { visibleWatches } from "@/data/watches";
 import { terms } from "@/data/terms";
+import { collectionInfos } from "@/data/collections";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -16,7 +17,13 @@ function buildContext(): string {
     )
     .join("\n");
   const t = terms.map((x) => `- ${x.term}: ${x.short}`).join("\n");
-  return `DANH MỤC (${visibleWatches.length} mẫu):\n${w}\n\nTHUẬT NGỮ:\n${t}`;
+  const c = collectionInfos
+    .map(
+      (x) =>
+        `- ${x.brand} ${x.collection}: ${x.tagline}. Để làm gì: ${x.purpose} Đặc trưng: ${x.signature.join("; ")}. ${x.heritage} Hợp ai: ${x.forWho}`,
+    )
+    .join("\n");
+  return `DANH MỤC (${visibleWatches.length} mẫu):\n${w}\n\nCÁC DÒNG (collection):\n${c}\n\nTHUẬT NGỮ:\n${t}`;
 }
 const CONTEXT = buildContext();
 
