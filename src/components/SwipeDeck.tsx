@@ -12,7 +12,7 @@ import { IconCheck, IconClose, IconShuffle, IconSparkle, IconChat } from "./icon
 import { playFlip, playSwipe, playCorrect, playComplete, playTap } from "@/lib/sound";
 import { englishName } from "@/lib/name";
 import { colorBreakdown } from "@/lib/colorParts";
-import CollectionInfo from "./CollectionInfo";
+import CollectionToggle from "./CollectionToggle";
 
 function BrandTag({ brand }: { brand: Watch["brand"] }) {
   return (
@@ -157,8 +157,10 @@ export default function SwipeDeck({
           dragMomentum={false}
           style={{ x, rotate }}
           onDragEnd={onDragEnd}
-          onTap={() => {
+          onTap={(e) => {
             if (busy.current) return;
+            // Bo qua tap trong vung "data-no-flip" (vd nut "Ve dong") -> khong lat the
+            if ((e.target as HTMLElement)?.closest?.("[data-no-flip]")) return;
             if (Math.abs(x.get()) < 8) {
               setFlipped((f) => !f);
               setFlipBurst((k) => k + 1);
@@ -240,8 +242,6 @@ export default function SwipeDeck({
                 </p>
               )}
 
-              <CollectionInfo collection={current.collection} variant="full" className="mt-3" />
-
               {/* Spec sheet (thuật ngữ tiếng Anh) */}
               <div className="mt-3 grid grid-cols-2 gap-1.5 text-[11px]">
                 <Spec label="Năm · Year" value={current.year} accent />
@@ -318,6 +318,9 @@ export default function SwipeDeck({
                   💡 {current.tip}
                 </p>
               )}
+
+              {/* Ve dong: uu tien thap hon -> de duoi cung, an sau nut bam */}
+              <CollectionToggle key={current.id} collection={current.collection} className="mt-3" />
 
               <div className="h-2 shrink-0" />
             </div>

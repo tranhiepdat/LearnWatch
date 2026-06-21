@@ -35,9 +35,32 @@ function ac(): AudioContext | null {
     master.gain.value = muted() ? 0 : 0.5;
     master.connect(comp);
     comp.connect(ctx.destination);
+    // Mo khoa iOS: phat 1 buffer CAM (silent) ngay trong gesture dau tien
+    try {
+      const b = ctx.createBuffer(1, 1, 22050);
+      const s = ctx.createBufferSource();
+      s.buffer = b;
+      s.connect(ctx.destination);
+      s.start(0);
+    } catch {
+      /* ignore */
+    }
   }
   if (ctx.state === "suspended") void ctx.resume();
   return ctx;
+}
+
+/**
+ * Bo boc phat tieng: neu AudioContext dang "suspended" (iOS hay tu treo) thi
+ * RESUME XONG MOI lich tieng -> het canh "luc nghe duoc luc khong".
+ */
+function audio(play: (t: number) => void): void {
+  if (muted()) return;
+  const c = ac();
+  if (!c || !master) return;
+  const run = () => play(c.currentTime);
+  if (c.state === "running") run();
+  else c.resume().then(run).catch(run);
 }
 
 interface ToneOpts {
@@ -109,79 +132,67 @@ function noiseHit(t: number, dur: number, peak: number, fStart: number, fEnd: nu
 
 /** Tick UI CYBERPUNK: zap sáng đi lên + lấp lánh cao (không còn trầm) */
 export function playTap() {
-  if (muted()) return;
-  const c = ac();
-  if (!c) return;
-  const t = c.currentTime;
-  tone(740, t, 0.055, { type: "square", peak: 0.055, glide: 1950, filterStart: 1800, filterEnd: 7000, q: 4, attack: 0.003 });
-  tone(2637, t + 0.004, 0.05, { type: "sine", peak: 0.045, glide: 3520 });
+  audio((t) => {
+    tone(740, t, 0.055, { type: "square", peak: 0.055, glide: 1950, filterStart: 1800, filterEnd: 7000, q: 4, attack: 0.003 });
+    tone(2637, t + 0.004, 0.05, { type: "sine", peak: 0.045, glide: 3520 });
+  });
 }
 
 /** Lật thẻ: "power-up" thoả mãn (giống correct nhưng nhẹ hơn) */
 export function playFlip() {
-  if (muted()) return;
-  const c = ac();
-  if (!c) return;
-  const t = c.currentTime;
-  tone(160, t, 0.1, { type: "sine", peak: 0.1, glide: 250 });
-  tone(420, t, 0.16, { type: "sawtooth", peak: 0.12, glide: 1300, filterStart: 800, filterEnd: 3600, q: 6 });
-  tone(1046.5, t + 0.1, 0.24, { type: "triangle", peak: 0.08 });
-  tone(1568, t + 0.17, 0.2, { type: "sine", peak: 0.055 });
+  audio((t) => {
+    tone(160, t, 0.1, { type: "sine", peak: 0.1, glide: 250 });
+    tone(420, t, 0.16, { type: "sawtooth", peak: 0.12, glide: 1300, filterStart: 800, filterEnd: 3600, q: 6 });
+    tone(1046.5, t + 0.1, 0.24, { type: "triangle", peak: 0.08 });
+    tone(1568, t + 0.17, 0.2, { type: "sine", peak: 0.055 });
+  });
 }
 
 /** Laser swipe CYBERPUNK (sáng, zap cao, cộng hưởng) */
 export function playSwipe() {
-  if (muted()) return;
-  const c = ac();
-  if (!c) return;
-  const t = c.currentTime;
-  tone(2200, t, 0.2, { type: "sawtooth", peak: 0.11, glide: 380, filterStart: 6500, filterEnd: 800, q: 12 });
-  tone(1100, t, 0.13, { type: "square", peak: 0.05, glide: 2600 });
-  noiseHit(t, 0.12, 0.045, 3500, 900, 1.6);
+  audio((t) => {
+    tone(2200, t, 0.2, { type: "sawtooth", peak: 0.11, glide: 380, filterStart: 6500, filterEnd: 800, q: 12 });
+    tone(1100, t, 0.13, { type: "square", peak: 0.05, glide: 2600 });
+    noiseHit(t, 0.12, 0.045, 3500, 900, 1.6);
+  });
 }
 
 /** "Power-up confirm" futuristic: sub đập + quét lên + hợp âm vuông + lấp lánh */
 export function playCorrect() {
-  if (muted()) return;
-  const c = ac();
-  if (!c) return;
-  const t = c.currentTime;
-  tone(120, t, 0.12, { type: "sine", peak: 0.13, glide: 190 });
-  tone(300, t, 0.18, { type: "sawtooth", peak: 0.15, glide: 1500, filterStart: 700, filterEnd: 4000, q: 7 });
-  tone(1046.5, t + 0.13, 0.28, { type: "square", peak: 0.08, detune: 8 });
-  tone(1318.5, t + 0.13, 0.28, { type: "square", peak: 0.07, detune: -8 });
-  tone(2637, t + 0.22, 0.22, { type: "sine", peak: 0.06 });
+  audio((t) => {
+    tone(120, t, 0.12, { type: "sine", peak: 0.13, glide: 190 });
+    tone(300, t, 0.18, { type: "sawtooth", peak: 0.15, glide: 1500, filterStart: 700, filterEnd: 4000, q: 7 });
+    tone(1046.5, t + 0.13, 0.28, { type: "square", peak: 0.08, detune: 8 });
+    tone(1318.5, t + 0.13, 0.28, { type: "square", peak: 0.07, detune: -8 });
+    tone(2637, t + 0.22, 0.22, { type: "sine", peak: 0.06 });
+  });
 }
 
 /** Lỗi số hoá: quét xuống + glitch vuông */
 export function playWrong() {
-  if (muted()) return;
-  const c = ac();
-  if (!c) return;
-  const t = c.currentTime;
-  tone(340, t, 0.24, { type: "sawtooth", peak: 0.16, glide: 90, filterStart: 1400, filterEnd: 180, q: 9 });
-  tone(150, t + 0.05, 0.16, { type: "square", peak: 0.12, glide: 70 });
-  noiseHit(t + 0.02, 0.12, 0.05, 600, 140, 2);
+  audio((t) => {
+    tone(340, t, 0.24, { type: "sawtooth", peak: 0.16, glide: 90, filterStart: 1400, filterEnd: 180, q: 9 });
+    tone(150, t + 0.05, 0.16, { type: "square", peak: 0.12, glide: 70 });
+    noiseHit(t + 0.02, 0.12, 0.05, 600, 140, 2);
+  });
 }
 
 /** Hoàn thành: arpeggio sóng cưa đi lên + shimmer (level-up) */
 export function playComplete() {
-  if (muted()) return;
-  const c = ac();
-  if (!c) return;
-  const t = c.currentTime;
-  tone(110, t, 0.16, { type: "sine", peak: 0.13, glide: 165 });
-  [392, 523.25, 659.25, 783.99, 1046.5, 1318.5].forEach((f, i) => {
-    tone(f, t + i * 0.075, 0.34, {
-      type: "sawtooth",
-      peak: 0.1,
-      detune: i % 2 ? 7 : -7,
-      filterStart: 900 + i * 500,
-      filterEnd: 2600,
-      q: 5,
+  audio((t) => {
+    tone(110, t, 0.16, { type: "sine", peak: 0.13, glide: 165 });
+    [392, 523.25, 659.25, 783.99, 1046.5, 1318.5].forEach((f, i) => {
+      tone(f, t + i * 0.075, 0.34, {
+        type: "sawtooth",
+        peak: 0.1,
+        detune: i % 2 ? 7 : -7,
+        filterStart: 900 + i * 500,
+        filterEnd: 2600,
+        q: 5,
+      });
     });
+    [2093, 2637, 3136].forEach((f, i) => tone(f, t + 0.34 + i * 0.05, 0.3, { type: "sine", peak: 0.05 }));
   });
-  [2093, 2637, 3136].forEach((f, i) => tone(f, t + 0.34 + i * 0.05, 0.3, { type: "sine", peak: 0.05 }));
 }
 
 // FIX mobile "lúc có lúc không": mở khoá + giữ AudioContext luôn chạy.
