@@ -114,6 +114,11 @@ export default function BrowsePage() {
                     </div>
                   </div>
                 </div>
+                {w.warning && (
+                  <p className="mt-2 rounded-[4px] border border-bordeaux bg-bordeaux/15 px-2 py-1 text-[11px] text-ivory">
+                    <span className="font-bold text-bordeaux">⚠ Custom/Rep:</span> {w.warning}
+                  </p>
+                )}
                 {w.nicknameMeaning && <p className="mt-2 text-xs text-taupe">{w.nicknameMeaning}</p>}
               </div>
             );

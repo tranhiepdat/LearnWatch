@@ -218,6 +218,12 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
                             {watch.colorEn && <p className="text-[11px] text-gold-300">EN: {watch.colorEn}</p>}
                           </div>
                         </div>
+                        {watch.warning && (
+                          <p className="mt-2 rounded-[6px] border border-bordeaux bg-bordeaux/15 p-2.5 text-[12px] leading-snug text-ivory">
+                            <span className="font-extrabold uppercase tracking-luxe text-bordeaux">⚠ Cảnh báo xác thực:</span>{" "}
+                            {watch.warning}
+                          </p>
+                        )}
                         <p className="mt-2 text-ivory/85">
                           {watch.nickname && watch.nicknameMeaning
                             ? `“${watch.nickname}” — ${watch.nicknameMeaning}`

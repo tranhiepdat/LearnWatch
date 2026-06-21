@@ -190,6 +190,7 @@ export function localAnswer(qRaw: string): AssistantResult {
 /** Mô tả CHI TIẾT 1 mẫu cụ thể (cho nút "Hỏi AI về mẫu này"). */
 export function watchDetail(w: Watch): AssistantResult {
   const lines: string[] = [`${englishName(w)}${w.colorEn ? ` · ${w.colorEn}` : ""}`];
+  if (w.warning) lines.push(`⚠️ CẢNH BÁO: ${w.warning}`);
   const ci = getCollectionInfo(w.collection);
   if (ci) lines.push(`Dòng ${ci.collection} — ${ci.tagline}. Để làm gì: ${ci.purpose}`);
   if (w.tier) lines.push(`▸ Phân khúc: ${w.tier}`);

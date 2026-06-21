@@ -62,6 +62,8 @@ export interface Watch {
   movementNote?: string;
   /** Mat phu (sub-dials) / cua so lich: dial nao de lam gi + cach dung. Cac dong ngan cach bang " | ". */
   subdials?: string;
+  /** Canh bao xac thuc: vd "Custom/aftermarket - khong phai chinh hang". Hien banner do noi bat. */
+  warning?: string;
 }
 
 export type TermCategory =

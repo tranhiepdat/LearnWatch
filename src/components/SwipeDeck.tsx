@@ -179,6 +179,11 @@ export default function SwipeDeck({
           >
             {/* MAT TRUOC */}
             <div className="card-lux absolute inset-0 flex flex-col items-center justify-between overflow-hidden p-6 [backface-visibility:hidden]">
+              {current.warning && (
+                <div className="absolute left-3 top-3 z-10 rounded-[4px] bg-bordeaux px-2 py-1 text-[10px] font-extrabold uppercase tracking-luxe text-ivory shadow-glow">
+                  ⚠ Custom / Rep
+                </div>
+              )}
               <div className="h-px w-full bg-gold-line" />
               <div className="flex w-full items-center justify-between">
                 <BrandTag brand={current.brand} />
@@ -225,6 +230,13 @@ export default function SwipeDeck({
                 {current.reference && <span className="font-mono text-xs text-taupe">Ref. {current.reference}</span>}
               </div>
               <h3 className="font-display text-xl font-semibold leading-tight text-ivory">{current.model}</h3>
+
+              {current.warning && (
+                <div className="mt-2 rounded-[6px] border border-bordeaux bg-bordeaux/15 p-2.5 text-[12px] leading-snug text-ivory">
+                  <span className="font-extrabold uppercase tracking-luxe text-bordeaux">⚠ Cảnh báo xác thực</span>
+                  <span className="mt-0.5 block">{current.warning}</span>
+                </div>
+              )}
 
               {current.tier && (
                 <p className="mt-1.5 text-xs font-semibold text-gold-300">▸ {current.tier}</p>
