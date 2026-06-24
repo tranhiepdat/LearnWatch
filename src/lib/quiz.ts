@@ -136,8 +136,8 @@ export function buildPool(): QuizQuestion[] {
   }
 
   // ----- Cau hoi NHIN HINH (chi cho mau co anh that) -----
-  // Nhan: chi dung biet danh khi nó DUY NHẤT trong dòng (tránh "President" - biệt danh
-  // chung của CẢ dòng Day-Date - bị hiểu nhầm thành 1 model riêng). Còn lại dùng model.
+  // Nhan TIENG ANH (ban hang khach Tay). Chi dung biet danh khi nó DUY NHẤT trong
+  // dòng (tránh "President" chung cả dòng); còn lại dùng collection + size + colorEn.
   const collNick = new Map<string, number>();
   watches.forEach((w) => {
     if (w.nickname) {
@@ -145,8 +145,13 @@ export function buildPool(): QuizQuestion[] {
       collNick.set(k, (collNick.get(k) ?? 0) + 1);
     }
   });
-  const labelOf = (w: (typeof watches)[number]) =>
-    w.nickname && collNick.get(`${w.collection}|${w.nickname}`) === 1 ? `${w.collection} '${w.nickname}'` : w.model;
+  const labelOf = (w: (typeof watches)[number]) => {
+    const size = w.caseSize?.match(/^(\d+)/)?.[0];
+    const base = `${w.collection}${size ? ` ${size}` : ""}`;
+    if (w.nickname && collNick.get(`${w.collection}|${w.nickname}`) === 1) return `${base} “${w.nickname}”`;
+    if (w.colorEn) return `${base} · ${w.colorEn}`;
+    return base;
+  };
   for (const w of watches) {
     if (!watchPhotos.has(w.id)) continue;
     const img = `/watches/${w.id}.jpg`;

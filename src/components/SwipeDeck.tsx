@@ -10,7 +10,7 @@ import GoldBurst from "./GoldBurst";
 import Link from "next/link";
 import { IconCheck, IconClose, IconShuffle, IconSparkle, IconChat } from "./icons";
 import { playFlip, playSwipe, playCorrect, playComplete, playTap } from "@/lib/sound";
-import { englishName } from "@/lib/name";
+import { enLabel } from "@/lib/name";
 import ColorTable from "./ColorTable";
 import CollectionToggle from "./CollectionToggle";
 
@@ -203,19 +203,18 @@ export default function SwipeDeck({
               )}
 
               <div className="text-center">
-                {current.nickname ? (
+                {current.nickname && (
                   <>
                     <p className="label-luxe">Biệt danh</p>
-                    <p className="font-display text-4xl font-semibold gold-text">{current.nickname}</p>
+                    <p className="font-display text-3xl font-semibold gold-text">{current.nickname}</p>
                   </>
-                ) : (
-                  <p className="font-display text-2xl font-semibold leading-tight text-ivory">{current.collection}</p>
                 )}
-                {current.colorEn && <p className="mt-0.5 text-sm font-medium text-champagne">{current.colorEn}</p>}
-                <p className="mt-0.5 font-tech text-[11px] text-taupe">
-                  {englishName(current)}
-                  {current.reference ? ` · ${current.reference}` : ""}
+                {/* Ten tieng Anh = CHINH */}
+                <p className={`font-display font-semibold leading-tight text-ivory ${current.nickname ? "mt-1 text-base" : "text-xl"}`}>
+                  {enLabel(current)}
                 </p>
+                {/* Ten tieng Viet = phu */}
+                <p className="mt-0.5 text-[11px] text-taupe">VN: {current.model}</p>
               </div>
 
               <p className="text-[11px] text-taupe">Chạm để lật · Vuốt phải nếu đã thuộc</p>
@@ -227,7 +226,9 @@ export default function SwipeDeck({
                 <BrandTag brand={current.brand} />
                 {current.reference && <span className="font-mono text-xs text-taupe">Ref. {current.reference}</span>}
               </div>
-              <h3 className="font-display text-xl font-semibold leading-tight text-ivory">{current.model}</h3>
+              {/* Ten tieng Anh = CHINH; tieng Viet = phu */}
+              <h3 className="font-display text-lg font-semibold leading-tight text-ivory">{enLabel(current)}</h3>
+              <p className="text-[11px] text-taupe">VN: {current.model}</p>
 
               {current.warning && (
                 <div className="mt-2 rounded-[6px] border border-bordeaux bg-bordeaux/15 p-2.5 text-[12px] leading-snug text-ivory">
@@ -239,12 +240,6 @@ export default function SwipeDeck({
               {current.tier && (
                 <p className="mt-1.5 text-xs font-semibold text-gold-300">▸ {current.tier}</p>
               )}
-
-              <div className="mt-2 rounded-[6px] border border-gold-700/50 bg-gold-500/10 px-3 py-2">
-                <span className="label-luxe block text-[9px]">Tên tiếng Anh · English name</span>
-                <span className="text-sm font-semibold text-gold-200">{englishName(current)}</span>
-                {current.colorEn && <span className="text-[11px] text-taupe"> · {current.colorEn}</span>}
-              </div>
 
               {current.nickname && current.nicknameMeaning && (
                 <p className="mt-2 rounded-[6px] border border-hairline bg-surface-2 p-3 text-sm text-champagne">

@@ -9,6 +9,7 @@ import { visibleWatches as watches } from "@/data/watches";
 import { terms } from "@/data/terms";
 import { collectionInfos, getCollectionInfo } from "@/data/collections";
 import { playTap } from "@/lib/sound";
+import { enLabel } from "@/lib/name";
 import { IconClose, IconChevron } from "@/components/icons";
 import type { Watch } from "@/data/types";
 
@@ -209,9 +210,9 @@ function WatchCard({ w, onClick }: { w: Watch; onClick: () => void }) {
             <span className="rounded border border-hairline px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-luxe text-gold-300">
               {w.brand}
             </span>
-            <span className="truncate font-display text-base font-semibold text-ivory">{w.nickname ?? w.collection}</span>
+            <span className="truncate font-display text-[15px] font-semibold text-ivory">{enLabel(w)}</span>
           </div>
-          <p className="truncate text-xs text-taupe">{w.model}</p>
+          <p className="truncate text-[11px] text-taupe">VN: {w.model}</p>
           <div className="mt-0.5 flex flex-wrap gap-x-3 text-[11px]">
             {w.reference && <span className="font-mono text-taupe">Ref. {w.reference}</span>}
             {w.colorEn && <span className="text-gold-300">EN: {w.colorEn}</span>}

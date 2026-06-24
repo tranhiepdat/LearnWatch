@@ -5,7 +5,7 @@ import type { Watch } from "@/data/types";
 import { hasPhoto } from "@/data/photos";
 import WatchVisual from "./WatchVisual";
 import CollectionInfo from "./CollectionInfo";
-import { englishName } from "@/lib/name";
+import { enLabel } from "@/lib/name";
 import ColorTable from "./ColorTable";
 import { playTap } from "@/lib/sound";
 import { IconChat } from "./icons";
@@ -44,15 +44,12 @@ export default function WatchDetail({ watch: w }: { watch: Watch }) {
           </span>
           <span className="label-luxe">{w.collection}</span>
         </div>
-        {w.nickname ? (
-          <p className="mt-1 font-display text-3xl font-semibold gold-text">{w.nickname}</p>
-        ) : (
-          <p className="mt-1 font-display text-xl font-semibold leading-tight text-ivory">{w.model}</p>
-        )}
-        <p className="mt-0.5 font-tech text-[11px] text-taupe">
-          {englishName(w)}
-          {w.reference ? ` · ${w.reference}` : ""}
-        </p>
+        {w.nickname && <p className="mt-1 font-display text-3xl font-semibold gold-text">{w.nickname}</p>}
+        {/* TEN TIENG ANH = chinh (ban khach Tay) */}
+        <p className="mt-1 font-display text-lg font-semibold leading-tight text-ivory">{enLabel(w)}</p>
+        {/* Ten tieng Viet = phu */}
+        <p className="mt-0.5 text-[12px] text-taupe">VN: {w.model}</p>
+        {w.reference && <p className="mt-0.5 font-tech text-[10px] text-taupe">Ref. {w.reference}</p>}
       </div>
 
       {w.warning && (
@@ -63,12 +60,6 @@ export default function WatchDetail({ watch: w }: { watch: Watch }) {
       )}
 
       {w.tier && <p className="text-xs font-semibold text-gold-300">▸ {w.tier}</p>}
-
-      <div className="rounded-[6px] border border-gold-700/50 bg-gold-500/10 px-3 py-2">
-        <span className="label-luxe block text-[9px]">Tên tiếng Anh · English name</span>
-        <span className="text-sm font-semibold text-gold-200">{englishName(w)}</span>
-        {w.colorEn && <span className="text-[11px] text-taupe"> · {w.colorEn}</span>}
-      </div>
 
       {w.nickname && w.nicknameMeaning && (
         <p className="rounded-[6px] border border-hairline bg-surface-2 p-3 text-sm text-champagne">
