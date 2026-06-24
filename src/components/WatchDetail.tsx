@@ -6,7 +6,7 @@ import { hasPhoto } from "@/data/photos";
 import WatchVisual from "./WatchVisual";
 import CollectionInfo from "./CollectionInfo";
 import { englishName } from "@/lib/name";
-import { colorBreakdown } from "@/lib/colorParts";
+import ColorTable from "./ColorTable";
 import { playTap } from "@/lib/sound";
 import { IconChat } from "./icons";
 
@@ -22,7 +22,6 @@ function Spec({ label, value, accent }: { label: string; value?: string; accent?
 
 /** Khoi THONG TIN DAY DU cua 1 mau — dung o modal Tra cuu (va co the tai su dung). */
 export default function WatchDetail({ watch: w }: { watch: Watch }) {
-  const colorLines = colorBreakdown(w);
   return (
     <div className="space-y-3">
       {/* Anh + ten */}
@@ -88,24 +87,7 @@ export default function WatchDetail({ watch: w }: { watch: Watch }) {
         <Spec label="Giá · Resale" value={w.resale} accent />
       </div>
 
-      {colorLines.length > 0 && (
-        <div className="rounded-[6px] border border-hairline bg-surface-2 p-3">
-          <p className="label-luxe text-[9px]">Màu nằm ở đâu? · Color location</p>
-          <ul className="mt-1.5 space-y-1.5 text-[11.5px] leading-snug">
-            {colorLines.map((c, i) => (
-              <li key={i} className="flex items-start gap-2">
-                <span className="mt-px shrink-0 rounded-[3px] border border-gold-700/50 bg-gold-500/10 px-1.5 py-px text-[9px] font-bold uppercase tracking-luxe text-gold-300">
-                  {c.part}
-                </span>
-                <span className="text-ivory/90">
-                  <b className="text-champagne">{c.display}</b>
-                  {c.note ? ` — ${c.note}` : ""}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <ColorTable watch={w} />
 
       {w.movementNote && <p className="text-[11px] text-taupe">⚙ {w.movementNote}</p>}
 

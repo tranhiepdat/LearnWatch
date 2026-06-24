@@ -1372,7 +1372,7 @@ const enrich: Record<string, { colorEn?: string; resale?: string; marketTerms?: 
   "rolex-daytona-panda": { colorEn: "White 'Panda' dial", resale: "~$30–40k" },
   "rolex-daytona-blackceramic": { colorEn: "Black dial · ceramic bezel", resale: "~$30–38k" },
   "rolex-daytona-platinum": { colorEn: "Ice Blue (platinum-only) · chestnut bezel", resale: "~$80–110k" },
-  "rolex-daytona-yellowgold": { colorEn: "Champagne / Sundust · yellow gold", resale: "~$40–50k" },
+  "rolex-daytona-yellowgold": { colorEn: "Champagne", resale: "~$40–50k" },
   "rolex-daytona-everose": { colorEn: "Everose (rose gold)", resale: "~$40–48k" },
   "rolex-daytona-twotone": { colorEn: "Two-tone / Yellow Rolesor", resale: "~$22–28k" },
   "rolex-daytona-whitegold": { colorEn: "White gold · MOP / blue / diamond", resale: "~$45–65k" },

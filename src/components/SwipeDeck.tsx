@@ -11,7 +11,7 @@ import Link from "next/link";
 import { IconCheck, IconClose, IconShuffle, IconSparkle, IconChat } from "./icons";
 import { playFlip, playSwipe, playCorrect, playComplete, playTap } from "@/lib/sound";
 import { englishName } from "@/lib/name";
-import { colorBreakdown } from "@/lib/colorParts";
+import ColorTable from "./ColorTable";
 import CollectionToggle from "./CollectionToggle";
 
 function BrandTag({ brand }: { brand: Watch["brand"] }) {
@@ -127,8 +127,6 @@ export default function SwipeDeck({
       </motion.div>
     );
   }
-
-  const colorLines = colorBreakdown(current);
 
   return (
     <div className="flex h-full select-none flex-col">
@@ -265,24 +263,9 @@ export default function SwipeDeck({
                 <Spec label="Giá · Resale" value={current.resale} accent />
               </div>
 
-              {colorLines.length > 0 && (
-                <div className="mt-3 rounded-[6px] border border-hairline bg-surface-2 p-3">
-                  <p className="label-luxe text-[9px]">Màu nằm ở đâu? · Color location</p>
-                  <ul className="mt-1.5 space-y-1.5 text-[11.5px] leading-snug">
-                    {colorLines.map((c, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <span className="mt-px shrink-0 rounded-[3px] border border-gold-700/50 bg-gold-500/10 px-1.5 py-px text-[9px] font-bold uppercase tracking-luxe text-gold-300">
-                          {c.part}
-                        </span>
-                        <span className="text-ivory/90">
-                          <b className="text-champagne">{c.display}</b>
-                          {c.note ? ` — ${c.note}` : ""}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+              <div className="mt-3">
+                <ColorTable watch={current} />
+              </div>
 
               {current.movementNote && (
                 <p className="mt-2 text-[11px] text-taupe">⚙ {current.movementNote}</p>
