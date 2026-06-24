@@ -136,8 +136,17 @@ export function buildPool(): QuizQuestion[] {
   }
 
   // ----- Cau hoi NHIN HINH (chi cho mau co anh that) -----
-  // Nhan dong nhat: luon co DONG (collection) -> tranh option chi hien moi nickname (vd "Ice Blue")
-  const labelOf = (w: (typeof watches)[number]) => (w.nickname ? `${w.collection} '${w.nickname}'` : w.model);
+  // Nhan: chi dung biet danh khi nó DUY NHẤT trong dòng (tránh "President" - biệt danh
+  // chung của CẢ dòng Day-Date - bị hiểu nhầm thành 1 model riêng). Còn lại dùng model.
+  const collNick = new Map<string, number>();
+  watches.forEach((w) => {
+    if (w.nickname) {
+      const k = `${w.collection}|${w.nickname}`;
+      collNick.set(k, (collNick.get(k) ?? 0) + 1);
+    }
+  });
+  const labelOf = (w: (typeof watches)[number]) =>
+    w.nickname && collNick.get(`${w.collection}|${w.nickname}`) === 1 ? `${w.collection} '${w.nickname}'` : w.model;
   for (const w of watches) {
     if (!watchPhotos.has(w.id)) continue;
     const img = `/watches/${w.id}.jpg`;

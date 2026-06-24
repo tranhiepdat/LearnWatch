@@ -10,7 +10,8 @@ import { recordQuiz } from "@/lib/progress";
 import { playTap, playCorrect, playWrong, playComplete } from "@/lib/sound";
 import GoldBurst from "./GoldBurst";
 import CollectionToggle from "./CollectionToggle";
-import { IconCheck, IconClose, IconFlame, IconGem } from "./icons";
+import WatchDetail from "./WatchDetail";
+import { IconCheck, IconClose, IconFlame, IconGem, IconBook } from "./icons";
 
 const CAT_COLOR: Record<string, string> = {
   "Biệt danh": "text-gold-300",
@@ -36,6 +37,7 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
   const [savedXp, setSavedXp] = useState(0);
   const [streak, setStreak] = useState(0);
   const [burstKey, setBurstKey] = useState(0);
+  const [showDetail, setShowDetail] = useState(false);
   const shake = useAnimationControls();
 
   const q = questions[index];
@@ -59,6 +61,7 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
 
   function next() {
     playTap();
+    setShowDetail(false);
     if (index + 1 < total) {
       setIndex((i) => i + 1);
       setSelected(null);
@@ -237,6 +240,12 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
                         )}
                         {watch.tip && <p className="mt-1.5 text-xs text-gold-300">💡 {watch.tip}</p>}
                         <CollectionToggle collection={watch.collection} className="mt-3" />
+                        <button
+                          onClick={() => { setShowDetail(true); playTap(); }}
+                          className="cyber mt-2 flex w-full items-center justify-center gap-1.5 rounded-[6px] border border-gold-700/50 bg-gold-500/10 py-2.5 text-xs font-bold text-gold-300 active:scale-[0.98]"
+                        >
+                          <IconBook className="h-4 w-4" /> Xem đầy đủ thông tin mẫu này
+                        </button>
                       </div>
                     ) : (
                       <p className="mt-1 text-ivory/85">{q.explanation}</p>
@@ -262,6 +271,27 @@ export default function QuizRunner({ questions, onRestart }: { questions: QuizQu
           </motion.button>
         )}
       </AnimatePresence>
+
+      {showDetail && watch && (
+        <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center" onClick={() => setShowDetail(false)}>
+          <div className="absolute inset-0 bg-ink/85 backdrop-blur-sm" />
+          <div
+            className="relative z-10 max-h-[88vh] w-full max-w-lg overflow-y-auto rounded-t-2xl border border-hairline bg-surface p-5 pb-8 shadow-2xl sm:rounded-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => { setShowDetail(false); playTap(); }}
+              aria-label="Đóng"
+              className="cyber sticky top-0 z-20 ml-auto grid h-9 w-9 place-items-center rounded-full border border-hairline bg-surface text-taupe active:scale-90"
+            >
+              <IconClose className="h-5 w-5" />
+            </button>
+            <div className="-mt-7">
+              <WatchDetail watch={watch} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
