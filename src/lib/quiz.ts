@@ -1,9 +1,12 @@
 import { visibleWatches as watches } from "@/data/watches";
 import { terms } from "@/data/terms";
 import { watchPhotos } from "@/data/photos";
+import { collectionInfos } from "@/data/collections";
+import { colorName } from "@/lib/partColors";
+import { englishName } from "@/lib/name";
 import type { Brand } from "@/data/types";
 
-export type QuizCategory = "Biệt danh" | "Mẫu mã" | "Chất liệu" | "Nhìn hình";
+export type QuizCategory = "Biệt danh" | "Mẫu mã" | "Chất liệu" | "Nhìn hình" | "Dòng" | "Thật/Giả";
 export type QuizBrand = Brand | "Chung";
 
 export interface QuizQuestion {
@@ -190,6 +193,83 @@ export function buildPool(): QuizQuestion[] {
         img,
       );
       if (qNick) out.push(qNick);
+    }
+  }
+
+  // ====== MỞ RỘNG: nhiều dạng câu hỏi mới (thư viện lớn) ======
+  const allBrands = Array.from(new Set(watches.map((w) => w.brand)));
+  const allColls = Array.from(new Set(watches.map((w) => w.collection)));
+  const DIAL_PALETTE = ["Đen", "Trắng / bạc", "Xám", "Xanh dương", "Xanh lá", "Vàng / champagne", "Nâu", "Hồng", "Xanh ngọc", "Đỏ"];
+  const baseColor = (hex?: string): string => {
+    const n = colorName(hex);
+    if (!n) return "";
+    if (/đen/i.test(n)) return "Đen";
+    if (/trắng|bạc/i.test(n)) return "Trắng / bạc";
+    if (/xám|slate/i.test(n)) return "Xám";
+    if (/xanh ngọc|turquoise/i.test(n)) return "Xanh ngọc";
+    if (/xanh lá/i.test(n)) return "Xanh lá";
+    if (/xanh dương/i.test(n)) return "Xanh dương";
+    if (/champagne|vàng/i.test(n)) return "Vàng / champagne";
+    if (/nâu|chocolate|đồng/i.test(n)) return "Nâu";
+    if (/hồng/i.test(n)) return "Hồng";
+    if (/đỏ/i.test(n)) return "Đỏ";
+    if (/tím/i.test(n)) return "Tím";
+    return "";
+  };
+
+  // 1) Nhìn hình -> HÃNG / DÒNG / MÀU MẶT SỐ
+  for (const w of watches) {
+    if (!watchPhotos.has(w.id)) continue;
+    const img = `/watches/${w.id}.jpg`;
+
+    const qBrand = assemble(`imgbrand-${w.id}`, w.brand, "Nhìn hình", "Đồng hồ trong ảnh là HÃNG nào?", w.brand, allBrands, `${englishName(w)}.`, w.id, img);
+    if (qBrand) out.push(qBrand);
+
+    const collDistract = watches.filter((x) => x.brand === w.brand && x.collection !== w.collection).map((x) => x.collection);
+    const qColl = assemble(`imgcoll-${w.id}`, w.brand, "Nhìn hình", "Đồng hồ trong ảnh thuộc DÒNG (collection) nào?", w.collection, [...collDistract, ...allColls], `${englishName(w)}.`, w.id, img);
+    if (qColl) out.push(qColl);
+
+    const dc = baseColor(w.dialColor);
+    if (dc) {
+      const qDial = assemble(`imgdial-${w.id}`, w.brand, "Nhìn hình", "Mặt số (dial) trong ảnh chủ yếu màu gì?", dc, DIAL_PALETTE, `${w.brand} ${w.model} — mặt ${dc.toLowerCase()}.`, w.id, img);
+      if (qDial) out.push(qDial);
+    }
+  }
+
+  // 2) DÒNG: công dụng / định vị (2 chiều)
+  const collsWithData = collectionInfos.filter((c) => watches.some((w) => w.collection === c.collection));
+  const allTaglines = collsWithData.map((c) => c.tagline);
+  for (const c of collsWithData) {
+    const qTag = assemble(`coll-tag-${c.collection}`, c.brand, "Dòng", `Dòng ${c.collection} (${c.brand}) nổi tiếng / định vị là gì?`, c.tagline, allTaglines, `${c.collection}: ${c.purpose}`);
+    if (qTag) out.push(qTag);
+    const qWhat = assemble(`coll-what-${c.collection}`, c.brand, "Dòng", `Dòng nào được mô tả: "${c.tagline}"?`, c.collection, allColls, `${c.collection} (${c.brand}): ${c.purpose}`);
+    if (qWhat) out.push(qWhat);
+  }
+
+  // 3) MÁY / Calibre (1 câu mỗi dòng)
+  const seenMovColl = new Set<string>();
+  const allMovs = Array.from(new Set(watches.map((w) => w.movement).filter(Boolean) as string[]));
+  for (const w of watches) {
+    if (!w.movement || seenMovColl.has(w.collection)) continue;
+    seenMovColl.add(w.collection);
+    const qMov = assemble(`mov-${w.collection}`, w.brand, "Chất liệu", `${w.brand} ${w.collection} dùng bộ máy (calibre) nào?`, w.movement, allMovs, `${w.collection} dùng ${w.movement}.`);
+    if (qMov) out.push(qMov);
+  }
+
+  // 4) THẬT/GIẢ: nhìn ẢNH đoán chính hãng hay hàng độ/rep (cân bằng 2 loại)
+  const AUTH_GENUINE = "Chính hãng — cấu hình CÓ thật";
+  const AUTH_FAKE = "Hàng ĐỘ/REP — cấu hình KHÔNG có thật";
+  let gi = 0;
+  for (const w of watches) {
+    if (!watchPhotos.has(w.id)) continue;
+    const img = `/watches/${w.id}.jpg`;
+    if (w.warning) {
+      const qa = assemble(`auth-${w.id}`, w.brand, "Thật/Giả", "Đồng hồ trong ảnh là loại nào?", AUTH_FAKE, [AUTH_GENUINE, "Chính hãng — bản grail hiếm", "Chính hãng — bản giới hạn"], w.warning, w.id, img);
+      if (qa) out.push(qa);
+    } else if (gi++ % 4 === 0) {
+      // lấy mẫu ~1/4 mẫu thật để cân bằng (đáp án 'chính hãng')
+      const qg = assemble(`authg-${w.id}`, w.brand, "Thật/Giả", "Đồng hồ trong ảnh là loại nào?", AUTH_GENUINE, [AUTH_FAKE, "Cấu hình lai (Frankenwatch)", "Không rõ nguồn gốc"], `${englishName(w)} — cấu hình chính hãng.`, w.id, img);
+      if (qg) out.push(qg);
     }
   }
 

@@ -20,8 +20,8 @@ const BRANDS: BrandOpt[] = [
     (a, b) => (QB_COUNTS[b] ?? 0) - (QB_COUNTS[a] ?? 0),
   ),
 ];
-const CATS: CatOpt[] = ["Tất cả", "Nhìn hình", "Biệt danh", "Mẫu mã", "Chất liệu"];
-const LENGTHS = [5, 10, 15];
+const CATS: CatOpt[] = ["Tất cả", "Nhìn hình", "Thật/Giả", "Dòng", "Biệt danh", "Mẫu mã", "Chất liệu"];
+const LENGTHS = [5, 10, 15, 20, 30];
 
 export default function QuizPage() {
   const [brand, setBrand] = useState<BrandOpt>("Rolex");

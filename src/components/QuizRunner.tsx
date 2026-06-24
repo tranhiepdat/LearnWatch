@@ -18,6 +18,8 @@ const CAT_COLOR: Record<string, string> = {
   "Mẫu mã": "text-sage",
   "Chất liệu": "text-champagne",
   "Nhìn hình": "text-bordeaux",
+  "Dòng": "text-sage",
+  "Thật/Giả": "text-bordeaux",
 };
 
 function Counter({ to }: { to: number }) {
