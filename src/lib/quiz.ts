@@ -136,7 +136,8 @@ export function buildPool(): QuizQuestion[] {
   }
 
   // ----- Cau hoi NHIN HINH (chi cho mau co anh that) -----
-  const labelOf = (w: (typeof watches)[number]) => w.nickname ?? w.model;
+  // Nhan dong nhat: luon co DONG (collection) -> tranh option chi hien moi nickname (vd "Ice Blue")
+  const labelOf = (w: (typeof watches)[number]) => (w.nickname ? `${w.collection} '${w.nickname}'` : w.model);
   for (const w of watches) {
     if (!watchPhotos.has(w.id)) continue;
     const img = `/watches/${w.id}.jpg`;
