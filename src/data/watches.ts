@@ -4,6 +4,7 @@ import { extraWatches } from "./watchesExtra";
 import { extraWatches2 } from "./watchesExtra2";
 import { extraWatches3 } from "./watchesExtra3";
 import { extraWatches4 } from "./watchesExtra4";
+import { extraWatches5 } from "./watchesExtra5";
 import { applyCollectionSpecs } from "./specs";
 import { applySubdials } from "./subdials";
 
@@ -1345,7 +1346,7 @@ const coreWatches: Watch[] = [
   },
 ];
 
-export const watches: Watch[] = [...coreWatches, ...extraWatches, ...extraWatches2, ...extraWatches3, ...extraWatches4];
+export const watches: Watch[] = [...coreWatches, ...extraWatches, ...extraWatches2, ...extraWatches3, ...extraWatches4, ...extraWatches5];
 
 /**
  * Bo sung thuat ngu tieng Anh (ten mau) + gia resale tham khao (thi truong genuine,

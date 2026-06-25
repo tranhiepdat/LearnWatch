@@ -8,6 +8,15 @@ export type Brand =
   | "IWC"
   | "Audemars Piguet"
   | "Patek Philippe"
+  | "Vacheron Constantin"
+  | "Chopard"
+  | "Bvlgari"
+  | "Chanel"
+  | "Gucci"
+  | "Longines"
+  | "Tissot"
+  | "Rado"
+  | "Burberry"
   | "Diesel"
   | "Movado";
 
