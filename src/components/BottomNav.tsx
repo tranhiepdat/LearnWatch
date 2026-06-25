@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { IconHome, IconCards, IconQuiz, IconBook, IconChat } from "./icons";
+import { IconHome, IconCards, IconQuiz, IconBook, IconChat, IconBox } from "./icons";
 import { playTap } from "@/lib/sound";
 
 const tabs = [
@@ -11,6 +11,7 @@ const tabs = [
   { href: "/flashcards", label: "Học", Icon: IconCards },
   { href: "/quiz", label: "Đố", Icon: IconQuiz },
   { href: "/browse", label: "Tra cứu", Icon: IconBook },
+  { href: "/inventory", label: "Kho", Icon: IconBox },
   { href: "/assistant", label: "Trợ lý", Icon: IconChat },
 ];
 

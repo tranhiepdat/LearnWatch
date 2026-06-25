@@ -85,6 +85,13 @@ export const IconGem = (p: P) => (
   </svg>
 );
 
+export const IconBox = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5v-9Z" />
+    <path d="M3 7.5 12 12l9-4.5M12 12v9" opacity="0.55" />
+  </svg>
+);
+
 export const IconCheck = (p: P) => (
   <svg {...base(p)} strokeWidth={2.3}>
     <path d="M5 12.5 10 17l9-10" />

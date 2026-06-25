@@ -43,15 +43,18 @@ export default function Home() {
         ))}
       </section>
 
-      <section className="card-lux p-5">
-        <p className="label-luxe">Thư viện</p>
+      <Link href="/inventory" className="cyber card-lux group block p-5 active:scale-[0.99]">
+        <div className="flex items-center justify-between">
+          <p className="label-luxe">Kho hàng · Thư viện</p>
+          <span className="text-xs font-semibold text-gold-300">Xem kho →</span>
+        </div>
         <div className="mt-3 grid grid-cols-4 gap-3 text-center">
           <Stat n={visibleWatches.length} label="Mẫu" />
           <Stat n={brandCount} label="Hãng" />
           <Stat n={rx} label="Rolex" />
           <Stat n={terms.length} label="Thuật ngữ" />
         </div>
-      </section>
+      </Link>
 
       <section className="space-y-3">
         <div className="flex items-end justify-between">
