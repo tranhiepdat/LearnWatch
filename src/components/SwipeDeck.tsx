@@ -12,8 +12,18 @@ import { IconCheck, IconClose, IconShuffle, IconSparkle, IconChat } from "./icon
 import { playFlip, playSwipe, playCorrect, playComplete, playTap } from "@/lib/sound";
 import { hFlip, hSwipe, hSuccess, hComplete } from "@/lib/haptics";
 import { enLabel } from "@/lib/name";
+import { useTheme, type ThemeId } from "@/lib/theme";
 import ColorTable from "./ColorTable";
 import CollectionToggle from "./CollectionToggle";
+
+/** "Tính cách" kéo-văng thẻ theo theme: biên độ xoay + thời gian bay khác nhau */
+const DRAG_FEEL: Record<ThemeId, { rot: number; flingDur: number; flingEase: "easeIn" | "easeOut" }> = {
+  game: { rot: 16, flingDur: 0.22, flingEase: "easeIn" },   // dứt khoát, giật
+  apple: { rot: 8, flingDur: 0.32, flingEase: "easeOut" },  // lướt êm như kính
+  cozy: { rot: 26, flingDur: 0.3, flingEase: "easeIn" },    // lật nhào vui nhộn
+  dreamy: { rot: 12, flingDur: 0.4, flingEase: "easeOut" }, // trôi đi nhẹ bẫng
+  studio: { rot: 10, flingDur: 0.18, flingEase: "easeIn" }, // snap gọn
+};
 
 function BrandTag({ brand }: { brand: Watch["brand"] }) {
   return (
@@ -44,15 +54,19 @@ export default function SwipeDeck({
   onToggleLearned: (id: string) => void;
   onReshuffle: () => void;
 }) {
+  const { theme, meta } = useTheme();
+  const feel = DRAG_FEEL[theme];
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [flipBurst, setFlipBurst] = useState(0);
   const [swipeBurst, setSwipeBurst] = useState<{ k: number; dir: 1 | -1 }>({ k: 0, dir: 1 });
   const busy = useRef(false);
   const x = useMotionValue(0);
-  const rotate = useTransform(x, [-200, 200], [-16, 16]);
+  const rotate = useTransform(x, [-200, 200], [-feel.rot, feel.rot]);
   const likeOpacity = useTransform(x, [15, 90], [0, 1]);
   const nopeOpacity = useTransform(x, [-90, -15], [1, 0]);
+  // studio: kéo thẻ là hiện KHUNG CHỌN design-tool quanh thẻ
+  const frameOpacity = useTransform(x, [-70, -14, 14, 70], [1, 0, 0, 1]);
 
   const current = deck[index];
   const next = deck[index + 1];
@@ -89,8 +103,8 @@ export default function SwipeDeck({
       hSwipe();
     }
     animate(x, dir * 680, {
-      duration: 0.24,
-      ease: "easeIn",
+      duration: feel.flingDur,
+      ease: feel.flingEase,
       onComplete: () => {
         setFlipped(false);
         setIndex((i) => i + 1);
@@ -172,9 +186,9 @@ export default function SwipeDeck({
               hFlip();
             }
           }}
-          initial={{ scale: 0.96, opacity: 0, y: 12 }}
+          initial={theme === "cozy" ? { scale: 0.7, opacity: 0, y: -46 } : { scale: 0.96, opacity: 0, y: 12 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 320, damping: 30 }}
+          transition={theme === "cozy" ? meta.motion.bouncy : { type: "spring", stiffness: 320, damping: 30 }}
           className="absolute inset-0 cursor-grab touch-none select-none active:cursor-grabbing [perspective:1600px]"
         >
           <motion.div
@@ -322,6 +336,18 @@ export default function SwipeDeck({
               <div className="h-2 shrink-0" />
             </div>
           </motion.div>
+
+          {/* studio: khung chọn trắng hiện dần khi kéo thẻ */}
+          {theme === "studio" && (
+            <motion.div style={{ opacity: frameOpacity }} className="pointer-events-none absolute -inset-1 z-20">
+              <span className="absolute inset-0 border-[1.5px] border-white/90" />
+              {["-left-[4px] -top-[4px]", "-right-[4px] -top-[4px]", "-left-[4px] -bottom-[4px]", "-right-[4px] -bottom-[4px]"].map(
+                (pos) => (
+                  <span key={pos} className={`absolute h-[8px] w-[8px] bg-white ${pos}`} />
+                ),
+              )}
+            </motion.div>
+          )}
 
           {/* overlay THUOC / ON LAI */}
           <motion.div

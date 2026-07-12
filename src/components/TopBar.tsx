@@ -37,7 +37,7 @@ export default function TopBar() {
       <div className="app-frame flex items-center justify-between gap-2 px-5 py-2.5">
         <div className="flex min-w-0 items-center gap-2">
           <span className="whitespace-nowrap font-display text-sm font-extrabold gold-text">LearnWatch</span>
-          <span className="whitespace-nowrap rounded-full border border-hairline px-2 py-0.5 text-[10px] font-bold text-taupe">
+          <span className="whitespace-nowrap rounded-[var(--r-full)] border border-hairline px-2 py-0.5 text-[10px] font-bold text-taupe">
             Lv.{lv.level}
             <span className="hidden sm:inline"> · {lv.name}</span>
           </span>

@@ -230,7 +230,7 @@ export default function QuizRunner({
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={meta.motion.bouncy}
-              className="mx-auto mt-2 w-fit rounded-full bg-gold-foil px-3 py-1 text-xs font-extrabold text-onaccent"
+              className="mx-auto mt-2 w-fit rounded-[var(--r-full)] bg-gold-foil px-3 py-1 text-xs font-extrabold text-onaccent"
             >
               🏆 KỶ LỤC MỚI!
             </motion.p>
@@ -324,9 +324,9 @@ export default function QuizRunner({
       <div className="mb-3 flex shrink-0 items-center gap-3">
         {isBlitz ? (
           <>
-            <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-surface-2">
+            <div className="h-2.5 flex-1 overflow-hidden rounded-[var(--r-full)] bg-surface-2">
               <motion.div
-                className={`h-full rounded-full ${blitzLeft <= 10 ? "bg-bordeaux" : "bg-gold-foil"}`}
+                className={`h-full rounded-[var(--r-full)] ${blitzLeft <= 10 ? "bg-bordeaux" : "bg-gold-foil"}`}
                 animate={{ width: `${(blitzLeft / BLITZ_SECONDS) * 100}%` }}
                 transition={{ duration: 0.9, ease: "linear" }}
               />
@@ -343,9 +343,9 @@ export default function QuizRunner({
           </>
         ) : (
           <>
-            <div className="h-2 flex-1 overflow-hidden rounded-full bg-surface-2">
+            <div className="h-2 flex-1 overflow-hidden rounded-[var(--r-full)] bg-surface-2">
               <motion.div
-                className="h-full rounded-full bg-gold-foil"
+                className="h-full rounded-[var(--r-full)] bg-gold-foil"
                 animate={{ width: `${(index / total) * 100}%` }}
                 transition={{ type: "spring", stiffness: 200, damping: 30 }}
               />
@@ -365,7 +365,7 @@ export default function QuizRunner({
               animate={{ scale: combo >= 5 ? 1.15 : 1, rotate: 0, opacity: 1 }}
               exit={{ scale: 0.4, opacity: 0 }}
               transition={meta.motion.bouncy}
-              className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-extrabold ${
+              className={`flex items-center gap-1 rounded-[var(--r-full)] px-2.5 py-1 text-xs font-extrabold ${
                 combo >= 5 ? "bg-gold-foil text-onaccent shadow-glow" : "border border-gold-500 text-gold-300"
               }`}
             >
@@ -536,7 +536,7 @@ export default function QuizRunner({
             <button
               onClick={() => { setShowDetail(false); playTap(); }}
               aria-label="Đóng"
-              className="cyber sticky top-0 z-20 ml-auto grid h-9 w-9 place-items-center rounded-full border border-hairline bg-surface text-taupe active:scale-90"
+              className="cyber sticky top-0 z-20 ml-auto grid h-9 w-9 place-items-center rounded-[var(--r-full)] border border-hairline bg-surface text-taupe active:scale-90"
             >
               <IconClose className="h-5 w-5" />
             </button>

@@ -184,6 +184,28 @@ function GlassOrb({ size }: { size: number }) {
 function GlassScene({ sx, sy }: { sx: MotionValue<number>; sy: MotionValue<number> }) {
   return (
     <>
+      {/* blob MÀU đậm nằm SAU các thẻ kính — nhìn xuyên qua mới thấy rõ blur
+          (glassmorphism cần thứ gì đó phía sau để "mờ") */}
+      {[
+        { c: "#ff9ad5", size: 150, cls: "left-[8%] top-[16%]", depth: 8, dur: "13s" },
+        { c: "#7df0c8", size: 120, cls: "right-[2%] top-[34%]", depth: 12, dur: "11s" },
+        { c: "#ffd88a", size: 105, cls: "left-[16%] top-[52%]", depth: 10, dur: "15s" },
+        { c: "#c4b5ff", size: 135, cls: "right-[14%] top-[68%]", depth: 7, dur: "12s" },
+      ].map((b, i) => (
+        <Layer key={`b${i}`} sx={sx} sy={sy} depth={b.depth} className={`${b.cls} opacity-70`}>
+          <div
+            className="decor-float rounded-full"
+            style={{
+              width: b.size,
+              height: b.size,
+              background: `radial-gradient(circle at 35% 30%, ${b.c}, ${b.c}cc 60%, ${b.c}55 100%)`,
+              filter: "blur(2px)",
+              "--dur": b.dur,
+              "--dy": "-26px",
+            } as React.CSSProperties}
+          />
+        </Layer>
+      ))}
       <Layer sx={sx} sy={sy} depth={20} className="right-[8%] top-[12%] opacity-90">
         <div className="decor-float" style={{ "--dur": "9s", "--dy": "-24px" } as React.CSSProperties}>
           <GlassOrb size={92} />

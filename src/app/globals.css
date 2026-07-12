@@ -43,7 +43,7 @@
   --sh-lux: 0 26px 70px -24px rgba(0, 0, 0, 0.8);
   --btn-edge: rgba(0, 90, 130, 0.9);
 
-  --r-xs: 3px; --r-sm: 5px; --r-md: 7px; --r-lg: 10px; --r-xl: 16px;
+  --r-xs: 3px; --r-sm: 5px; --r-md: 7px; --r-lg: 10px; --r-xl: 16px; --r-full: 6px;
   --track-luxe: 0.22em;
   --font-display-active: var(--font-sans);
   --font-tech-active: var(--font-tech);
@@ -62,7 +62,7 @@
   --c-surface2: 106 146 248;
   --c-surface3: 143 176 255;
   --c-fg: 255 255 255;
-  --c-muted: 214 228 255;
+  --c-muted: 233 241 255;
   --c-soft: 234 242 255;
   --c-accent-50: 20 45 110;
   --c-accent-100: 32 64 150;
@@ -84,7 +84,7 @@
   --sh-lux: 0 24px 60px -22px rgba(18, 38, 110, 0.55);
   --btn-edge: rgba(120, 150, 220, 0.5);
 
-  --r-xs: 7px; --r-sm: 11px; --r-md: 15px; --r-lg: 18px; --r-xl: 26px;
+  --r-xs: 7px; --r-sm: 11px; --r-md: 15px; --r-lg: 18px; --r-xl: 26px; --r-full: 9999px;
   --track-luxe: 0.14em;
   --font-display-active: var(--font-sans);
   --font-tech-active: var(--font-sans);
@@ -103,7 +103,7 @@
   --c-surface2: 255 243 224;
   --c-surface3: 255 229 195;
   --c-fg: 74 46 30;
-  --c-muted: 176 132 98;
+  --c-muted: 152 106 72;
   --c-soft: 234 88 40;
   --c-accent-50: 255 238 230;
   --c-accent-100: 255 216 200;
@@ -125,7 +125,7 @@
   --sh-lux: 0 18px 40px -16px rgba(190, 120, 50, 0.35);
   --btn-edge: rgba(196, 52, 22, 1);
 
-  --r-xs: 12px; --r-sm: 16px; --r-md: 20px; --r-lg: 24px; --r-xl: 30px;
+  --r-xs: 12px; --r-sm: 16px; --r-md: 20px; --r-lg: 24px; --r-xl: 30px; --r-full: 9999px;
   --track-luxe: 0.1em;
   --font-display-active: var(--font-round);
   --font-tech-active: var(--font-round);
@@ -144,7 +144,7 @@
   --c-surface2: 249 244 254;
   --c-surface3: 238 227 250;
   --c-fg: 59 44 79;
-  --c-muted: 154 136 178;
+  --c-muted: 128 108 158;
   --c-soft: 124 58 237;
   --c-accent-50: 245 235 255;
   --c-accent-100: 233 213 255;
@@ -166,7 +166,7 @@
   --sh-lux: 0 22px 50px -20px rgba(122, 60, 200, 0.3);
   --btn-edge: rgba(107, 33, 168, 0.45);
 
-  --r-xs: 8px; --r-sm: 12px; --r-md: 16px; --r-lg: 20px; --r-xl: 26px;
+  --r-xs: 8px; --r-sm: 12px; --r-md: 16px; --r-lg: 20px; --r-xl: 26px; --r-full: 9999px;
   --track-luxe: 0.2em;
   --font-display-active: var(--font-sans);
   --font-tech-active: var(--font-sans);
@@ -207,7 +207,7 @@
   --sh-lux: 0 26px 70px -24px rgba(0, 0, 0, 0.75);
   --btn-edge: rgba(14, 96, 54, 0.95);
 
-  --r-xs: 4px; --r-sm: 6px; --r-md: 9px; --r-lg: 12px; --r-xl: 18px;
+  --r-xs: 2px; --r-sm: 3px; --r-md: 5px; --r-lg: 7px; --r-xl: 10px; --r-full: 3px;
   --track-luxe: 0.18em;
   --font-display-active: var(--font-sans);
   --font-tech-active: var(--font-sans);
@@ -309,11 +309,11 @@ body::after {
 /* ===== card-lux biến hình theo theme ===== */
 /* Kính mờ: thẻ kính trong suốt + blur thật */
 [data-theme="apple"] .card-lux {
-  background: rgba(255, 255, 255, 0.16);
-  backdrop-filter: blur(22px) saturate(1.5);
-  -webkit-backdrop-filter: blur(22px) saturate(1.5);
-  border-color: rgba(255, 255, 255, 0.45);
-  box-shadow: var(--sh-lux), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0.16) 100%);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: var(--sh-lux), inset 0 1px 0 rgba(255, 255, 255, 0.7), inset 0 -1px 0 rgba(255, 255, 255, 0.2);
 }
 /* Đất sét: đặc, dày, highlight trên như nặn tay */
 [data-theme="cozy"] .card-lux {

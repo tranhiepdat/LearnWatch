@@ -144,7 +144,7 @@ function QuizSetup() {
               <span className="block text-[11px] text-taupe">{m.desc}</span>
             </span>
             {mode === m.id && (
-              <motion.span layoutId="mode-dot" className="h-2.5 w-2.5 shrink-0 rounded-full bg-gold-foil shadow-glow" />
+              <motion.span layoutId="mode-dot" className="h-2.5 w-2.5 shrink-0 rounded-[var(--r-full)] bg-gold-foil shadow-glow" />
             )}
           </motion.button>
         ))}

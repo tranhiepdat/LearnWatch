@@ -71,8 +71,8 @@ export default function InventoryPage() {
                 <span className={brand === b ? "font-semibold text-gold-300" : "text-ivory"}>{b}</span>
                 <span className="font-tech text-taupe">{n}</span>
               </div>
-              <div className="mt-0.5 h-1.5 overflow-hidden rounded-full bg-surface-2">
-                <div className="h-full rounded-full bg-gold-foil" style={{ width: `${(n / MAXB) * 100}%` }} />
+              <div className="mt-0.5 h-1.5 overflow-hidden rounded-[var(--r-full)] bg-surface-2">
+                <div className="h-full rounded-[var(--r-full)] bg-gold-foil" style={{ width: `${(n / MAXB) * 100}%` }} />
               </div>
             </button>
           ))}
@@ -146,7 +146,7 @@ export default function InventoryPage() {
                 playTap();
               }}
               aria-label="Đóng"
-              className="cyber sticky top-0 z-20 ml-auto grid h-9 w-9 place-items-center rounded-full border border-hairline bg-surface text-taupe active:scale-90"
+              className="cyber sticky top-0 z-20 ml-auto grid h-9 w-9 place-items-center rounded-[var(--r-full)] border border-hairline bg-surface text-taupe active:scale-90"
             >
               <IconClose className="h-5 w-5" />
             </button>

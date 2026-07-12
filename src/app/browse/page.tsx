@@ -184,7 +184,7 @@ export default function BrowsePage() {
             <button
               onClick={() => { setSelected(null); playTap(); }}
               aria-label="Đóng"
-              className="cyber sticky top-0 z-20 ml-auto grid h-9 w-9 place-items-center rounded-full border border-hairline bg-surface text-taupe active:scale-90"
+              className="cyber sticky top-0 z-20 ml-auto grid h-9 w-9 place-items-center rounded-[var(--r-full)] border border-hairline bg-surface text-taupe active:scale-90"
             >
               <IconClose className="h-5 w-5" />
             </button>

@@ -26,8 +26,12 @@ export interface ThemeMotion {
   spring: Transition;
   /** spring nảy mạnh cho khoảnh khắc thưởng */
   bouncy: Transition;
-  /** hiệu ứng vào trang */
-  page: { initial: Record<string, number | string>; animate: Record<string, number | string>; transition: Transition };
+  /** hiệu ứng vào trang (animate cho phép keyframes để nảy nhiều nhịp) */
+  page: {
+    initial: Record<string, number | string>;
+    animate: Record<string, number | string | Array<number | string>>;
+    transition: Transition;
+  };
 }
 
 export interface ThemeMeta {
@@ -110,10 +114,14 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
       spring: { type: "spring", stiffness: 360, damping: 15 },
       bouncy: { type: "spring", stiffness: 430, damping: 9 },
       page: {
-        // đất sét rơi bịch xuống rồi nhún
-        initial: { opacity: 0, y: 26, scale: 0.9 },
-        animate: { opacity: 1, y: 0, scale: 1 },
-        transition: { type: "spring", stiffness: 330, damping: 13 },
+        // đất sét RƠI xuống đập đất rồi NẢY TƯNG nhiều nhịp giảm dần
+        initial: { opacity: 0, y: -70, scale: 0.92 },
+        animate: {
+          opacity: 1,
+          y: [-70, 0, -22, 0, -9, 0, -3, 0],
+          scale: [0.92, 1.025, 0.985, 1.012, 0.995, 1.005, 1, 1],
+        },
+        transition: { duration: 0.85, ease: "easeOut", opacity: { duration: 0.22 } },
       },
     },
   },

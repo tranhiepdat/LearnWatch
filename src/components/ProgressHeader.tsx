@@ -112,9 +112,9 @@ export default function ProgressHeader() {
           </p>
         </div>
         {/* thanh XP tới level sau */}
-        <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-surface-3">
+        <div className="mt-1.5 h-2 overflow-hidden rounded-[var(--r-full)] bg-surface-3">
           <motion.div
-            className="h-full rounded-full bg-gold-foil"
+            className="h-full rounded-[var(--r-full)] bg-gold-foil"
             initial={{ width: 0 }}
             animate={{ width: `${lvPct * 100}%` }}
             transition={{ type: "spring", stiffness: 70, damping: 18 }}
@@ -125,15 +125,15 @@ export default function ProgressHeader() {
         </p>
 
         <div className="mt-2 flex items-center gap-2 text-[11px]">
-          <span className="flex items-center gap-1 rounded-full border border-hairline px-2 py-0.5 font-semibold text-gold-300">
+          <span className="flex items-center gap-1 rounded-[var(--r-full)] border border-hairline px-2 py-0.5 font-semibold text-gold-300">
             <IconFlame className={`h-3 w-3 ${(p?.streak ?? 0) > 0 ? "flame-beat" : ""}`} />
             <Num to={p?.streak ?? 0} /> ngày
           </span>
-          <span className="flex items-center gap-1 rounded-full border border-hairline px-2 py-0.5 font-semibold text-sage">
+          <span className="flex items-center gap-1 rounded-[var(--r-full)] border border-hairline px-2 py-0.5 font-semibold text-sage">
             <IconCheck className="h-3 w-3" />
             <Num to={p?.learned.length ?? 0} /> thuộc
           </span>
-          <span className="flex items-center gap-1 rounded-full border border-hairline px-2 py-0.5 font-semibold text-taupe">
+          <span className="flex items-center gap-1 rounded-[var(--r-full)] border border-hairline px-2 py-0.5 font-semibold text-taupe">
             <IconTarget className="h-3 w-3" />
             <Num to={p?.bestCombo ?? 0} /> combo
           </span>

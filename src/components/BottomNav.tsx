@@ -49,7 +49,13 @@ function Tab({
     playTap();
     hTap();
     if (theme === "cozy") {
-      bounce.start({ rotate: [0, -12, 10, -6, 0], scale: [1, 1.25, 0.95, 1.08, 1], transition: { duration: 0.55 } });
+      // kẹo nảy TUNG lên + lúc lắc
+      bounce.start({
+        y: [0, -12, 0, -5, 0],
+        rotate: [0, -12, 10, -5, 0],
+        scale: [1, 1.28, 0.94, 1.1, 1],
+        transition: { duration: 0.65, ease: "easeOut" },
+      });
     } else if (theme === "game") {
       bounce.start({ y: [0, -7, 0, -2.5, 0], transition: { duration: 0.45, ease: "easeOut" } });
     } else if (theme === "studio") {
@@ -76,7 +82,7 @@ function Tab({
       {active && theme === "game" && (
         <motion.span
           layoutId="nav-active"
-          className="absolute -top-px h-0.5 w-9 rounded-full bg-gold-foil"
+          className="absolute -top-px h-0.5 w-9 rounded-[var(--r-full)] bg-gold-foil"
           style={{ boxShadow: "0 0 12px 1px rgb(var(--c-accent) / 0.8)" }}
           transition={meta.motion.spring}
         />
@@ -84,7 +90,7 @@ function Tab({
       {active && theme === "apple" && (
         <motion.span
           layoutId="nav-active"
-          className="absolute top-1 h-[32px] w-14 rounded-full"
+          className="absolute top-1 h-[32px] w-14 rounded-[var(--r-full)]"
           style={{
             background: "rgba(255,255,255,0.32)",
             border: "1px solid rgba(255,255,255,0.5)",
@@ -97,7 +103,7 @@ function Tab({
       {cozyActive && (
         <motion.span
           layoutId="nav-active"
-          className="absolute top-0.5 h-[36px] w-[36px] rounded-full"
+          className="absolute top-0.5 h-[36px] w-[36px] rounded-[var(--r-full)]"
           style={{ background: cozyColor, boxShadow: `0 4px 0 0 ${cozyColor}55, inset 0 2px 0 rgba(255,255,255,0.45)` }}
           transition={meta.motion.bouncy}
         />

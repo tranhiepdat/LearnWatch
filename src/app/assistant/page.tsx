@@ -193,7 +193,7 @@ export default function AssistantPage() {
 
         {loading && (
           <div className="card-lux flex items-center gap-2 p-3 text-sm text-taupe">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-gold-400" />
+            <span className="h-2 w-2 animate-pulse rounded-[var(--r-full)] bg-gold-400" />
             Đang nghĩ…
           </div>
         )}
