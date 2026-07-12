@@ -18,7 +18,7 @@ export default function CollectionInfo({
 
   if (variant === "compact") {
     return (
-      <div className={`rounded-[6px] border border-hairline bg-surface-2 p-3 ${className}`}>
+      <div className={`rounded-[var(--r-md)] border border-hairline bg-surface-2 p-3 ${className}`}>
         <div className="flex items-center gap-2">
           <span className="rounded-[3px] border border-gold-700/50 bg-gold-500/10 px-1.5 py-px text-[9px] font-bold uppercase tracking-luxe text-gold-300">
             Dòng
@@ -34,7 +34,7 @@ export default function CollectionInfo({
   }
 
   return (
-    <div className={`rounded-[6px] border border-gold-700/40 bg-surface-2 p-3.5 ${className}`}>
+    <div className={`rounded-[var(--r-md)] border border-gold-700/40 bg-surface-2 p-3.5 ${className}`}>
       <p className="label-luxe text-[9px]">Về dòng · About the line</p>
       <div className="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
         <span className="font-display text-base font-semibold text-ivory">{info.collection}</span>
@@ -71,12 +71,12 @@ export default function CollectionInfo({
         </p>
       )}
 
-      <p className="mt-1.5 rounded-[5px] border border-gold-700/40 bg-gold-500/10 p-2 text-[12px] leading-snug text-gold-200">
+      <p className="mt-1.5 rounded-[var(--r-sm)] border border-gold-700/40 bg-gold-500/10 p-2 text-[12px] leading-snug text-gold-200">
         <b>Hợp ai / cách chốt:</b> {info.forWho}
       </p>
 
       {info.terms && (
-        <p className="mt-2 rounded-[5px] border border-hairline bg-ink/40 px-2 py-1 font-tech text-[10.5px] text-gold-200">
+        <p className="mt-2 rounded-[var(--r-sm)] border border-hairline bg-ink/40 px-2 py-1 font-tech text-[10.5px] text-gold-200">
           EN: {info.terms}
         </p>
       )}

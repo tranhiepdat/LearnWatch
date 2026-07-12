@@ -13,7 +13,7 @@ import { IconChat } from "./icons";
 function Spec({ label, value, accent }: { label: string; value?: string; accent?: boolean }) {
   if (!value) return null;
   return (
-    <div className="rounded-[4px] border border-hairline px-2 py-1 leading-tight">
+    <div className="rounded-[var(--r-xs)] border border-hairline px-2 py-1 leading-tight">
       <span className="label-luxe block text-[9px]">{label}</span>
       <span className={accent ? "text-gold-300" : "text-ivory"}>{value}</span>
     </div>
@@ -39,7 +39,7 @@ export default function WatchDetail({ watch: w }: { watch: Watch }) {
           </div>
         )}
         <div className="mt-2 flex items-center gap-2">
-          <span className="rounded-[9px] border border-hairline px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-luxe text-gold-300">
+          <span className="rounded-[var(--r-lg)] border border-hairline px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-luxe text-gold-300">
             {w.brand}
           </span>
           <span className="label-luxe">{w.collection}</span>
@@ -53,7 +53,7 @@ export default function WatchDetail({ watch: w }: { watch: Watch }) {
       </div>
 
       {w.warning && (
-        <div className="rounded-[6px] border border-bordeaux bg-bordeaux/15 p-2.5 text-[12px] leading-snug text-ivory">
+        <div className="rounded-[var(--r-md)] border border-bordeaux bg-bordeaux/15 p-2.5 text-[12px] leading-snug text-ivory">
           <span className="font-extrabold uppercase tracking-luxe text-bordeaux">⚠ Cảnh báo xác thực</span>
           <span className="mt-0.5 block">{w.warning}</span>
         </div>
@@ -62,7 +62,7 @@ export default function WatchDetail({ watch: w }: { watch: Watch }) {
       {w.tier && <p className="text-xs font-semibold text-gold-300">▸ {w.tier}</p>}
 
       {w.nickname && w.nicknameMeaning && (
-        <p className="rounded-[6px] border border-hairline bg-surface-2 p-3 text-sm text-champagne">
+        <p className="rounded-[var(--r-md)] border border-hairline bg-surface-2 p-3 text-sm text-champagne">
           <span className="font-bold">“{w.nickname}”</span> — {w.nicknameMeaning}
         </p>
       )}
@@ -83,7 +83,7 @@ export default function WatchDetail({ watch: w }: { watch: Watch }) {
       {w.movementNote && <p className="text-[11px] text-taupe">⚙ {w.movementNote}</p>}
 
       {w.subdials && (
-        <div className="rounded-[6px] border border-gold-700/40 bg-surface-2 p-3">
+        <div className="rounded-[var(--r-md)] border border-gold-700/40 bg-surface-2 p-3">
           <p className="label-luxe text-[9px]">Mặt số &amp; cách dùng · Dials</p>
           <ul className="mt-1.5 space-y-1 text-[11.5px] leading-snug text-ivory/90">
             {w.subdials.split(" | ").map((line, i) => (
@@ -99,7 +99,7 @@ export default function WatchDetail({ watch: w }: { watch: Watch }) {
       {w.materials?.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {w.materials.map((m) => (
-            <span key={m} className="rounded-[9px] border border-hairline px-2.5 py-1 text-xs text-taupe">
+            <span key={m} className="rounded-[var(--r-lg)] border border-hairline px-2.5 py-1 text-xs text-taupe">
               {m}
             </span>
           ))}
@@ -118,11 +118,11 @@ export default function WatchDetail({ watch: w }: { watch: Watch }) {
       )}
 
       {w.funFact && (
-        <p className="rounded-[6px] border border-hairline bg-surface-2 p-3 text-sm text-champagne">✦ {w.funFact}</p>
+        <p className="rounded-[var(--r-md)] border border-hairline bg-surface-2 p-3 text-sm text-champagne">✦ {w.funFact}</p>
       )}
 
       {w.tip && (
-        <p className="rounded-[6px] border border-gold-700/40 bg-gold-500/10 p-2.5 text-xs text-gold-300">💡 {w.tip}</p>
+        <p className="rounded-[var(--r-md)] border border-gold-700/40 bg-gold-500/10 p-2.5 text-xs text-gold-300">💡 {w.tip}</p>
       )}
 
       <CollectionInfo collection={w.collection} variant="full" />
@@ -130,7 +130,7 @@ export default function WatchDetail({ watch: w }: { watch: Watch }) {
       <Link
         href={`/assistant?id=${w.id}`}
         onClick={() => playTap()}
-        className="cyber flex items-center justify-center gap-1.5 rounded-[6px] border border-gold-700/50 bg-gold-500/10 py-2.5 text-xs font-semibold text-gold-300 active:scale-95"
+        className="cyber flex items-center justify-center gap-1.5 rounded-[var(--r-md)] border border-gold-700/50 bg-gold-500/10 py-2.5 text-xs font-semibold text-gold-300 active:scale-95"
       >
         <IconChat className="h-4 w-4" /> Hỏi AI về mẫu này
       </Link>

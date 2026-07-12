@@ -89,7 +89,7 @@ export default function InventoryPage() {
               setAuth(a);
               playTap();
             }}
-            className={`cyber rounded-[5px] px-3 py-1 text-xs font-semibold transition active:scale-95 ${
+            className={`cyber rounded-[var(--r-sm)] px-3 py-1 text-xs font-semibold transition active:scale-95 ${
               auth === a
                 ? a === "Custom/Rep"
                   ? "border border-bordeaux bg-bordeaux/15 text-bordeaux"
@@ -117,7 +117,7 @@ export default function InventoryPage() {
             }}
             className="cyber card-lux group p-2.5 text-left transition active:scale-[0.98]"
           >
-            <div className="relative aspect-square w-full overflow-hidden rounded-[6px] ring-1 ring-hairline">
+            <div className="relative aspect-square w-full overflow-hidden rounded-[var(--r-md)] ring-1 ring-hairline">
               <WatchVisual watch={w} size={150} className="h-full w-full" />
               {w.warning && (
                 <span className="absolute left-1 top-1 rounded-[3px] bg-bordeaux px-1 py-px text-[8px] font-bold uppercase tracking-luxe text-ivory">
@@ -137,7 +137,7 @@ export default function InventoryPage() {
         <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center" onClick={() => setSelected(null)}>
           <div className="absolute inset-0 bg-ink/85 backdrop-blur-sm" />
           <div
-            className="relative z-10 max-h-[88vh] w-full max-w-lg overflow-y-auto rounded-t-2xl border border-hairline bg-surface p-5 pb-8 shadow-2xl sm:rounded-2xl"
+            className="relative z-10 max-h-[88vh] w-full max-w-lg overflow-y-auto rounded-t-[var(--r-xl)] border border-hairline bg-surface p-5 pb-8 shadow-2xl sm:rounded-[var(--r-xl)]"
             onClick={(e) => e.stopPropagation()}
           >
             <button

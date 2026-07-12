@@ -1,13 +1,62 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import SwipeDeck from "@/components/SwipeDeck";
 import FilterSelect from "@/components/FilterSelect";
+import JuicyButton from "@/components/JuicyButton";
 import { visibleWatches as watches } from "@/data/watches";
 import { shuffle } from "@/lib/quiz";
 import { getProgress, toggleLearned } from "@/lib/progress";
-import { playTap } from "@/lib/sound";
+import { playTap, playPop } from "@/lib/sound";
 import type { Brand } from "@/data/types";
+
+/** Hướng dẫn 1 LẦN ĐẦU trên mọi màn hình (trước đây chỉ desktop thấy) */
+function CoachOverlay({ onDone }: { onDone: () => void }) {
+  const rows = [
+    { icon: "👉", text: "Vuốt PHẢI = đã thuộc (+5 XP)", dir: 26 },
+    { icon: "👈", text: "Vuốt TRÁI = ôn lại sau", dir: -26 },
+    { icon: "👆", text: "Chạm thẻ = lật xem chi tiết", dir: 0 },
+  ];
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="absolute inset-0 z-40 grid place-items-center rounded-[var(--r-lg)] bg-ink/85 p-6 backdrop-blur-sm"
+    >
+      <div className="w-full max-w-xs text-center">
+        <p className="font-display text-xl font-bold text-ivory">Cách học thẻ</p>
+        <div className="mt-5 space-y-4">
+          {rows.map((r, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 + i * 0.12 }}
+              className="flex items-center gap-3 rounded-[var(--r-md)] border border-hairline bg-surface p-3"
+            >
+              <motion.span
+                animate={r.dir !== 0 ? { x: [0, r.dir, 0] } : { y: [0, -7, 0] }}
+                transition={{ duration: 1.15, repeat: Infinity, ease: "easeInOut", delay: i * 0.2 }}
+                className="text-2xl"
+              >
+                {r.icon}
+              </motion.span>
+              <span className="text-left text-sm font-semibold text-ivory">{r.text}</span>
+            </motion.div>
+          ))}
+        </div>
+        <JuicyButton
+          onClick={onDone}
+          className="mt-6 w-full rounded-[var(--r-md)] bg-gold-foil py-3 font-bold text-onaccent shadow-glow"
+        >
+          Hiểu rồi, học thôi!
+        </JuicyButton>
+      </div>
+    </motion.div>
+  );
+}
 
 type Filter = "Tất cả" | Brand;
 type Mode = "Tất cả" | "Chưa thuộc" | "Đã thuộc";
@@ -28,6 +77,11 @@ export default function FlashcardsPage() {
   const [order, setOrder] = useState<string[]>([]);
   const [learned, setLearned] = useState<string[]>([]);
   const [deckKey, setDeckKey] = useState(0);
+  const [coach, setCoach] = useState(false);
+
+  useEffect(() => {
+    if (!window.localStorage.getItem("lw_coach_fc")) setCoach(true);
+  }, []);
 
   const base = useMemo(() => watches.filter((w) => filter === "Tất cả" || w.brand === filter), [filter]);
 
@@ -91,7 +145,7 @@ export default function FlashcardsPage() {
               setMode(m);
               playTap();
             }}
-            className={`cyber rounded-[5px] px-3 py-1 text-xs font-semibold transition active:scale-95 ${
+            className={`cyber rounded-[var(--r-sm)] px-3 py-1 text-xs font-semibold transition active:scale-95 ${
               mode === m ? "border border-gold-500 text-gold-300" : "border border-hairline text-taupe"
             }`}
           >
@@ -102,7 +156,18 @@ export default function FlashcardsPage() {
       </div>
 
       <div className="min-h-0 flex-1 lg:flex lg:items-stretch lg:justify-center lg:gap-8">
-        <div className="mx-auto h-full w-full max-w-md lg:mx-0">
+        <div className="relative mx-auto h-full w-full max-w-md lg:mx-0">
+          <AnimatePresence>
+            {coach && deck.length > 0 && (
+              <CoachOverlay
+                onDone={() => {
+                  window.localStorage.setItem("lw_coach_fc", "1");
+                  setCoach(false);
+                  playPop();
+                }}
+              />
+            )}
+          </AnimatePresence>
           {deck.length > 0 ? (
             <SwipeDeck
               key={deckKey}

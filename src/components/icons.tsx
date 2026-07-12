@@ -144,3 +144,46 @@ export const IconSend = (p: P) => (
     <path d="M11.3 13.4 19 5" opacity="0.6" />
   </svg>
 );
+
+/** Bảng màu — nút đổi theme */
+export const IconPalette = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M12 3a9 9 0 1 0 0 18c1.4 0 2.2-.9 2.2-2 0-.6-.3-1-.6-1.4-.3-.4-.6-.8-.6-1.4 0-1.1.9-2 2-2h1.8A4.2 4.2 0 0 0 21 10c-.5-4-4.4-7-9-7Z" />
+    <circle cx="7.6" cy="10.2" r="1.15" fill="currentColor" stroke="none" />
+    <circle cx="11" cy="7.2" r="1.15" fill="currentColor" stroke="none" />
+    <circle cx="15.4" cy="8.6" r="1.15" fill="currentColor" stroke="none" />
+  </svg>
+);
+
+/** Tia sét — chế độ Blitz 60s */
+export const IconBolt = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M13 2.5 4.5 13.5H11l-1 8L18.5 10H12l1-7.5Z" />
+  </svg>
+);
+
+/** Mục tiêu ngày */
+export const IconTarget = (p: P) => (
+  <svg {...base(p)}>
+    <circle cx="12" cy="12" r="8.5" />
+    <circle cx="12" cy="12" r="4.8" opacity="0.7" />
+    <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none" />
+  </svg>
+);
+
+/** Cúp — level / kỷ lục */
+export const IconTrophy = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M7 4h10v5.5a5 5 0 0 1-10 0V4Z" />
+    <path d="M7 5.5H4.5V7A3 3 0 0 0 7 10M17 5.5h2.5V7A3 3 0 0 1 17 10" opacity="0.7" />
+    <path d="M12 14.5V17M8.5 20h7M9.5 17h5" />
+  </svg>
+);
+
+/** Ôn lại lỗi sai */
+export const IconRedo = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M4.5 12a7.5 7.5 0 1 1 2.2 5.3" />
+    <path d="M4.5 13.5v-4h4" />
+  </svg>
+);

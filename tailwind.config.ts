@@ -1,50 +1,55 @@
 import type { Config } from "tailwindcss";
 
-// Token "gold-*" được giữ TÊN nhưng mang GIÁ TRỊ XANH LÁ (brand emerald)
-// để đổi màu toàn app mà không phải sửa từng class.
+// ===== TOKEN → CSS VARIABLE =====
+// Mọi màu đọc từ biến CSS theo [data-theme] (globals.css) nên đổi theme là
+// đổi TOÀN BỘ app. Tên token giữ nguyên (gold-*, ivory, taupe…) để không phải
+// sửa hàng trăm class — chỉ Ý NGHĨA đổi: gold = accent chính của theme.
+const v = (name: string) => `rgb(var(${name}) / <alpha-value>)`;
+
 const config: Config = {
   content: ["./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        ink: { DEFAULT: "#0A0F0C", 2: "#0E140F" },
-        surface: { DEFAULT: "#111A14", 2: "#17241C", 3: "#1F2F26" },
-        hairline: "rgba(52,211,153,0.18)",
+        ink: { DEFAULT: v("--c-bg"), 2: v("--c-bg2") },
+        surface: { DEFAULT: v("--c-surface"), 2: v("--c-surface2"), 3: v("--c-surface3") },
+        hairline: "var(--c-hairline)",
         gold: {
-          50: "#E7F8EF",
-          100: "#C9F0DC",
-          300: "#6FE0A6",
-          400: "#34D399",
-          500: "#12B886",
-          DEFAULT: "#12B886",
-          600: "#0E9C70",
-          700: "#0B7A57",
+          50: v("--c-accent-50"),
+          100: v("--c-accent-100"),
+          300: v("--c-accent-hi"),
+          400: v("--c-accent"),
+          500: v("--c-accent-lo"),
+          DEFAULT: v("--c-accent-lo"),
+          600: v("--c-accent-600"),
+          700: v("--c-accent-700"),
         },
-        champagne: "#C9E8D5",
-        ivory: "#EAF2EC",
-        taupe: "#8C988F",
-        sage: "#5FBF8A",
-        bordeaux: "#E0726A",
+        champagne: v("--c-soft"),
+        ivory: v("--c-fg"),
+        taupe: v("--c-muted"),
+        sage: v("--c-second"),
+        bordeaux: v("--c-danger"),
+        onaccent: v("--c-on-accent"),
         rolex: "#1E7A4D",
         omega: "#B23A3A",
       },
       fontFamily: {
-        display: ["var(--font-sans)", "system-ui", "sans-serif"],
+        display: ["var(--font-display-active)", "system-ui", "sans-serif"],
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
-        tech: ["var(--font-tech)", "ui-monospace", "SFMono-Regular", "monospace"],
+        tech: ["var(--font-tech-active)", "ui-monospace", "SFMono-Regular", "monospace"],
       },
       letterSpacing: {
-        luxe: "0.22em",
+        luxe: "var(--track-luxe)",
       },
       boxShadow: {
-        gold: "0 0 0 1px rgba(52,211,153,0.22), 0 10px 34px -12px rgba(0,0,0,0.7)",
-        lux: "0 26px 70px -24px rgba(0,0,0,0.8)",
-        glow: "0 0 24px -2px rgba(52,211,153,0.5)",
+        gold: "var(--sh-ring)",
+        lux: "var(--sh-lux)",
+        glow: "var(--sh-glow)",
       },
       backgroundImage: {
-        "gold-foil": "linear-gradient(135deg,#6FE0A6 0%,#34D399 38%,#0B7A57 60%,#12B886 100%)",
-        "gold-line": "linear-gradient(90deg,transparent,rgba(52,211,153,0.55),transparent)",
-        "ink-radial": "radial-gradient(120% 80% at 50% -10%, #123524 0%, #0A0F0C 60%)",
+        "gold-foil": "var(--grad-primary)",
+        "gold-line": "var(--grad-line)",
+        "ink-radial": "var(--bg-wash)",
       },
       keyframes: {
         shimmer: { "0%": { backgroundPosition: "0% 50%" }, "100%": { backgroundPosition: "200% 50%" } },

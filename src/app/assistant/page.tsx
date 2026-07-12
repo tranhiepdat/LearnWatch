@@ -19,7 +19,7 @@ function ResultCard({ w }: { w: Watch }) {
   return (
     <div className="card-lux flex items-center gap-3 p-2.5">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={`/watches/${w.id}.jpg`} alt={w.model} className="h-12 w-12 shrink-0 rounded-[5px] object-cover ring-1 ring-hairline" />
+      <img src={`/watches/${w.id}.jpg`} alt={w.model} className="h-12 w-12 shrink-0 rounded-[var(--r-sm)] object-cover ring-1 ring-hairline" />
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-semibold text-ivory">
           {w.nickname ? `${w.nickname} · ` : ""}
@@ -138,7 +138,7 @@ export default function AssistantPage() {
           <button
             key={s}
             onClick={() => ask(s)}
-            className="cyber rounded-[5px] border border-hairline px-3 py-1.5 text-xs text-taupe transition active:scale-95"
+            className="cyber rounded-[var(--r-sm)] border border-hairline px-3 py-1.5 text-xs text-taupe transition active:scale-95"
           >
             {s}
           </button>
@@ -165,7 +165,7 @@ export default function AssistantPage() {
               className={m.role === "user" ? "flex justify-end" : ""}
             >
               {m.role === "user" ? (
-                <div className="max-w-[85%] rounded-[6px] bg-gold-foil px-3.5 py-2 text-sm font-semibold text-ink">
+                <div className="max-w-[85%] rounded-[var(--r-md)] bg-gold-foil px-3.5 py-2 text-sm font-semibold text-onaccent">
                   {m.text}
                 </div>
               ) : (
@@ -212,12 +212,12 @@ export default function AssistantPage() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Vd: Rolex xanh lá, Cerachrom là gì, mẫu nhập môn…"
-          className="min-w-0 flex-1 rounded-[6px] border border-hairline bg-surface px-3.5 py-3 text-sm text-ivory outline-none placeholder:text-taupe focus:border-gold-600"
+          className="min-w-0 flex-1 rounded-[var(--r-md)] border border-hairline bg-surface px-3.5 py-3 text-sm text-ivory outline-none placeholder:text-taupe focus:border-gold-600"
         />
         <button
           type="submit"
           aria-label="Gửi"
-          className="cyber grid h-12 w-12 shrink-0 place-items-center rounded-[6px] bg-gold-foil text-ink shadow-glow transition active:scale-90"
+          className="cyber grid h-12 w-12 shrink-0 place-items-center rounded-[var(--r-md)] bg-gold-foil text-onaccent shadow-glow transition active:scale-90"
         >
           <IconSend className="h-5 w-5" />
         </button>

@@ -42,7 +42,7 @@ export default function FilterSelect({
           setOpen((o) => !o);
           playTap();
         }}
-        className="cyber flex items-center gap-2 rounded-[5px] bg-gold-foil px-4 py-1.5 text-sm font-bold text-ink shadow-glow active:scale-95"
+        className="cyber flex items-center gap-2 rounded-[var(--r-sm)] bg-gold-foil px-4 py-1.5 text-sm font-bold text-onaccent shadow-glow active:scale-95"
       >
         {label && <span className="text-[10px] font-semibold uppercase tracking-luxe opacity-70">{label}</span>}
         <span>{value}</span>
@@ -50,7 +50,7 @@ export default function FilterSelect({
       </button>
 
       {open && (
-        <div className="absolute left-0 top-full z-40 mt-1.5 max-h-[55vh] w-52 overflow-y-auto rounded-[6px] border border-hairline bg-surface p-1 shadow-2xl">
+        <div className="absolute left-0 top-full z-40 mt-1.5 max-h-[55vh] w-52 overflow-y-auto rounded-[var(--r-md)] border border-hairline bg-surface p-1 shadow-2xl">
           {options.map((o) => (
             <button
               key={o}
@@ -59,7 +59,7 @@ export default function FilterSelect({
                 setOpen(false);
                 playTap();
               }}
-              className={`flex w-full items-center justify-between rounded-[4px] px-3 py-2 text-left text-sm transition active:scale-[0.98] ${
+              className={`flex w-full items-center justify-between rounded-[var(--r-xs)] px-3 py-2 text-left text-sm transition active:scale-[0.98] ${
                 o === value ? "bg-gold-500/15 font-semibold text-gold-300" : "text-ivory hover:bg-surface-2"
               }`}
             >

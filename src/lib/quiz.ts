@@ -279,6 +279,8 @@ export function buildPool(): QuizQuestion[] {
 export interface QuizFilter {
   brand?: Brand;
   category?: QuizCategory;
+  /** chỉ lấy câu hỏi về các mẫu này (chế độ ÔN LỖI SAI) */
+  ids?: string[];
 }
 
 export function generateQuiz(count = 10, filter: QuizFilter = {}): QuizQuestion[] {
@@ -288,6 +290,10 @@ export function generateQuiz(count = 10, filter: QuizFilter = {}): QuizQuestion[
   }
   if (filter.category) {
     pool = pool.filter((q) => q.category === filter.category);
+  }
+  if (filter.ids) {
+    const set = new Set(filter.ids);
+    pool = pool.filter((q) => q.watchId && set.has(q.watchId));
   }
   return shuffle(pool).slice(0, count);
 }

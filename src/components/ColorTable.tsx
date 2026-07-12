@@ -6,7 +6,7 @@ export default function ColorTable({ watch }: { watch: Watch }) {
   const { rows, chronoNote } = colorTable(watch);
   if (!rows.length) return null;
   return (
-    <div className="rounded-[6px] border border-hairline bg-surface-2 p-3">
+    <div className="rounded-[var(--r-md)] border border-hairline bg-surface-2 p-3">
       <p className="label-luxe text-[9px]">Màu sắc từng bộ phận · Colors</p>
       <ul className="mt-1.5 space-y-1.5 text-[12px] leading-snug">
         {rows.map((r, i) => (

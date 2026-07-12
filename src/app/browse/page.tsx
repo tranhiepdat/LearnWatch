@@ -86,7 +86,7 @@ export default function BrowsePage() {
         value={q}
         onChange={(e) => setQ(e.target.value)}
         placeholder="Pepsi · Submariner · lặn · Cerachrom · 126710…"
-        className="w-full rounded-[6px] border border-hairline bg-surface px-4 py-3 text-sm text-ivory outline-none placeholder:text-taupe focus:border-gold-600"
+        className="w-full rounded-[var(--r-md)] border border-hairline bg-surface px-4 py-3 text-sm text-ivory outline-none placeholder:text-taupe focus:border-gold-600"
       />
 
       <div className="flex flex-wrap items-center gap-2">
@@ -97,8 +97,8 @@ export default function BrowsePage() {
               setTab(t);
               playTap();
             }}
-            className={`cyber rounded-[5px] px-4 py-1.5 text-sm font-semibold transition active:scale-95 ${
-              tab === t ? "bg-gold-foil text-ink shadow-glow" : "border border-hairline text-taupe"
+            className={`cyber rounded-[var(--r-sm)] px-4 py-1.5 text-sm font-semibold transition active:scale-95 ${
+              tab === t ? "bg-gold-foil text-onaccent shadow-glow" : "border border-hairline text-taupe"
             }`}
           >
             {t} ({t === "Đồng hồ" ? fWatches.length : t === "Dòng" ? fCollections.length : fTerms.length})
@@ -143,7 +143,7 @@ export default function BrowsePage() {
                 </span>
                 <button
                   onClick={() => { setBrand(c.brand); setTab("Đồng hồ"); setQ(c.collection); playTap(); }}
-                  className="cyber rounded-[4px] border border-hairline px-2 py-0.5 text-[11px] text-gold-300 active:scale-95"
+                  className="cyber rounded-[var(--r-xs)] border border-hairline px-2 py-0.5 text-[11px] text-gold-300 active:scale-95"
                 >
                   Xem {COUNTS.get(c.collection)} mẫu →
                 </button>
@@ -161,7 +161,7 @@ export default function BrowsePage() {
             <details key={t.id} className="card-lux p-4">
               <summary className="flex cursor-pointer items-center justify-between gap-2">
                 <span className="font-display text-base font-semibold text-ivory">{t.term}</span>
-                <span className="rounded-[5px] border border-hairline px-2 py-0.5 text-[10px] text-taupe">
+                <span className="rounded-[var(--r-sm)] border border-hairline px-2 py-0.5 text-[10px] text-taupe">
                   {t.brand} · {t.category}
                 </span>
               </summary>
@@ -178,7 +178,7 @@ export default function BrowsePage() {
         <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center" onClick={() => setSelected(null)}>
           <div className="absolute inset-0 bg-ink/85 backdrop-blur-sm" />
           <div
-            className="relative z-10 max-h-[88vh] w-full max-w-lg overflow-y-auto rounded-t-2xl border border-hairline bg-surface p-5 pb-8 shadow-2xl sm:rounded-2xl"
+            className="relative z-10 max-h-[88vh] w-full max-w-lg overflow-y-auto rounded-t-[var(--r-xl)] border border-hairline bg-surface p-5 pb-8 shadow-2xl sm:rounded-[var(--r-xl)]"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -202,7 +202,7 @@ function WatchCard({ w, onClick }: { w: Watch; onClick: () => void }) {
   return (
     <button onClick={onClick} className="cyber card-lux group p-4 text-left transition active:scale-[0.98]">
       <div className="flex gap-3">
-        <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl ring-1 ring-hairline">
+        <div className="h-16 w-16 shrink-0 overflow-hidden rounded-[var(--r-lg)] ring-1 ring-hairline">
           <WatchVisual watch={w} size={64} className="h-16 w-16" />
         </div>
         <div className="min-w-0 flex-1">
@@ -222,7 +222,7 @@ function WatchCard({ w, onClick }: { w: Watch; onClick: () => void }) {
         <IconChevron className="h-4 w-4 shrink-0 self-center text-taupe transition group-hover:translate-x-0.5 group-hover:text-gold-300" />
       </div>
       {w.warning && (
-        <p className="mt-2 rounded-[4px] border border-bordeaux bg-bordeaux/15 px-2 py-1 text-[11px] text-ivory">
+        <p className="mt-2 rounded-[var(--r-xs)] border border-bordeaux bg-bordeaux/15 px-2 py-1 text-[11px] text-ivory">
           <span className="font-bold text-bordeaux">⚠ Custom/Rep</span>
         </p>
       )}

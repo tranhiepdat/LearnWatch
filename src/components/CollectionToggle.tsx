@@ -25,7 +25,7 @@ export default function CollectionToggle({
           setOpen((o) => !o);
           playTap();
         }}
-        className="cyber flex w-full items-center justify-between rounded-[6px] border border-gold-700/40 bg-gold-500/10 px-3 py-2.5 text-xs font-bold text-gold-300 active:scale-[0.99]"
+        className="cyber flex w-full items-center justify-between rounded-[var(--r-md)] border border-gold-700/40 bg-gold-500/10 px-3 py-2.5 text-xs font-bold text-gold-300 active:scale-[0.99]"
       >
         <span className="flex items-center gap-1.5">
           <IconBook className="h-4 w-4" />

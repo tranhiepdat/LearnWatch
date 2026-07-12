@@ -10,13 +10,14 @@ import GoldBurst from "./GoldBurst";
 import Link from "next/link";
 import { IconCheck, IconClose, IconShuffle, IconSparkle, IconChat } from "./icons";
 import { playFlip, playSwipe, playCorrect, playComplete, playTap } from "@/lib/sound";
+import { hFlip, hSwipe, hSuccess, hComplete } from "@/lib/haptics";
 import { enLabel } from "@/lib/name";
 import ColorTable from "./ColorTable";
 import CollectionToggle from "./CollectionToggle";
 
 function BrandTag({ brand }: { brand: Watch["brand"] }) {
   return (
-    <span className="rounded-[9px] border border-hairline px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-luxe text-gold-300">
+    <span className="rounded-[var(--r-lg)] border border-hairline px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-luxe text-gold-300">
       {brand}
     </span>
   );
@@ -25,7 +26,7 @@ function BrandTag({ brand }: { brand: Watch["brand"] }) {
 function Spec({ label, value, accent }: { label: string; value?: string; accent?: boolean }) {
   if (!value) return null;
   return (
-    <div className="rounded-[4px] border border-hairline px-2 py-1 leading-tight">
+    <div className="rounded-[var(--r-xs)] border border-hairline px-2 py-1 leading-tight">
       <span className="label-luxe block text-[9px]">{label}</span>
       <span className={accent ? "text-gold-300" : "text-ivory"}>{value}</span>
     </div>
@@ -58,7 +59,10 @@ export default function SwipeDeck({
   const done = index >= deck.length;
 
   useEffect(() => {
-    if (done) playComplete();
+    if (done) {
+      playComplete();
+      hComplete();
+    }
   }, [done]);
 
   // Tai truoc anh cac the sap toi -> khong bi "chop" khi swipe
@@ -78,9 +82,11 @@ export default function SwipeDeck({
     setSwipeBurst((s) => ({ k: s.k + 1, dir }));
     if (dir > 0) {
       playCorrect();
+      hSuccess();
       if (!learned.includes(current.id)) onToggleLearned(current.id);
     } else {
       playSwipe();
+      hSwipe();
     }
     animate(x, dir * 680, {
       duration: 0.24,
@@ -120,7 +126,7 @@ export default function SwipeDeck({
             x.set(0);
             onReshuffle();
           }}
-          className="cyber mt-2 rounded-[6px] bg-gold-foil px-6 py-3 font-bold text-ink shadow-glow active:scale-95"
+          className="cyber mt-2 rounded-[var(--r-md)] bg-gold-foil px-6 py-3 font-bold text-onaccent shadow-glow active:scale-95"
         >
           Học lại (xáo trộn)
         </button>
@@ -141,7 +147,7 @@ export default function SwipeDeck({
                   src={`/watches/${next.id}.jpg`}
                   alt=""
                   aria-hidden
-                  className="h-[55%] w-auto rounded-[6px] object-cover blur-[1px]"
+                  className="h-[55%] w-auto rounded-[var(--r-md)] object-cover blur-[1px]"
                 />
               ) : null}
             </div>
@@ -163,6 +169,7 @@ export default function SwipeDeck({
               setFlipped((f) => !f);
               setFlipBurst((k) => k + 1);
               playFlip();
+              hFlip();
             }
           }}
           initial={{ scale: 0.96, opacity: 0, y: 12 }}
@@ -178,7 +185,7 @@ export default function SwipeDeck({
             {/* MAT TRUOC */}
             <div className="card-lux absolute inset-0 flex flex-col items-center justify-between overflow-hidden p-6 [backface-visibility:hidden]">
               {current.warning && (
-                <div className="absolute left-3 top-3 z-10 rounded-[4px] bg-bordeaux px-2 py-1 text-[10px] font-extrabold uppercase tracking-luxe text-ivory shadow-glow">
+                <div className="absolute left-3 top-3 z-10 rounded-[var(--r-xs)] bg-bordeaux px-2 py-1 text-[10px] font-extrabold uppercase tracking-luxe text-ivory shadow-glow">
                   ⚠ Custom / Rep
                 </div>
               )}
@@ -194,7 +201,7 @@ export default function SwipeDeck({
                   src={`/watches/${current.id}.jpg`}
                   alt={current.model}
                   draggable={false}
-                  className="aspect-square w-[min(232px,40vh)] rounded-[6px] object-cover shadow-gold ring-1 ring-hairline"
+                  className="aspect-square w-[min(232px,40vh)] rounded-[var(--r-md)] object-cover shadow-gold ring-1 ring-hairline"
                 />
               ) : (
                 <div className="grid aspect-square w-[min(224px,40vh)] place-items-center">
@@ -231,7 +238,7 @@ export default function SwipeDeck({
               <p className="text-[11px] text-taupe">VN: {current.model}</p>
 
               {current.warning && (
-                <div className="mt-2 rounded-[6px] border border-bordeaux bg-bordeaux/15 p-2.5 text-[12px] leading-snug text-ivory">
+                <div className="mt-2 rounded-[var(--r-md)] border border-bordeaux bg-bordeaux/15 p-2.5 text-[12px] leading-snug text-ivory">
                   <span className="font-extrabold uppercase tracking-luxe text-bordeaux">⚠ Cảnh báo xác thực</span>
                   <span className="mt-0.5 block">{current.warning}</span>
                 </div>
@@ -242,7 +249,7 @@ export default function SwipeDeck({
               )}
 
               {current.nickname && current.nicknameMeaning && (
-                <p className="mt-2 rounded-[6px] border border-hairline bg-surface-2 p-3 text-sm text-champagne">
+                <p className="mt-2 rounded-[var(--r-md)] border border-hairline bg-surface-2 p-3 text-sm text-champagne">
                   <span className="font-bold">“{current.nickname}”</span> — {current.nicknameMeaning}
                 </p>
               )}
@@ -267,7 +274,7 @@ export default function SwipeDeck({
               )}
 
               {current.subdials && (
-                <div className="mt-3 rounded-[6px] border border-gold-700/40 bg-surface-2 p-3">
+                <div className="mt-3 rounded-[var(--r-md)] border border-gold-700/40 bg-surface-2 p-3">
                   <p className="label-luxe text-[9px]">Mặt số &amp; cách dùng · Dials</p>
                   <ul className="mt-1.5 space-y-1 text-[11.5px] leading-snug text-ivory/90">
                     {current.subdials.split(" | ").map((line, i) => (
@@ -282,7 +289,7 @@ export default function SwipeDeck({
 
               <div className="mt-3 flex flex-wrap gap-1.5">
                 {current.materials.map((m) => (
-                  <span key={m} className="rounded-[9px] border border-hairline px-2.5 py-1 text-xs text-taupe">
+                  <span key={m} className="rounded-[var(--r-lg)] border border-hairline px-2.5 py-1 text-xs text-taupe">
                     {m}
                   </span>
                 ))}
@@ -298,13 +305,13 @@ export default function SwipeDeck({
               </ul>
 
               {current.funFact && (
-                <p className="mt-3 rounded-[6px] border border-hairline bg-surface-2 p-3 text-sm text-champagne">
+                <p className="mt-3 rounded-[var(--r-md)] border border-hairline bg-surface-2 p-3 text-sm text-champagne">
                   ✦ {current.funFact}
                 </p>
               )}
 
               {current.tip && (
-                <p className="mt-3 rounded-[6px] border border-gold-700/40 bg-gold-500/10 p-2.5 text-xs text-gold-300">
+                <p className="mt-3 rounded-[var(--r-md)] border border-gold-700/40 bg-gold-500/10 p-2.5 text-xs text-gold-300">
                   💡 {current.tip}
                 </p>
               )}
@@ -319,13 +326,13 @@ export default function SwipeDeck({
           {/* overlay THUOC / ON LAI */}
           <motion.div
             style={{ opacity: likeOpacity }}
-            className="pointer-events-none absolute left-5 top-6 rotate-[-12deg] rounded-[6px] border-2 border-gold-300 px-3 py-1 text-sm font-extrabold uppercase tracking-luxe text-gold-300"
+            className="pointer-events-none absolute left-5 top-6 rotate-[-12deg] rounded-[var(--r-md)] border-2 border-gold-300 px-3 py-1 text-sm font-extrabold uppercase tracking-luxe text-gold-300"
           >
             Thuộc
           </motion.div>
           <motion.div
             style={{ opacity: nopeOpacity }}
-            className="pointer-events-none absolute right-5 top-6 rotate-[12deg] rounded-[6px] border-2 border-taupe px-3 py-1 text-sm font-extrabold uppercase tracking-luxe text-taupe"
+            className="pointer-events-none absolute right-5 top-6 rotate-[12deg] rounded-[var(--r-md)] border-2 border-taupe px-3 py-1 text-sm font-extrabold uppercase tracking-luxe text-taupe"
           >
             Ôn lại
           </motion.div>
@@ -338,7 +345,7 @@ export default function SwipeDeck({
       <Link
         href={`/assistant?id=${current.id}`}
         onClick={() => playTap()}
-        className="cyber mt-3 flex shrink-0 items-center justify-center gap-1.5 rounded-[6px] border border-gold-700/50 bg-gold-500/10 py-2 text-xs font-semibold text-gold-300 active:scale-95"
+        className="cyber mt-3 flex shrink-0 items-center justify-center gap-1.5 rounded-[var(--r-md)] border border-gold-700/50 bg-gold-500/10 py-2 text-xs font-semibold text-gold-300 active:scale-95"
       >
         <IconChat className="h-4 w-4" /> Hỏi AI về mẫu này
       </Link>
@@ -348,21 +355,21 @@ export default function SwipeDeck({
         <button
           onClick={() => fling(-1)}
           aria-label="Ôn lại"
-          className="grid h-14 w-14 cyber place-items-center rounded-[9px] border border-hairline text-taupe transition active:scale-90"
+          className="grid h-14 w-14 cyber place-items-center rounded-[var(--r-lg)] border border-hairline text-taupe transition active:scale-90"
         >
           <IconClose className="h-6 w-6" />
         </button>
         <button
           onClick={onReshuffle}
           aria-label="Xáo trộn"
-          className="grid h-11 w-11 cyber place-items-center rounded-[9px] border border-hairline text-gold-300 transition active:scale-90"
+          className="grid h-11 w-11 cyber place-items-center rounded-[var(--r-lg)] border border-hairline text-gold-300 transition active:scale-90"
         >
           <IconShuffle className="h-5 w-5" />
         </button>
         <button
           onClick={() => fling(1)}
           aria-label="Đã thuộc"
-          className="grid h-14 w-14 cyber place-items-center rounded-[9px] bg-gold-foil text-ink shadow-glow transition active:scale-90"
+          className="grid h-14 w-14 cyber place-items-center rounded-[var(--r-lg)] bg-gold-foil text-onaccent shadow-glow transition active:scale-90"
         >
           <IconCheck className="h-6 w-6" />
         </button>
