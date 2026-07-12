@@ -74,7 +74,7 @@ export default function ThemeSwitcher() {
               animate={{ y: 0, opacity: 1, scale: 1 }}
               exit={{ y: 60, opacity: 0 }}
               transition={{ type: "spring", stiffness: 380, damping: 30 }}
-              className="relative z-10 w-full max-w-md rounded-t-[var(--r-xl)] border border-hairline bg-surface p-5 pb-[max(20px,env(safe-area-inset-bottom))] shadow-lux sm:rounded-[var(--r-xl)]"
+              className="relative z-10 max-h-[86dvh] w-full max-w-md overflow-y-auto rounded-t-[var(--r-xl)] border border-hairline bg-surface p-5 pb-[max(20px,env(safe-area-inset-bottom))] shadow-lux sm:rounded-[var(--r-xl)]"
             >
               <p className="label-luxe">Giao diện</p>
               <h2 className="font-display text-xl font-bold text-ivory">Chọn vibe của bạn</h2>

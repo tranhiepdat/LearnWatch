@@ -47,7 +47,7 @@ export const viewport: Viewport = {
 };
 
 // Đặt data-theme TRƯỚC khi React chạy → không chớp màu khi mở app
-const themeInit = `(function(){try{var t=localStorage.getItem("lw_theme");if(t!=="apple"&&t!=="cozy"&&t!=="game")t="game";document.documentElement.setAttribute("data-theme",t);var m={game:"#050818",apple:"#f2f2f7",cozy:"#fff4e4"};var el=document.querySelector('meta[name="theme-color"]');if(el)el.setAttribute("content",m[t]);}catch(e){document.documentElement.setAttribute("data-theme","game")}})()`;
+const themeInit = `(function(){try{var ok=["game","apple","cozy","dreamy","studio"];var t=localStorage.getItem("lw_theme");if(ok.indexOf(t)<0)t="game";document.documentElement.setAttribute("data-theme",t);var m={game:"#050818",apple:"#5b86f7",cozy:"#ffefd6",dreamy:"#f2e7fe",studio:"#052014"};var el=document.querySelector('meta[name="theme-color"]');if(el)el.setAttribute("content",m[t]);}catch(e){document.documentElement.setAttribute("data-theme","game")}})()`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

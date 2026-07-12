@@ -4,23 +4,112 @@ import { motion } from "framer-motion";
 import { useTheme } from "@/lib/theme";
 
 const COZY_GLYPHS = [
-  { ch: "✦", c: "#ffb63d" },
-  { ch: "★", c: "#ff8a70" },
-  { ch: "♥", c: "#ff5c8a" },
-  { ch: "●", c: "#2fbf9b" },
-  { ch: "✿", c: "#b983ff" },
-  { ch: "▲", c: "#ffd166" },
+  { ch: "✦", c: "#ffc53d" },
+  { ch: "★", c: "#ff5e3a" },
+  { ch: "♥", c: "#ec4899" },
+  { ch: "●", c: "#00c48c" },
+  { ch: "✿", c: "#8b5cf6" },
+  { ch: "▲", c: "#38bdf8" },
 ];
+
+const DREAM_TILES = ["#c084fc", "#a855f7", "#d8b4fe", "#e9d5ff", "#f0abfc"];
+const STUDIO_SHAPES = ["#53e08b", "#ff8a5c", "#d9f99d", "#ffffff"];
 
 /**
  * Bùng nổ khi trả lời đúng / vuốt thẻ — mỗi theme một kiểu:
- *  · game  — flash neon + tia + mảnh vụn (nguyên bản arcade)
- *  · apple — vòng sóng thanh lịch + vài chấm nhỏ, tối giản
- *  · cozy  — MƯA CONFETTI tim/sao pastel nảy tưng
+ *  · game   — flash neon + tia + mảnh vụn (arcade)
+ *  · apple  — vòng kính + giọt sáng trắng lơ lửng
+ *  · cozy   — MƯA CONFETTI kẹo màu đặc nảy tưng
+ *  · dreamy — ô khảm lilac bung ra rồi trôi lên như sương
+ *  · studio — HÌNH KHỐI vector (tam giác/bi/vuông) + khung chọn flash
  * `small` = bản nhẹ (lật thẻ / vuốt trái).
  */
 export default function GoldBurst({ small = false }: { small?: boolean }) {
   const { theme } = useTheme();
+
+  if (theme === "dreamy") {
+    const N = small ? 7 : 14;
+    const tiles = Array.from({ length: N }).map((_, i) => ({
+      c: DREAM_TILES[i % DREAM_TILES.length],
+      x: (Math.random() * 2 - 1) * (small ? 80 : 150),
+      y: -(20 + Math.random() * (small ? 80 : 140)),
+      r: (Math.random() * 2 - 1) * 200,
+      d: 0.9 + Math.random() * 0.5,
+      delay: Math.random() * 0.12,
+      size: small ? 8 + Math.random() * 6 : 10 + Math.random() * 9,
+    }));
+    return (
+      <div className="pointer-events-none absolute inset-0 z-30 grid place-items-center overflow-hidden">
+        <motion.div
+          initial={{ scale: 0.2, opacity: 0.5 }}
+          animate={{ scale: small ? 1.6 : 2.4, opacity: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className={`absolute rounded-full bg-gold-400/30 blur-2xl ${small ? "h-20 w-20" : "h-32 w-32"}`}
+        />
+        {tiles.map((b, i) => (
+          <motion.span
+            key={i}
+            initial={{ x: 0, y: 0, opacity: 0, rotate: 0, scale: 0.3 }}
+            animate={{ x: b.x, y: b.y, opacity: [0, 0.95, 0], rotate: b.r, scale: [0.3, 1, 0.85] }}
+            transition={{ duration: b.d, ease: [0.16, 0.7, 0.3, 1], delay: b.delay, times: [0, 0.4, 1] }}
+            className="absolute"
+            style={{ width: b.size, height: b.size, borderRadius: "26%", background: b.c }}
+          />
+        ))}
+      </div>
+    );
+  }
+
+  if (theme === "studio") {
+    const N = small ? 8 : 15;
+    const shapes = Array.from({ length: N }).map((_, i) => ({
+      c: STUDIO_SHAPES[i % STUDIO_SHAPES.length],
+      kind: i % 3, // 0 tam giác, 1 bi, 2 vuông
+      x: (Math.random() * 2 - 1) * (small ? 90 : 160),
+      y: (Math.random() * 2 - 1) * (small ? 70 : 120) - 30,
+      r: (Math.random() * 2 - 1) * 300,
+      d: 0.55 + Math.random() * 0.35,
+      delay: Math.random() * 0.08,
+      size: small ? 7 + Math.random() * 5 : 9 + Math.random() * 8,
+    }));
+    return (
+      <div className="pointer-events-none absolute inset-0 z-30 grid place-items-center overflow-hidden">
+        {/* khung chọn flash quanh tâm */}
+        <motion.div
+          initial={{ scale: 0.4, opacity: 1 }}
+          animate={{ scale: small ? 1.5 : 2.1, opacity: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className={`absolute border-[1.5px] border-white/90 ${small ? "h-16 w-16" : "h-24 w-24"}`}
+        >
+          {["-left-[3px] -top-[3px]", "-right-[3px] -top-[3px]", "-left-[3px] -bottom-[3px]", "-right-[3px] -bottom-[3px]"].map(
+            (pos) => (
+              <span key={pos} className={`absolute h-[6px] w-[6px] bg-white ${pos}`} />
+            ),
+          )}
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0.45, scale: 0.2 }}
+          animate={{ opacity: 0, scale: small ? 1.6 : 2.2 }}
+          transition={{ duration: 0.45, ease: "easeOut" }}
+          className={`absolute rounded-full bg-gold-300 blur-2xl ${small ? "h-20 w-20" : "h-32 w-32"}`}
+        />
+        {shapes.map((s, i) => (
+          <motion.span
+            key={i}
+            initial={{ x: 0, y: 0, opacity: 1, rotate: 0, scale: 1 }}
+            animate={{ x: s.x, y: s.y, opacity: 0, rotate: s.r, scale: 0.4 }}
+            transition={{ duration: s.d, ease: "easeOut", delay: s.delay }}
+            className="absolute"
+            style={
+              s.kind === 0
+                ? { width: 0, height: 0, borderLeft: `${s.size / 2}px solid transparent`, borderRight: `${s.size / 2}px solid transparent`, borderBottom: `${s.size}px solid ${s.c}` }
+                : { width: s.size, height: s.size, background: s.c, borderRadius: s.kind === 1 ? "9999px" : "2px" }
+            }
+          />
+        ))}
+      </div>
+    );
+  }
 
   if (theme === "apple") {
     return (

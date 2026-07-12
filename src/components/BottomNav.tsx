@@ -17,14 +17,16 @@ const tabs = [
   { href: "/assistant", label: "Trợ lý", Icon: IconChat },
 ];
 
-// cozy: mỗi tab một màu pastel riêng khi active — nhìn như hộp kẹo
-const COZY_TAB = ["#ff6b57", "#ffb63d", "#2fbf9b", "#5aa9ff", "#b983ff", "#ff5c8a"];
+// cozy: mỗi tab một màu KẸO ĐẶC riêng khi active
+const COZY_TAB = ["#ff5e3a", "#ffb020", "#00c48c", "#38bdf8", "#8b5cf6", "#ec4899"];
 
 /**
  * Tab bar — "tính cách" active đổi theo theme:
- *  · game  — vạch neon trên đỉnh + icon phát sáng, nảy điện
- *  · apple — viên pill xám sau icon, trượt spring mượt
- *  · cozy  — blob tròn màu RIÊNG TỪNG TAB, icon lúc lắc
+ *  · game   — vạch neon trên đỉnh + icon phát sáng, nảy điện
+ *  · apple  — viên kính trắng mờ trượt spring, icon nổi
+ *  · cozy   — ĐỒNG XU MÀU ĐẶC riêng từng tab, icon trắng, lúc lắc
+ *  · dreamy — ô khảm lilac xoay nhẹ + trôi lững lờ
+ *  · studio — KHUNG CHỌN trắng + 4 chấm handle quanh icon, snap
  */
 function Tab({
   href,
@@ -50,10 +52,16 @@ function Tab({
       bounce.start({ rotate: [0, -12, 10, -6, 0], scale: [1, 1.25, 0.95, 1.08, 1], transition: { duration: 0.55 } });
     } else if (theme === "game") {
       bounce.start({ y: [0, -7, 0, -2.5, 0], transition: { duration: 0.45, ease: "easeOut" } });
+    } else if (theme === "studio") {
+      bounce.start({ scale: [1, 0.85, 1.06, 1], transition: { duration: 0.3, ease: "easeOut" } });
+    } else if (theme === "dreamy") {
+      bounce.start({ y: [0, -6, 0], rotate: [0, 4, 0], transition: { duration: 0.7, ease: "easeInOut" } });
     } else {
       bounce.start({ scale: [1, 1.14, 1], transition: { duration: 0.32, ease: [0.3, 0.7, 0.3, 1] } });
     }
   }
+
+  const cozyActive = theme === "cozy" && active;
 
   return (
     <Link
@@ -76,22 +84,52 @@ function Tab({
       {active && theme === "apple" && (
         <motion.span
           layoutId="nav-active"
-          className="absolute top-1.5 h-[30px] w-14 rounded-full bg-surface-3"
+          className="absolute top-1 h-[32px] w-14 rounded-full"
+          style={{
+            background: "rgba(255,255,255,0.32)",
+            border: "1px solid rgba(255,255,255,0.5)",
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.6)",
+            backdropFilter: "blur(6px)",
+          }}
           transition={meta.motion.spring}
         />
       )}
-      {active && theme === "cozy" && (
+      {cozyActive && (
+        <motion.span
+          layoutId="nav-active"
+          className="absolute top-0.5 h-[36px] w-[36px] rounded-full"
+          style={{ background: cozyColor, boxShadow: `0 4px 0 0 ${cozyColor}55, inset 0 2px 0 rgba(255,255,255,0.45)` }}
+          transition={meta.motion.bouncy}
+        />
+      )}
+      {active && theme === "dreamy" && (
         <motion.span
           layoutId="nav-active"
           className="absolute top-1 h-[34px] w-[34px]"
-          style={{ background: `${cozyColor}2e`, borderRadius: "46% 54% 58% 42% / 52% 44% 56% 48%" }}
-          transition={meta.motion.bouncy}
+          style={{ background: "rgb(var(--c-accent) / 0.16)", borderRadius: "26%", rotate: 8 }}
+          transition={meta.motion.spring}
         />
+      )}
+      {active && theme === "studio" && (
+        <motion.span layoutId="nav-active" className="absolute top-0.5 h-[36px] w-[38px]" transition={meta.motion.spring}>
+          <span className="absolute inset-0 border-[1.5px] border-white/85" />
+          {["-left-[3px] -top-[3px]", "-right-[3px] -top-[3px]", "-left-[3px] -bottom-[3px]", "-right-[3px] -bottom-[3px]"].map(
+            (pos) => (
+              <span key={pos} className={`absolute h-[6px] w-[6px] bg-white ${pos}`} />
+            ),
+          )}
+        </motion.span>
       )}
       <motion.span animate={bounce} className="relative z-10">
         <Icon
           className="h-[22px] w-[22px]"
-          style={theme === "game" && active ? { filter: "drop-shadow(0 0 6px rgb(var(--c-accent) / 0.9))" } : undefined}
+          style={
+            theme === "game" && active
+              ? { filter: "drop-shadow(0 0 6px rgb(var(--c-accent) / 0.9))" }
+              : cozyActive
+                ? { color: "#fff" }
+                : undefined
+          }
         />
       </motion.span>
       <span className={`relative z-10 text-[10px] tracking-wide ${active ? "font-bold" : "font-medium"}`}>{label}</span>

@@ -4,13 +4,19 @@ import { createContext, useCallback, useContext, useEffect, useState, type React
 import type { Transition } from "framer-motion";
 
 /**
- * Hệ 3 theme — mỗi theme không chỉ đổi màu (CSS vars trong globals.css)
- * mà đổi cả "tính cách chuyển động": độ nảy spring, mức scale khi bấm,
- * kiểu vào trang… Component đọc qua useTheme().motion.
+ * Hệ 5 theme — mỗi theme đổi cả bảng màu (CSS vars trong globals.css) LẪN
+ * "tính cách chuyển động": độ nảy spring, mức scale khi bấm, kiểu vào trang,
+ * artwork nền, bộ âm thanh. Component đọc qua useTheme().motion.
+ *
+ *  · game   — Arcade: neon tối, sắc, giật điện
+ *  · apple  — Kính mờ: glassmorphism xanh dương, blur focus-in mượt
+ *  · cozy   — Đất sét: MÀU ĐẶC rực rỡ, nhún claymorphism
+ *  · dreamy — Mộng mơ: lilac mosaic, trôi lơ lửng chậm rãi
+ *  · studio — Studio: xanh rêu 3D design-tool, khung chọn snap
  */
 
-export type ThemeId = "game" | "apple" | "cozy";
-export const THEME_IDS: ThemeId[] = ["game", "apple", "cozy"];
+export type ThemeId = "game" | "apple" | "cozy" | "dreamy" | "studio";
+export const THEME_IDS: ThemeId[] = ["game", "apple", "cozy", "dreamy", "studio"];
 const KEY = "lw_theme";
 
 export interface ThemeMotion {
@@ -55,57 +61,109 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
       spring: { type: "spring", stiffness: 520, damping: 26 },
       bouncy: { type: "spring", stiffness: 640, damping: 14 },
       page: {
-        initial: { opacity: 0, x: 22, skewX: -1.5 },
+        initial: { opacity: 0, x: 26, skewX: -2 },
         animate: { opacity: 1, x: 0, skewX: 0 },
-        transition: { type: "spring", stiffness: 420, damping: 32 },
+        transition: { type: "spring", stiffness: 430, damping: 30 },
       },
     },
   },
   apple: {
     id: "apple",
-    name: "Tinh giản",
-    tagline: "Sáng sạch · mượt như lụa · kiểu iOS",
-    emoji: "",
+    name: "Kính mờ",
+    tagline: "Glass xanh dương · ánh sáng xuyên · lơ lửng",
+    emoji: "🫧",
     preview: {
-      bg: "#f2f2f7",
-      card: "#ffffff",
-      text: "#16161a",
-      accent: "#0a7aff",
-      extra: ["#34c759", "#ff9f0a", "#af52de"],
+      bg: "#5b86f7",
+      card: "rgba(255,255,255,0.35)",
+      text: "#ffffff",
+      accent: "#eaf2ff",
+      extra: ["#bfe0ff", "#8fd6ff", "#dcd4ff"],
     },
-    bar: "#f2f2f7",
+    bar: "#5b86f7",
     motion: {
-      tap: 0.97,
-      spring: { type: "spring", stiffness: 380, damping: 32 },
-      bouncy: { type: "spring", stiffness: 420, damping: 26 },
+      tap: 0.96,
+      spring: { type: "spring", stiffness: 340, damping: 28 },
+      bouncy: { type: "spring", stiffness: 380, damping: 22 },
       page: {
-        initial: { opacity: 0, y: 8, scale: 0.988 },
-        animate: { opacity: 1, y: 0, scale: 1 },
-        transition: { duration: 0.34, ease: [0.32, 0.72, 0.24, 1] },
+        // kính lấy nét: từ mờ nhoè phóng nhẹ → sắc nét
+        initial: { opacity: 0, scale: 1.04, filter: "blur(10px)" },
+        animate: { opacity: 1, scale: 1, filter: "blur(0px)" },
+        transition: { duration: 0.5, ease: [0.22, 0.68, 0.26, 1] },
       },
     },
   },
   cozy: {
     id: "cozy",
-    name: "Ấm áp",
-    tagline: "Kem pastel · nhún như thạch · dễ thương",
-    emoji: "🧸",
+    name: "Đất sét",
+    tagline: "Màu đặc rực rỡ · nhún clay · kẹo ngọt",
+    emoji: "🍭",
     preview: {
-      bg: "#fff4e4",
-      card: "#fffdf7",
-      text: "#4c3527",
-      accent: "#ff6b57",
-      extra: ["#2fbf9b", "#ffb63d", "#b983ff"],
+      bg: "#ffefd6",
+      card: "#ffffff",
+      text: "#4a2e1e",
+      accent: "#ff5e3a",
+      extra: ["#00c48c", "#ffc53d", "#8b5cf6"],
     },
-    bar: "#fff4e4",
+    bar: "#ffefd6",
     motion: {
-      tap: 0.88,
-      spring: { type: "spring", stiffness: 340, damping: 18 },
-      bouncy: { type: "spring", stiffness: 400, damping: 11 },
+      tap: 0.86,
+      spring: { type: "spring", stiffness: 360, damping: 15 },
+      bouncy: { type: "spring", stiffness: 430, damping: 9 },
       page: {
-        initial: { opacity: 0, y: 16, scale: 0.955 },
+        // đất sét rơi bịch xuống rồi nhún
+        initial: { opacity: 0, y: 26, scale: 0.9 },
         animate: { opacity: 1, y: 0, scale: 1 },
-        transition: { type: "spring", stiffness: 320, damping: 17 },
+        transition: { type: "spring", stiffness: 330, damping: 13 },
+      },
+    },
+  },
+  dreamy: {
+    id: "dreamy",
+    name: "Mộng mơ",
+    tagline: "Lilac mơ màng · khảm gương · trôi lững lờ",
+    emoji: "🌷",
+    preview: {
+      bg: "#f2e7fe",
+      card: "#ffffff",
+      text: "#3b2c4f",
+      accent: "#a855f7",
+      extra: ["#c084fc", "#ec4899", "#e9d5ff"],
+    },
+    bar: "#f2e7fe",
+    motion: {
+      tap: 0.965,
+      spring: { type: "spring", stiffness: 220, damping: 26 },
+      bouncy: { type: "spring", stiffness: 260, damping: 18 },
+      page: {
+        // sương tan: nổi lên chậm, mờ → rõ
+        initial: { opacity: 0, y: 30, filter: "blur(7px)" },
+        animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+        transition: { duration: 0.65, ease: [0.16, 0.68, 0.24, 1] },
+      },
+    },
+  },
+  studio: {
+    id: "studio",
+    name: "Studio",
+    tagline: "Xanh rêu 3D · khung chọn · chất designer",
+    emoji: "📐",
+    preview: {
+      bg: "#052014",
+      card: "#0a3320",
+      text: "#eaf7ee",
+      accent: "#53e08b",
+      extra: ["#ff8a5c", "#d9f99d", "#ffffff"],
+    },
+    bar: "#052014",
+    motion: {
+      tap: 0.94,
+      spring: { type: "spring", stiffness: 560, damping: 32 },
+      bouncy: { type: "spring", stiffness: 600, damping: 20 },
+      page: {
+        // khung canvas snap vào vị trí — dứt khoát như design tool
+        initial: { opacity: 0, scale: 0.965 },
+        animate: { opacity: 1, scale: 1 },
+        transition: { type: "spring", stiffness: 640, damping: 34 },
       },
     },
   },
@@ -114,7 +172,7 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
 export function readTheme(): ThemeId {
   if (typeof document === "undefined") return "game";
   const t = document.documentElement.getAttribute("data-theme");
-  return t === "apple" || t === "cozy" ? t : "game";
+  return (THEME_IDS as string[]).includes(t ?? "") ? (t as ThemeId) : "game";
 }
 
 function applyTheme(id: ThemeId) {

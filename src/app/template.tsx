@@ -10,10 +10,13 @@ import { useTheme } from "@/lib/theme";
  *  · cozy  — nhún lên spring nảy
  */
 export default function Template({ children }: { children: React.ReactNode }) {
-  const { meta } = useTheme();
+  const { theme, meta } = useTheme();
   const pg = meta.motion.page;
   return (
+    // key={theme}: đổi theme là REMOUNT — không bị kẹt transform dở dang của
+    // theme trước (x/skew/blur đóng băng), và được xem enter-animation mới.
     <motion.div
+      key={theme}
       initial={pg.initial}
       animate={pg.animate}
       transition={pg.transition}

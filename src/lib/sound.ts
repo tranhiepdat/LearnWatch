@@ -1,14 +1,17 @@
 /**
- * Engine âm thanh 3 THEME — tổng hợp 100% Web Audio (không file, không bản quyền).
- *  · game  — sci-fi arcade: sóng cưa/vuông, quét laser, filter cộng hưởng
- *  · apple — thuỷ tinh tinh giản: sine ngắn, êm, lịch sự
- *  · cozy  — kalimba/marimba gỗ ấm: pluck pentatonic, tròn trịa
+ * Engine âm thanh 5 THEME — tổng hợp 100% Web Audio (không file, không bản quyền).
+ *  · game   — sci-fi arcade: sóng cưa/vuông, quét laser, filter cộng hưởng
+ *  · apple  — kính mờ: thuỷ tinh sine trong veo, vang nhẹ
+ *  · cozy   — kalimba/marimba gỗ ấm: pluck pentatonic, tròn trịa
+ *  · dreamy — chuông gió & pad mơ màng: attack chậm, hoạ âm bay
+ *  · studio — design-tool: click cơ khí, snap, pluck gọn
  *
  * CHỐNG NHÀM (khác Duolingo): mọi tiếng random ±detune & ±volume nhẹ,
  * tap xoay vòng note pool, tiếng "đúng" LEO THANG pentatonic theo combo.
  */
 
-type ThemeId = "game" | "apple" | "cozy";
+type ThemeId = "game" | "apple" | "cozy" | "dreamy" | "studio";
+const THEME_SET = new Set<ThemeId>(["game", "apple", "cozy", "dreamy", "studio"]);
 
 let ctx: AudioContext | null = null;
 let master: GainNode | null = null;
@@ -16,8 +19,8 @@ let _muted: boolean | null = null;
 
 function theme(): ThemeId {
   if (typeof document === "undefined") return "game";
-  const t = document.documentElement.getAttribute("data-theme");
-  return t === "apple" || t === "cozy" ? t : "game";
+  const t = document.documentElement.getAttribute("data-theme") as ThemeId | null;
+  return t && THEME_SET.has(t) ? t : "game";
 }
 
 function muted(): boolean {
@@ -376,7 +379,149 @@ const cozy = {
   },
 };
 
-const voices = { game, apple, cozy };
+// ============================================================
+// VOICE 4 — DREAMY (chuông gió + pad, attack chậm, bay bổng)
+// ============================================================
+/** chuông gió: sine attack mềm + hoạ âm 2.76 (chuông thật) ngân dài */
+function chime(freq: number, t: number, peak = 0.06, dur = 0.9) {
+  tone(freq, t, dur, { type: "sine", peak, attack: 0.02, release: dur });
+  tone(freq * 2.76, t, dur * 0.55, { type: "sine", peak: peak * 0.18, attack: 0.02 });
+  tone(freq * 5.4, t, dur * 0.3, { type: "sine", peak: peak * 0.07, attack: 0.015 });
+}
+const dreamy = {
+  tap(t: number) {
+    const pool = [1318.5, 1567.98, 1760, 2093]; // E6 G6 A6 C7 — chuông gió
+    chime(hz(pool[tapStep++ % pool.length]), t, 0.038, 0.5);
+  },
+  flip(t: number) {
+    chime(hz(880), t, 0.05, 0.7);
+    chime(hz(1318.5), t + 0.09, 0.045, 0.8);
+    noiseHit(t, 0.2, 0.014, 2800, 5200, 0.7, "highpass"); // gió thoảng
+  },
+  swipe(t: number) {
+    noiseHit(t, 0.24, 0.028, 1800, 4800, 0.6, "highpass");
+    chime(hz(1046.5), t + 0.05, 0.028, 0.5);
+  },
+  correct(t: number, combo: number) {
+    const up = comboSemi(combo);
+    tone(hz(220), t, 0.5, { type: "sine", peak: 0.05, attack: 0.05 }); // pad nền
+    chime(semi(hz(783.99), up), t + 0.01, 0.06, 0.8);
+    chime(semi(hz(1174.7), up), t + 0.1, 0.055, 0.9);
+    chime(semi(hz(1567.98), up), t + 0.2, 0.05, 1);
+    if (combo >= 5) chime(semi(hz(2093), up), t + 0.3, 0.04, 1);
+  },
+  wrong(t: number) {
+    // thở dài dịu: 2 nốt xuống attack mềm — không hề gắt
+    tone(hz(392), t, 0.3, { type: "sine", peak: 0.07, attack: 0.03, glide: 370 });
+    tone(hz(311.1), t + 0.22, 0.42, { type: "sine", peak: 0.07, attack: 0.03, vibHz: 4.5, vibCents: 24 });
+  },
+  complete(t: number) {
+    // harp gliss lên + chord pad
+    [523.25, 659.25, 783.99, 1046.5, 1318.5, 1567.98].forEach((f, i) => chime(hz(f), t + i * 0.07, 0.05, 1));
+    [261.6, 329.6, 392].forEach((f) => tone(hz(f), t + 0.4, 1, { type: "sine", peak: 0.045, attack: 0.12 }));
+  },
+  pop(t: number) {
+    chime(hz(1567.98), t, 0.035, 0.4);
+  },
+  switch_(t: number) {
+    noiseHit(t, 0.4, 0.02, 1400, 5600, 0.5, "highpass");
+    [783.99, 1046.5, 1318.5, 1567.98].forEach((f, i) => chime(hz(f), t + 0.08 + i * 0.09, 0.045, 0.9));
+  },
+  levelup(t: number) {
+    [523.25, 659.25, 783.99, 1046.5, 1318.5, 1567.98, 2093].forEach((f, i) => chime(hz(f), t + i * 0.075, 0.05, 1.1));
+    [329.6, 415.3, 493.88].forEach((f) => tone(hz(f), t + 0.55, 1.2, { type: "sine", peak: 0.05, attack: 0.14 }));
+  },
+  goal(t: number) {
+    [659.25, 987.77, 1318.5].forEach((f, i) => chime(hz(f), t + i * 0.11, 0.05, 0.9));
+  },
+  tick(t: number) {
+    chime(hz(1760), t, 0.024, 0.16);
+  },
+  timeup(t: number) {
+    chime(hz(523.25), t, 0.06, 0.6);
+    tone(hz(261.6), t + 0.18, 0.5, { type: "sine", peak: 0.06, attack: 0.04, glide: 233 });
+  },
+};
+
+// ============================================================
+// VOICE 5 — STUDIO (design-tool: click cơ khí, snap, gọn gàng)
+// ============================================================
+/** click cơ khí: burst noise cực ngắn + blip vuông thấp — như phím cơ/marker */
+function click(t: number, bright = 3400, peak = 0.05) {
+  noiseHit(t, 0.014, peak, bright, bright * 0.6, 2.4);
+  tone(hz(220), t, 0.03, { type: "square", peak: peak * 0.5, attack: 0.001, filterStart: 900, filterEnd: 500, q: 2 });
+}
+const studio = {
+  tap(t: number) {
+    const brights = [3200, 3800, 4400];
+    click(t, brights[tapStep++ % brights.length], 0.055);
+  },
+  flip(t: number) {
+    click(t, 2800, 0.05);
+    tone(hz(587.3), t + 0.03, 0.14, { type: "triangle", peak: 0.07, filterStart: 2400, filterEnd: 1200, q: 2 });
+    tone(hz(880), t + 0.1, 0.16, { type: "triangle", peak: 0.06 });
+  },
+  swipe(t: number) {
+    noiseHit(t, 0.1, 0.04, 4200, 1100, 1.4); // trượt thước
+    click(t + 0.1, 3000, 0.04); // snap cuối
+  },
+  correct(t: number, combo: number) {
+    const up = comboSemi(combo);
+    click(t, 3600, 0.05); // snap!
+    tone(semi(hz(659.25), up), t + 0.03, 0.16, { type: "triangle", peak: 0.09, attack: 0.003 });
+    tone(semi(hz(987.77), up), t + 0.11, 0.2, { type: "triangle", peak: 0.08 });
+    tone(semi(hz(1318.5), up), t + 0.19, 0.22, { type: "sine", peak: 0.06 });
+    if (combo >= 5) {
+      click(t + 0.26, 4600, 0.035);
+      tone(semi(hz(1975.5), up), t + 0.28, 0.18, { type: "sine", peak: 0.045 });
+    }
+  },
+  wrong(t: number) {
+    // "donk" cao su + buzz lỗi ngắn
+    tone(hz(196), t, 0.16, { type: "triangle", peak: 0.12, glide: 130 });
+    tone(hz(98), t + 0.1, 0.18, { type: "square", peak: 0.06, filterStart: 500, filterEnd: 200, q: 4 });
+    noiseHit(t, 0.03, 0.03, 800, 400, 1.5);
+  },
+  complete(t: number) {
+    // xuất bản xong: 3 click nhịp + arp triangle sáng
+    [0, 0.09, 0.18].forEach((d, i) => click(t + d, 3000 + i * 600, 0.04));
+    [523.25, 659.25, 783.99, 1046.5, 1318.5].forEach((f, i) =>
+      tone(hz(f), t + 0.26 + i * 0.08, 0.3, { type: "triangle", peak: 0.08, detune: i % 2 ? 5 : -5 }),
+    );
+    tone(hz(2093), t + 0.68, 0.3, { type: "sine", peak: 0.045 });
+  },
+  pop(t: number) {
+    click(t, 2600, 0.045);
+    tone(hz(783.99), t + 0.02, 0.08, { type: "triangle", peak: 0.045 });
+  },
+  switch_(t: number) {
+    // màn trập máy ảnh: click-click + whoosh
+    click(t, 3800, 0.05);
+    noiseHit(t + 0.04, 0.18, 0.035, 2600, 700, 1);
+    click(t + 0.2, 3000, 0.045);
+    [783.99, 1174.7].forEach((f, i) => tone(hz(f), t + 0.26 + i * 0.08, 0.2, { type: "triangle", peak: 0.055 }));
+  },
+  levelup(t: number) {
+    [0, 0.08].forEach((d) => click(t + d, 3400, 0.04));
+    [392, 523.25, 659.25, 783.99, 1046.5, 1318.5].forEach((f, i) =>
+      tone(hz(f), t + 0.16 + i * 0.085, 0.34, { type: "triangle", peak: 0.085, detune: i % 2 ? 6 : -6 }),
+    );
+    [1567.98, 2093].forEach((f, i) => tone(hz(f), t + 0.72 + i * 0.07, 0.28, { type: "sine", peak: 0.05 }));
+  },
+  goal(t: number) {
+    click(t, 3600, 0.045);
+    [659.25, 830.6, 1046.5].forEach((f, i) => tone(hz(f), t + 0.05 + i * 0.09, 0.24, { type: "triangle", peak: 0.07 }));
+  },
+  tick(t: number) {
+    click(t, 2400, 0.035); // metronome
+  },
+  timeup(t: number) {
+    tone(hz(440), t, 0.22, { type: "triangle", peak: 0.09, glide: 220 });
+    click(t + 0.2, 1800, 0.05);
+  },
+};
+
+const voices = { game, apple, cozy, dreamy, studio };
 const v = () => voices[theme()];
 
 // ---------- API công khai (giữ tên cũ + thêm mới) ----------

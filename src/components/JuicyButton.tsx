@@ -1,17 +1,18 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { motion, useAnimationControls } from "framer-motion";
 import { useTheme } from "@/lib/theme";
 import { playTap } from "@/lib/sound";
 import { hTap } from "@/lib/haptics";
 
 /**
- * Nút "mọng nước" — tính cách đổi theo theme:
- *  · game  — 3D lún xuống (cạnh dưới), chớp neon + tia quét chéo, spark văng
- *  · apple — spring scale mượt kiềm chế + vệt sáng specular chạy qua
- *  · cozy  — squash & stretch như thạch + gợn blob, sao nhỏ bung
- * Âm thanh + haptic đi kèm. Dùng cho mọi CTA chính.
+ * Nút "mọng nước" — 5 tính cách theo theme:
+ *  · game   — 3D lún + chớp neon + tia quét chéo (spark từ FxProvider)
+ *  · apple  — kính: sheen trắng chạy chậm + nảy nhẹ như bong bóng
+ *  · cozy   — đất sét: lún sâu inset + squash & stretch thả tay
+ *  · dreamy — quầng bloom tím nở từ tâm + nghiêng nhẹ mơ màng
+ *  · studio — KHUNG CHỌN trắng flash quanh nút + snap dứt khoát
  */
 export default function JuicyButton({
   children,
@@ -36,7 +37,7 @@ export default function JuicyButton({
   const flash = useAnimationControls();
   const sweep = useAnimationControls();
   const body = useAnimationControls();
-  const ref = useRef<HTMLButtonElement>(null);
+  const [fxKey, setFxKey] = useState(0);
 
   function firePress() {
     if (disabled) return;
@@ -48,36 +49,49 @@ export default function JuicyButton({
       sweep.set({ x: "-140%", opacity: 1 });
       sweep.start({ x: "210%", opacity: 0, transition: { duration: 0.42, ease: "easeOut" } });
     } else if (theme === "apple") {
-      sweep.set({ x: "-130%", opacity: 0.7 });
-      sweep.start({ x: "200%", opacity: 0, transition: { duration: 0.55, ease: [0.3, 0.7, 0.3, 1] } });
-      flash.set({ opacity: 0.18 });
-      flash.start({ opacity: 0, transition: { duration: 0.4 } });
+      sweep.set({ x: "-130%", opacity: 0.8 });
+      sweep.start({ x: "200%", opacity: 0, transition: { duration: 0.6, ease: [0.3, 0.7, 0.3, 1] } });
+      flash.set({ opacity: 0.22 });
+      flash.start({ opacity: 0, transition: { duration: 0.45 } });
+    } else if (theme === "studio" || theme === "dreamy") {
+      setFxKey((k) => k + 1); // bracket flash / bloom
+      if (theme === "dreamy") {
+        sweep.set({ x: "-130%", opacity: 0.5 });
+        sweep.start({ x: "200%", opacity: 0, transition: { duration: 0.8, ease: "easeOut" } });
+      }
     }
   }
 
   function fireRelease() {
     if (disabled) return;
     if (theme === "cozy") {
-      // squash & stretch thả tay — nhún như thạch
+      // squash & stretch thả tay — nhún như đất sét
       body.start({
-        scale: [0.88, 1.07, 0.965, 1.015, 1],
-        scaleY: [0.86, 1.1, 0.95, 1.02, 1],
-        transition: { duration: 0.5, ease: [0.34, 1.56, 0.64, 1] },
+        scale: [0.86, 1.08, 0.96, 1.02, 1],
+        scaleY: [0.84, 1.12, 0.94, 1.03, 1],
+        transition: { duration: 0.55, ease: [0.34, 1.56, 0.64, 1] },
       });
     } else if (theme === "game") {
       body.start({ scale: [0.94, 1.03, 1], transition: { duration: 0.28, ease: "easeOut" } });
+    } else if (theme === "studio") {
+      body.start({ scale: [0.96, 1.015, 1], transition: { duration: 0.2, ease: "easeOut" } });
+    } else if (theme === "apple") {
+      body.start({ scale: [0.97, 1.02, 1], transition: { duration: 0.4, type: "spring", stiffness: 300, damping: 16 } });
+    } else {
+      body.start({ rotate: [0, -0.8, 0.6, 0], transition: { duration: 0.6, ease: "easeOut" } });
     }
   }
 
   const press = disabled
     ? undefined
     : theme === "cozy"
-      ? { scale: 0.88, scaleY: 0.86 }
-      : { scale: meta.motion.tap };
+      ? { scale: 0.86, scaleY: 0.84 }
+      : theme === "dreamy"
+        ? { scale: meta.motion.tap, rotate: -1.2 }
+        : { scale: meta.motion.tap };
 
   return (
     <motion.button
-      ref={ref}
       type={type}
       disabled={disabled}
       aria-label={ariaLabel}
@@ -87,9 +101,11 @@ export default function JuicyButton({
       onPointerLeave={fireRelease}
       whileTap={press}
       animate={body}
-      className={`relative isolate overflow-hidden ${variant === "primary" && theme !== "apple" ? "btn3d" : ""} ${className}`}
+      className={`relative isolate ${theme === "studio" ? "" : "overflow-hidden"} ${
+        variant === "primary" && theme !== "apple" && theme !== "dreamy" ? "btn3d" : ""
+      } ${className}`}
     >
-      {/* chớp màu (game) / tint (apple) */}
+      {/* chớp màu (game) / tint kính (apple) */}
       <motion.span
         aria-hidden
         initial={{ opacity: 0 }}
@@ -97,6 +113,7 @@ export default function JuicyButton({
         className={`pointer-events-none absolute inset-0 z-0 ${
           theme === "game" ? "bg-gold-400 mix-blend-plus-lighter" : "bg-white"
         }`}
+        style={{ borderRadius: "inherit" }}
       />
       {/* vệt sáng quét chéo */}
       <motion.span
@@ -104,9 +121,20 @@ export default function JuicyButton({
         initial={{ opacity: 0, x: "-140%" }}
         animate={sweep}
         className={`pointer-events-none absolute inset-y-0 left-0 z-0 w-1/3 -skew-x-12 ${
-          theme === "apple" ? "bg-white/70 blur-[6px]" : "bg-white/55 blur-[2px]"
+          theme === "apple" ? "bg-white/80 blur-[7px]" : theme === "dreamy" ? "bg-white/60 blur-[8px]" : "bg-white/55 blur-[2px]"
         }`}
       />
+      {/* bloom tím (dreamy) */}
+      {theme === "dreamy" && fxKey > 0 && <span key={`bl${fxKey}`} aria-hidden className="bloom" style={{ borderRadius: "inherit" }} />}
+      {/* khung chọn flash (studio) */}
+      {theme === "studio" && fxKey > 0 && (
+        <span key={`br${fxKey}`} aria-hidden className="pointer-events-none absolute inset-0 z-[5]">
+          <span className="brk brk-tl" style={{ "--ox": "-6px", "--oy": "-6px" } as React.CSSProperties} />
+          <span className="brk brk-tr" style={{ "--ox": "6px", "--oy": "-6px" } as React.CSSProperties} />
+          <span className="brk brk-bl" style={{ "--ox": "-6px", "--oy": "6px" } as React.CSSProperties} />
+          <span className="brk brk-br" style={{ "--ox": "6px", "--oy": "6px" } as React.CSSProperties} />
+        </span>
+      )}
       <span className="relative z-10 flex items-center justify-center gap-2">{children}</span>
     </motion.button>
   );

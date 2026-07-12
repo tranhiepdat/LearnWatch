@@ -15,12 +15,72 @@ import { useTheme } from "@/lib/theme";
 
 const FEATURED = ["Submariner", "GMT-Master II", "Cosmograph Daytona", "Speedmaster", "Royal Oak", "Nautilus"];
 
+// desc NGẮN — đỡ rối chữ, để hình khối nói chuyện
 const MODES = [
-  { href: "/assistant", Icon: IconChat, title: "Trợ lý AI", desc: "Hỏi gì về đồng hồ — tìm mẫu, giá, thuật ngữ, máy/calibre." },
-  { href: "/flashcards", Icon: IconCards, title: "Flashcard", desc: "Vuốt & lật thẻ học mẫu mã, biệt danh, chất liệu." },
-  { href: "/quiz", Icon: IconQuiz, title: "Trắc nghiệm", desc: "Nhìn hình đoán mẫu, có combo thưởng XP & giải thích sâu." },
-  { href: "/browse", Icon: IconBook, title: "Tra cứu", desc: "Tìm nhanh mẫu & thuật ngữ khi đang tư vấn khách." },
+  { href: "/flashcards", Icon: IconCards, title: "Flashcard", desc: "Vuốt & lật thẻ", tint: 0 },
+  { href: "/quiz", Icon: IconQuiz, title: "Trắc nghiệm", desc: "Combo thưởng XP", tint: 1 },
+  { href: "/browse", Icon: IconBook, title: "Tra cứu", desc: "Tìm nhanh khi tư vấn", tint: 2 },
+  { href: "/assistant", Icon: IconChat, title: "Trợ lý AI", desc: "Hỏi mẫu, giá, thuật ngữ", tint: 3 },
 ];
+
+// màu tile cozy (kẹo đặc) & dreamy (lilac nhạt dần)
+const TILE_COZY = ["#ff5e3a", "#00c48c", "#ffb020", "#8b5cf6"];
+const TILE_DREAM = ["#a855f7", "#c084fc", "#ec4899", "#8b5cf6"];
+
+/** Ô icon có "phông nền" trang trí riêng từng theme — vector thay cho chữ */
+function IconTile({ Icon, tint }: { Icon: typeof IconCards; tint: number }) {
+  const { theme } = useTheme();
+  if (theme === "cozy") {
+    return (
+      <span
+        className="grid h-14 w-14 shrink-0 place-items-center rounded-[var(--r-sm)] text-white"
+        style={{ background: TILE_COZY[tint], boxShadow: `0 5px 0 0 ${TILE_COZY[tint]}55, inset 0 2px 0 rgba(255,255,255,0.4)` }}
+      >
+        <Icon className="h-7 w-7" />
+      </span>
+    );
+  }
+  if (theme === "dreamy") {
+    return (
+      <span className="relative grid h-14 w-14 shrink-0 place-items-center text-onaccent">
+        <span className="absolute inset-0 rotate-6" style={{ background: TILE_DREAM[tint], borderRadius: "26%" }} />
+        <span className="absolute inset-0 -rotate-3 opacity-40" style={{ background: TILE_DREAM[(tint + 1) % 4], borderRadius: "26%" }} />
+        <Icon className="relative z-10 h-7 w-7" />
+      </span>
+    );
+  }
+  if (theme === "apple") {
+    return (
+      <span
+        className="grid h-14 w-14 shrink-0 place-items-center rounded-[var(--r-sm)] text-white"
+        style={{
+          background: "rgba(255,255,255,0.22)",
+          border: "1px solid rgba(255,255,255,0.5)",
+          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.6), 0 8px 20px -8px rgba(20,40,120,0.4)",
+          backdropFilter: "blur(8px)",
+        }}
+      >
+        <Icon className="h-7 w-7 drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]" />
+      </span>
+    );
+  }
+  if (theme === "studio") {
+    return (
+      <span className="relative grid h-14 w-14 shrink-0 place-items-center text-gold-300">
+        <span className="absolute inset-0 border-[1.5px] border-white/70" />
+        {["-left-[3px] -top-[3px]", "-right-[3px] -top-[3px]", "-left-[3px] -bottom-[3px]", "-right-[3px] -bottom-[3px]"].map((pos) => (
+          <span key={pos} className={`absolute h-[6px] w-[6px] bg-white ${pos}`} />
+        ))}
+        <Icon className="h-7 w-7" />
+      </span>
+    );
+  }
+  return (
+    <span className="grid h-14 w-14 shrink-0 place-items-center rounded-[var(--r-sm)] border border-hairline text-gold-300 shadow-glow">
+      <Icon className="h-7 w-7" style={{ filter: "drop-shadow(0 0 6px rgb(var(--c-accent) / 0.8))" }} />
+    </span>
+  );
+}
 
 function greeting(): string {
   const h = new Date().getHours();
@@ -89,27 +149,25 @@ export default function Home() {
         </Link>
       )}
 
-      <section className="grid gap-3 md:grid-cols-2">
+      {/* 4 chế độ — lưới 2×2, icon to, chữ tối giản */}
+      <section className="grid grid-cols-2 gap-3">
         {MODES.map((m, i) => (
           <motion.div
             key={m.href}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ ...meta.motion.spring, delay: 0.04 * i }}
+            initial={{ opacity: 0, y: 16, scale: 0.94 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ ...meta.motion.spring, delay: 0.05 * i }}
           >
             <Link
               href={m.href}
               onClick={() => playTap()}
-              className="cyber group flex items-center gap-4 rounded-[var(--r-md)] border border-hairline bg-surface p-4 transition active:scale-[0.98]"
+              className="cyber group flex flex-col items-start gap-3 rounded-[var(--r-md)] border border-hairline bg-surface p-4 transition active:scale-[0.96]"
             >
-              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-[var(--r-sm)] border border-hairline text-gold-300 transition group-active:scale-110">
-                <m.Icon className="h-6 w-6" />
+              <IconTile Icon={m.Icon} tint={m.tint} />
+              <span>
+                <span className="block text-base font-bold leading-tight text-ivory">{m.title}</span>
+                <span className="mt-0.5 block text-[11px] text-taupe">{m.desc}</span>
               </span>
-              <span className="flex-1">
-                <span className="block text-lg font-bold text-ivory">{m.title}</span>
-                <span className="block text-xs text-taupe">{m.desc}</span>
-              </span>
-              <IconChevron className="h-5 w-5 text-taupe transition group-hover:translate-x-0.5 group-hover:text-gold-300" />
             </Link>
           </motion.div>
         ))}
