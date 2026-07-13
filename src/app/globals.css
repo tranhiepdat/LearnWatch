@@ -43,7 +43,8 @@
   --sh-lux: 0 26px 70px -24px rgba(0, 0, 0, 0.8);
   --btn-edge: rgba(0, 90, 130, 0.9);
 
-  --r-xs: 3px; --r-sm: 5px; --r-md: 7px; --r-lg: 10px; --r-xl: 16px; --r-full: 6px;
+  /* ARCADE = VUÔNG TUYỆT ĐỐI — outline card, chip, nút đều 90° khớp ngoặc HUD */
+  --r-xs: 0px; --r-sm: 0px; --r-md: 0px; --r-lg: 0px; --r-xl: 0px; --r-full: 0px;
   --track-luxe: 0.22em;
   --font-display-active: var(--font-sans);
   --font-tech-active: var(--font-tech);
@@ -207,7 +208,8 @@
   --sh-lux: 0 26px 70px -24px rgba(0, 0, 0, 0.75);
   --btn-edge: rgba(14, 96, 54, 0.95);
 
-  --r-xs: 2px; --r-sm: 3px; --r-md: 5px; --r-lg: 7px; --r-xl: 10px; --r-full: 3px;
+  /* STUDIO = VUÔNG TUYỆT ĐỐI — outline khớp khung chọn 90° bên trong */
+  --r-xs: 0px; --r-sm: 0px; --r-md: 0px; --r-lg: 0px; --r-xl: 0px; --r-full: 0px;
   --track-luxe: 0.18em;
   --font-display-active: var(--font-sans);
   --font-tech-active: var(--font-sans);

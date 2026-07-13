@@ -103,7 +103,12 @@ export default function ThemeSwitcher() {
                       {/* mini preview: card + nút + chấm màu */}
                       <span
                         className="grid h-12 w-12 shrink-0 place-items-center text-xl"
-                        style={{ background: m.preview.card, borderRadius: id === "cozy" ? 18 : id === "apple" ? 12 : 6, border: `1px solid ${m.preview.accent}44` }}
+                        style={{
+                          background: m.preview.card,
+                          // preview nói đúng ngôn ngữ bo góc của từng theme
+                          borderRadius: id === "cozy" ? 18 : id === "apple" ? 12 : id === "dreamy" ? 10 : 0,
+                          border: `1px solid ${m.preview.accent}44`,
+                        }}
                       >
                         {m.emoji}
                       </span>
