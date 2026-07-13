@@ -218,10 +218,7 @@ export default function QuizRunner({
           <p className="label-luxe">
             {isBlitz ? "Blitz 60 giây" : mode === "mistakes" ? "Ôn lỗi sai" : passed ? "Xuất sắc" : "Tiếp tục cố gắng"}
           </p>
-          <h2
-            className="glitch-flash mt-1 font-tech text-4xl font-semibold gold-text"
-            data-text={isBlitz ? `${correctCount} câu` : `${correctCount}/${total}`}
-          >
+          <h2 className="mt-1 font-tech text-4xl font-semibold gold-text">
             {isBlitz ? `${correctCount} câu` : `${correctCount}/${total}`}
           </h2>
           <p className="mt-1 text-taupe">{isBlitz ? "trong 60 giây" : `${pct}% chính xác`}</p>
@@ -237,19 +234,19 @@ export default function QuizRunner({
           )}
 
           <div className="mx-auto mt-6 grid max-w-sm grid-cols-3 gap-3">
-            <div className="rounded-[var(--r-md)] border border-hairline p-3.5">
+            <div className="rounded-[var(--r-md)] bg-surface-2 p-3.5">
               <IconGem className="mx-auto h-5 w-5 text-gold-300" />
               <p className="mt-1 font-tech text-xl font-semibold text-gold-300">
                 +<Counter to={savedXp} />
               </p>
               <p className="text-[11px] text-taupe">XP{bonusTotal > 0 ? ` (+${bonusTotal} combo)` : ""}</p>
             </div>
-            <div className="rounded-[var(--r-md)] border border-hairline p-3.5">
+            <div className="rounded-[var(--r-md)] bg-surface-2 p-3.5">
               <IconBolt className="mx-auto h-5 w-5 text-gold-300" />
               <p className="mt-1 font-tech text-xl font-semibold text-gold-300">x{maxCombo}</p>
               <p className="text-[11px] text-taupe">combo dài nhất</p>
             </div>
-            <div className="rounded-[var(--r-md)] border border-hairline p-3.5">
+            <div className="rounded-[var(--r-md)] bg-surface-2 p-3.5">
               <IconFlame className="mx-auto h-5 w-5 text-gold-300" />
               <p className="mt-1 font-tech text-xl font-semibold text-gold-300">{streak}</p>
               <p className="text-[11px] text-taupe">chuỗi ngày</p>
@@ -260,7 +257,7 @@ export default function QuizRunner({
             <motion.p
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-4 rounded-[var(--r-md)] border border-gold-700/50 bg-gold-500/10 p-2.5 text-sm font-bold text-gold-300"
+              className="mt-4 rounded-[var(--r-md)] bg-gold-400/10 p-2.5 text-sm font-bold text-gold-300"
             >
               🎯 Đạt mục tiêu XP hôm nay — giữ nhịp nhé!
             </motion.p>
@@ -302,9 +299,7 @@ export default function QuizRunner({
                 <GoldBurst />
                 <IconTrophy className="mx-auto h-12 w-12 text-gold-300" />
                 <p className="label-luxe mt-3">Lên cấp!</p>
-                <h3 className="glitch-flash mt-1 font-display text-3xl font-extrabold gold-text" data-text={`Level ${levelUp.level}`}>
-                  Level {levelUp.level}
-                </h3>
+                <h3 className="mt-1 font-display text-3xl font-extrabold gold-text">Level {levelUp.level}</h3>
                 <p className="mt-1 text-lg font-bold text-ivory">“{levelUp.name}”</p>
                 <p className="mt-2 text-xs text-taupe">Chạm để đóng</p>
               </motion.div>
@@ -366,10 +361,10 @@ export default function QuizRunner({
               exit={{ scale: 0.4, opacity: 0 }}
               transition={meta.motion.bouncy}
               className={`flex items-center gap-1 rounded-[var(--r-full)] px-2.5 py-1 text-xs font-extrabold ${
-                combo >= 5 ? "bg-gold-foil text-onaccent shadow-glow" : "border border-gold-500 text-gold-300"
+                combo >= 5 ? "bg-gold-foil text-onaccent" : "bg-gold-400/12 text-gold-300"
               }`}
             >
-              <IconFlame className={`h-3.5 w-3.5 ${combo >= 5 ? "flame-beat" : ""}`} />
+              <IconFlame className="h-3.5 w-3.5" />
               x{combo}
             </motion.span>
           )}
@@ -410,7 +405,7 @@ export default function QuizRunner({
                   animate={{ opacity: 1, scale: 1 }}
                   src={q.image}
                   alt="Đồng hồ cần nhận diện"
-                  className="mx-auto mt-3 aspect-square w-[min(280px,56vw)] rounded-[var(--r-md)] object-cover shadow-gold ring-1 ring-hairline"
+                  className="mx-auto mt-3 aspect-square w-[min(280px,56vw)] rounded-[var(--r-md)] object-cover ring-1 ring-hairline"
                 />
               )}
 
@@ -476,7 +471,7 @@ export default function QuizRunner({
                             </div>
                           </div>
                           {watch.warning && (
-                            <p className="mt-2 rounded-[var(--r-md)] border border-bordeaux bg-bordeaux/15 p-2.5 text-[12px] leading-snug text-ivory">
+                            <p className="mt-2 rounded-[var(--r-md)] bg-bordeaux/12 p-2.5 text-[12px] leading-snug text-ivory">
                               <span className="font-extrabold uppercase tracking-luxe text-bordeaux">⚠ Cảnh báo xác thực:</span>{" "}
                               {watch.warning}
                             </p>
@@ -496,7 +491,7 @@ export default function QuizRunner({
                           <CollectionToggle collection={watch.collection} className="mt-3" />
                           <button
                             onClick={() => { setShowDetail(true); playTap(); }}
-                            className="cyber mt-2 flex w-full items-center justify-center gap-1.5 rounded-[var(--r-md)] border border-gold-700/50 bg-gold-500/10 py-2.5 text-xs font-bold text-gold-300 active:scale-[0.98]"
+                            className="cyber mt-2 flex w-full items-center justify-center gap-1.5 rounded-[var(--r-md)] bg-gold-400/10 py-2.5 text-xs font-bold text-gold-300 active:scale-[0.98]"
                           >
                             <IconBook className="h-4 w-4" /> Xem đầy đủ thông tin mẫu này
                           </button>

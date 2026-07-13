@@ -145,9 +145,7 @@ export default function FlashcardsPage() {
               setMode(m);
               playTap();
             }}
-            className={`cyber rounded-[var(--r-sm)] px-3 py-1 text-xs font-semibold transition active:scale-95 ${
-              mode === m ? "border border-gold-500 text-gold-300" : "border border-hairline text-taupe"
-            }`}
+            className={`cyber chip ${mode === m ? "bg-gold-400/15 text-gold-300" : ""}`}
           >
             {m}
             {m === "Đã thuộc" ? ` (${learnedCount})` : ""}

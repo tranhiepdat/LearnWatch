@@ -65,9 +65,9 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
       spring: { type: "spring", stiffness: 520, damping: 26 },
       bouncy: { type: "spring", stiffness: 640, damping: 14 },
       page: {
-        initial: { opacity: 0, x: 26, skewX: -2 },
-        animate: { opacity: 1, x: 0, skewX: 0 },
-        transition: { type: "spring", stiffness: 430, damping: 30 },
+        initial: { opacity: 0, y: 10 },
+        animate: { opacity: 1, y: 0 },
+        transition: { duration: 0.22, ease: [0.25, 0.8, 0.3, 1] },
       },
     },
   },
@@ -78,9 +78,9 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
     emoji: "🫧",
     preview: {
       bg: "#5b86f7",
-      card: "rgba(255,255,255,0.35)",
+      card: "rgba(28,46,110,0.75)",
       text: "#ffffff",
-      accent: "#eaf2ff",
+      accent: "#ffffff",
       extra: ["#bfe0ff", "#8fd6ff", "#dcd4ff"],
     },
     bar: "#5b86f7",
@@ -89,10 +89,9 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
       spring: { type: "spring", stiffness: 340, damping: 28 },
       bouncy: { type: "spring", stiffness: 380, damping: 22 },
       page: {
-        // kính lấy nét: từ mờ nhoè phóng nhẹ → sắc nét
-        initial: { opacity: 0, scale: 1.04, filter: "blur(10px)" },
-        animate: { opacity: 1, scale: 1, filter: "blur(0px)" },
-        transition: { duration: 0.5, ease: [0.22, 0.68, 0.26, 1] },
+        initial: { opacity: 0, y: 8 },
+        animate: { opacity: 1, y: 0 },
+        transition: { duration: 0.3, ease: [0.3, 0.7, 0.3, 1] },
       },
     },
   },
@@ -114,14 +113,9 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
       spring: { type: "spring", stiffness: 360, damping: 15 },
       bouncy: { type: "spring", stiffness: 430, damping: 9 },
       page: {
-        // đất sét RƠI xuống đập đất rồi NẢY TƯNG nhiều nhịp giảm dần
-        initial: { opacity: 0, y: -70, scale: 0.92 },
-        animate: {
-          opacity: 1,
-          y: [-70, 0, -22, 0, -9, 0, -3, 0],
-          scale: [0.92, 1.025, 0.985, 1.012, 0.995, 1.005, 1, 1],
-        },
-        transition: { duration: 0.85, ease: "easeOut", opacity: { duration: 0.22 } },
+        initial: { opacity: 0, y: 14, scale: 0.985 },
+        animate: { opacity: 1, y: 0, scale: 1 },
+        transition: { type: "spring", stiffness: 380, damping: 22 },
       },
     },
   },
@@ -143,10 +137,9 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
       spring: { type: "spring", stiffness: 220, damping: 26 },
       bouncy: { type: "spring", stiffness: 260, damping: 18 },
       page: {
-        // sương tan: nổi lên chậm, mờ → rõ
-        initial: { opacity: 0, y: 30, filter: "blur(7px)" },
-        animate: { opacity: 1, y: 0, filter: "blur(0px)" },
-        transition: { duration: 0.65, ease: [0.16, 0.68, 0.24, 1] },
+        initial: { opacity: 0, y: 12 },
+        animate: { opacity: 1, y: 0 },
+        transition: { duration: 0.38, ease: [0.2, 0.7, 0.25, 1] },
       },
     },
   },
@@ -168,10 +161,9 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
       spring: { type: "spring", stiffness: 560, damping: 32 },
       bouncy: { type: "spring", stiffness: 600, damping: 20 },
       page: {
-        // khung canvas snap vào vị trí — dứt khoát như design tool
-        initial: { opacity: 0, scale: 0.965 },
+        initial: { opacity: 0, scale: 0.99 },
         animate: { opacity: 1, scale: 1 },
-        transition: { type: "spring", stiffness: 640, damping: 34 },
+        transition: { duration: 0.18, ease: "easeOut" },
       },
     },
   },

@@ -5,21 +5,21 @@ import { motion, animate } from "framer-motion";
 import { getProgress, levelFromXp, todayXp, type Progress } from "@/lib/progress";
 import { playGoal } from "@/lib/sound";
 import { hGoal } from "@/lib/haptics";
-import { IconFlame, IconCheck, IconTarget, IconTrophy } from "./icons";
+import { IconFlame, IconCheck, IconBolt, IconTrophy } from "./icons";
 import GoldBurst from "./GoldBurst";
 
 function Num({ to }: { to: number }) {
   const [v, setV] = useState(0);
   const prev = useRef(0);
   useEffect(() => {
-    const c = animate(prev.current, to, { duration: 0.7, ease: "easeOut", onUpdate: (x) => setV(Math.round(x)) });
+    const c = animate(prev.current, to, { duration: 0.6, ease: "easeOut", onUpdate: (x) => setV(Math.round(x)) });
     prev.current = to;
     return () => c.stop();
   }, [to]);
   return <>{v}</>;
 }
 
-/** Vòng mục tiêu ngày — đầy dần theo XP hôm nay, chạm mốc thì bùng + kêu 1 lần/ngày */
+/** Vòng mục tiêu ngày — đầy theo XP hôm nay; chạm mốc bùng 1 lần/ngày */
 function GoalRing({ value, goal }: { value: number; goal: number }) {
   const R = 34;
   const C = 2 * Math.PI * R;
@@ -40,7 +40,7 @@ function GoalRing({ value, goal }: { value: number; goal: number }) {
   }, [done]);
 
   return (
-    <div className="relative grid h-[104px] w-[104px] shrink-0 place-items-center">
+    <div className="relative grid h-[96px] w-[96px] shrink-0 place-items-center">
       <svg viewBox="0 0 84 84" className="h-full w-full -rotate-90">
         <circle cx="42" cy="42" r={R} fill="none" strokeWidth="7" className="stroke-surface-3" />
         <motion.circle
@@ -54,7 +54,7 @@ function GoalRing({ value, goal }: { value: number; goal: number }) {
           strokeDasharray={C}
           initial={{ strokeDashoffset: C }}
           animate={{ strokeDashoffset: C * (1 - pct) }}
-          transition={{ type: "spring", stiffness: 60, damping: 16 }}
+          transition={{ type: "spring", stiffness: 60, damping: 18 }}
         />
         <defs>
           <linearGradient id="goalgrad" x1="0" y1="0" x2="1" y2="1">
@@ -65,10 +65,10 @@ function GoalRing({ value, goal }: { value: number; goal: number }) {
       </svg>
       <div className="absolute inset-0 grid place-items-center text-center">
         {done ? (
-          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 400, damping: 14 }}>
+          <div>
             <IconCheck className="mx-auto h-6 w-6 text-gold-300" />
-            <p className="text-[9px] font-bold uppercase tracking-wide text-gold-300">Đạt mục tiêu!</p>
-          </motion.div>
+            <p className="text-[9px] font-bold uppercase tracking-wide text-gold-300">Đạt mục tiêu</p>
+          </div>
         ) : (
           <div>
             <p className="font-tech text-xl font-bold text-ivory">
@@ -84,8 +84,8 @@ function GoalRing({ value, goal }: { value: number; goal: number }) {
 }
 
 /**
- * Bảng điều khiển học: vòng MỤC TIÊU NGÀY + level & thanh XP + streak + đã thuộc.
- * Nghe lw:progress → cộng XP ở đâu cũng nhảy số ngay.
+ * Card tiến độ: vòng mục tiêu + level & thanh XP + MỘT hàng chỉ số phẳng
+ * (không pill viền). Nghe lw:progress → số nhảy realtime.
  */
 export default function ProgressHeader() {
   const [p, setP] = useState<Progress | null>(null);
@@ -108,34 +108,35 @@ export default function ProgressHeader() {
         <div className="flex items-center gap-1.5">
           <IconTrophy className="h-4 w-4 shrink-0 text-gold-300" />
           <p className="truncate text-sm font-bold text-ivory">
-            Lv.{lv.level} · <span className="gold-text">{lv.name}</span>
+            Lv.{lv.level} · <span className="text-gold-300">{lv.name}</span>
           </p>
         </div>
-        {/* thanh XP tới level sau */}
-        <div className="mt-1.5 h-2 overflow-hidden rounded-[var(--r-full)] bg-surface-3">
+
+        <div className="mt-2 h-1.5 overflow-hidden rounded-[var(--r-full)] bg-surface-3">
           <motion.div
             className="h-full rounded-[var(--r-full)] bg-gold-foil"
             initial={{ width: 0 }}
             animate={{ width: `${lvPct * 100}%` }}
-            transition={{ type: "spring", stiffness: 70, damping: 18 }}
+            transition={{ type: "spring", stiffness: 70, damping: 20 }}
           />
         </div>
-        <p className="mt-1 text-[10px] text-taupe">
-          Còn <span className="font-semibold text-gold-300">{Math.max(lv.span - lv.into, 0)} XP</span> lên cấp tiếp theo
+        <p className="mt-1 text-[11px] text-taupe">
+          Còn <span className="font-semibold text-gold-300">{Math.max(lv.span - lv.into, 0)} XP</span> lên cấp
         </p>
 
-        <div className="mt-2 flex items-center gap-2 text-[11px]">
-          <span className="flex items-center gap-1 rounded-[var(--r-full)] border border-hairline px-2 py-0.5 font-semibold text-gold-300">
-            <IconFlame className={`h-3 w-3 ${(p?.streak ?? 0) > 0 ? "flame-beat" : ""}`} />
+        {/* chỉ số PHẲNG — icon + số, không hộp không viền */}
+        <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1">
+          <span className="stat">
+            <IconFlame className="h-3.5 w-3.5 text-gold-300" />
             <Num to={p?.streak ?? 0} /> ngày
           </span>
-          <span className="flex items-center gap-1 rounded-[var(--r-full)] border border-hairline px-2 py-0.5 font-semibold text-sage">
-            <IconCheck className="h-3 w-3" />
+          <span className="stat">
+            <IconCheck className="h-3.5 w-3.5 text-sage" />
             <Num to={p?.learned.length ?? 0} /> thuộc
           </span>
-          <span className="flex items-center gap-1 rounded-[var(--r-full)] border border-hairline px-2 py-0.5 font-semibold text-taupe">
-            <IconTarget className="h-3 w-3" />
-            <Num to={p?.bestCombo ?? 0} /> combo
+          <span className="stat">
+            <IconBolt className="h-3.5 w-3.5 text-gold-300" />
+            combo <Num to={p?.bestCombo ?? 0} />
           </span>
         </div>
       </div>

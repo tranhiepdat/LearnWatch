@@ -52,7 +52,7 @@ export default function ThemeSwitcher() {
           hTap();
         }}
         aria-label="Đổi giao diện"
-        className="cyber grid h-9 w-9 place-items-center rounded-[var(--r-sm)] border border-hairline text-gold-300 transition active:scale-90"
+        className="cyber grid h-9 w-9 place-items-center rounded-[var(--r-sm)] bg-surface-2 text-gold-300 transition active:scale-90"
       >
         <IconPalette className="h-[18px] w-[18px]" />
       </button>

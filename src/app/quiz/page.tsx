@@ -126,17 +126,13 @@ function QuizSetup() {
             }}
             className={`cyber flex items-center gap-3 rounded-[var(--r-md)] border p-3.5 text-left transition active:scale-[0.98] ${
               mode === m.id
-                ? "border-gold-400 bg-gold-500/10 shadow-glow"
+                ? "border-gold-400 bg-gold-400/10"
                 : m.disabled
                   ? "border-hairline opacity-45"
                   : "border-hairline bg-surface"
             }`}
           >
-            <span
-              className={`grid h-10 w-10 shrink-0 place-items-center rounded-[var(--r-sm)] border ${
-                mode === m.id ? "border-gold-400 text-gold-300" : "border-hairline text-taupe"
-              }`}
-            >
+            <span className={`tile h-10 w-10 ${mode === m.id ? "" : "bg-surface-2 text-taupe"}`}>
               <m.Icon className="h-5 w-5" />
             </span>
             <span className="min-w-0 flex-1">
@@ -144,7 +140,7 @@ function QuizSetup() {
               <span className="block text-[11px] text-taupe">{m.desc}</span>
             </span>
             {mode === m.id && (
-              <motion.span layoutId="mode-dot" className="h-2.5 w-2.5 shrink-0 rounded-[var(--r-full)] bg-gold-foil shadow-glow" />
+              <motion.span layoutId="mode-dot" className="h-2.5 w-2.5 shrink-0 rounded-[var(--r-full)] bg-gold-foil" />
             )}
           </motion.button>
         ))}
@@ -206,9 +202,7 @@ function Chip({
         onClick();
         playTap();
       }}
-      className={`cyber rounded-[var(--r-sm)] px-4 py-1.5 text-sm font-semibold transition active:scale-95 ${
-        active ? "bg-gold-foil text-onaccent shadow-glow" : "border border-hairline text-taupe"
-      }`}
+      className={`cyber chip text-sm ${active ? "chip-on" : ""}`}
     >
       {children}
     </button>

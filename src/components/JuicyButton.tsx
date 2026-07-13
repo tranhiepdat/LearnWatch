@@ -65,12 +65,12 @@ export default function JuicyButton({
   function fireRelease() {
     if (disabled) return;
     if (theme === "cozy") {
-      // đất sét: NẢY BẬT LÊN khỏi mặt đất + squash & stretch giảm dần
+      // đất sét: nảy bật lên MỘT nhịp gọn + squash — đã tay nhưng không loạn
       body.start({
-        y: [0, -14, 0, -6, 0, -2, 0],
-        scale: [0.86, 1.09, 0.97, 1.04, 0.99, 1.01, 1],
-        scaleY: [0.84, 1.14, 0.93, 1.06, 0.97, 1.02, 1],
-        transition: { duration: 0.72, ease: "easeOut" },
+        y: [0, -8, 0, -2, 0],
+        scale: [0.86, 1.06, 0.98, 1.01, 1],
+        scaleY: [0.84, 1.09, 0.96, 1.01, 1],
+        transition: { duration: 0.5, ease: "easeOut" },
       });
     } else if (theme === "game") {
       body.start({ scale: [0.94, 1.03, 1], transition: { duration: 0.28, ease: "easeOut" } });

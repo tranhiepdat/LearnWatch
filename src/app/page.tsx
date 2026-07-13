@@ -15,72 +15,12 @@ import { useTheme } from "@/lib/theme";
 
 const FEATURED = ["Submariner", "GMT-Master II", "Cosmograph Daytona", "Speedmaster", "Royal Oak", "Nautilus"];
 
-// desc NGẮN — đỡ rối chữ, để hình khối nói chuyện
 const MODES = [
-  { href: "/flashcards", Icon: IconCards, title: "Flashcard", desc: "Vuốt & lật thẻ", tint: 0 },
-  { href: "/quiz", Icon: IconQuiz, title: "Trắc nghiệm", desc: "Combo thưởng XP", tint: 1 },
-  { href: "/browse", Icon: IconBook, title: "Tra cứu", desc: "Tìm nhanh khi tư vấn", tint: 2 },
-  { href: "/assistant", Icon: IconChat, title: "Trợ lý AI", desc: "Hỏi mẫu, giá, thuật ngữ", tint: 3 },
+  { href: "/flashcards", Icon: IconCards, title: "Flashcard", desc: "Vuốt & lật thẻ" },
+  { href: "/quiz", Icon: IconQuiz, title: "Trắc nghiệm", desc: "Combo thưởng XP" },
+  { href: "/browse", Icon: IconBook, title: "Tra cứu", desc: "Tìm nhanh khi tư vấn" },
+  { href: "/assistant", Icon: IconChat, title: "Trợ lý AI", desc: "Hỏi mẫu, giá, thuật ngữ" },
 ];
-
-// màu tile cozy (kẹo đặc) & dreamy (lilac nhạt dần)
-const TILE_COZY = ["#ff5e3a", "#00c48c", "#ffb020", "#8b5cf6"];
-const TILE_DREAM = ["#a855f7", "#c084fc", "#ec4899", "#8b5cf6"];
-
-/** Ô icon có "phông nền" trang trí riêng từng theme — vector thay cho chữ */
-function IconTile({ Icon, tint }: { Icon: typeof IconCards; tint: number }) {
-  const { theme } = useTheme();
-  if (theme === "cozy") {
-    return (
-      <span
-        className="grid h-14 w-14 shrink-0 place-items-center rounded-[var(--r-sm)] text-white"
-        style={{ background: TILE_COZY[tint], boxShadow: `0 5px 0 0 ${TILE_COZY[tint]}55, inset 0 2px 0 rgba(255,255,255,0.4)` }}
-      >
-        <Icon className="h-7 w-7" />
-      </span>
-    );
-  }
-  if (theme === "dreamy") {
-    return (
-      <span className="relative grid h-14 w-14 shrink-0 place-items-center text-onaccent">
-        <span className="absolute inset-0 rotate-6" style={{ background: TILE_DREAM[tint], borderRadius: "26%" }} />
-        <span className="absolute inset-0 -rotate-3 opacity-40" style={{ background: TILE_DREAM[(tint + 1) % 4], borderRadius: "26%" }} />
-        <Icon className="relative z-10 h-7 w-7" />
-      </span>
-    );
-  }
-  if (theme === "apple") {
-    return (
-      <span
-        className="grid h-14 w-14 shrink-0 place-items-center rounded-[var(--r-sm)] text-white"
-        style={{
-          background: "rgba(255,255,255,0.22)",
-          border: "1px solid rgba(255,255,255,0.5)",
-          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.6), 0 8px 20px -8px rgba(20,40,120,0.4)",
-          backdropFilter: "blur(8px)",
-        }}
-      >
-        <Icon className="h-7 w-7 drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]" />
-      </span>
-    );
-  }
-  if (theme === "studio") {
-    return (
-      <span className="relative grid h-14 w-14 shrink-0 place-items-center text-gold-300">
-        <span className="absolute inset-0 border-[1.5px] border-white/70" />
-        {["-left-[3px] -top-[3px]", "-right-[3px] -top-[3px]", "-left-[3px] -bottom-[3px]", "-right-[3px] -bottom-[3px]"].map((pos) => (
-          <span key={pos} className={`absolute h-[6px] w-[6px] bg-white ${pos}`} />
-        ))}
-        <Icon className="h-7 w-7" />
-      </span>
-    );
-  }
-  return (
-    <span className="grid h-14 w-14 shrink-0 place-items-center rounded-[var(--r-sm)] border border-hairline text-gold-300 shadow-glow">
-      <Icon className="h-7 w-7" style={{ filter: "drop-shadow(0 0 6px rgb(var(--c-accent) / 0.8))" }} />
-    </span>
-  );
-}
 
 function greeting(): string {
   const h = new Date().getHours();
@@ -88,6 +28,19 @@ function greeting(): string {
   if (h < 13) return "Chào buổi trưa 🍜";
   if (h < 18) return "Chào buổi chiều 🌤";
   return "Chào buổi tối 🌙";
+}
+
+/** Tiêu đề mục CHUẨN — dùng thống nhất mọi section */
+function SectionHeader({ label, title, action }: { label: string; title: string; action?: React.ReactNode }) {
+  return (
+    <div className="flex items-end justify-between">
+      <div>
+        <p className="label-luxe">{label}</p>
+        <h2 className="font-display text-lg font-bold text-ivory">{title}</h2>
+      </div>
+      {action}
+    </div>
+  );
 }
 
 export default function Home() {
@@ -110,62 +63,58 @@ export default function Home() {
   return (
     <div className="mx-auto max-w-4xl space-y-6 pt-2">
       <div>
-        <p className="text-sm text-taupe">{greet}</p>
+        <p className="text-[13px] text-taupe">{greet}</p>
         <h1 className="font-display text-2xl font-bold text-ivory">Hôm nay học gì?</h1>
       </div>
 
       <ProgressHeader />
 
-      {/* CTA thông minh: có nợ lỗi sai → ôn ngay; không thì rủ chơi Blitz */}
+      {/* CTA thông minh — MỘT dòng mảnh, không tranh sân khấu */}
       {mistakes > 0 ? (
         <Link
           href="/quiz?mode=mistakes"
           onClick={() => playTap()}
-          className="cyber flex items-center gap-3 rounded-[var(--r-md)] border border-bordeaux/60 bg-bordeaux/10 p-3.5 active:scale-[0.98]"
+          className="cyber flex items-center gap-3 rounded-[var(--r-md)] bg-bordeaux/12 px-4 py-3 active:scale-[0.99]"
         >
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[var(--r-sm)] bg-bordeaux/15 text-bordeaux">
-            <IconRedo className="h-5 w-5" />
+          <IconRedo className="h-5 w-5 shrink-0 text-bordeaux" />
+          <span className="min-w-0 flex-1 truncate text-[13px] font-semibold text-ivory">
+            Ôn {mistakes} câu từng sai — xoá nợ cho nhớ lâu
           </span>
-          <span className="min-w-0 flex-1">
-            <span className="block text-sm font-bold text-ivory">Ôn {mistakes} câu từng sai</span>
-            <span className="block text-[11px] text-taupe">Trả lời đúng để xoá nợ — nhớ lâu gấp đôi đó!</span>
-          </span>
-          <IconChevron className="h-5 w-5 shrink-0 text-bordeaux" />
+          <IconChevron className="h-4 w-4 shrink-0 text-bordeaux" />
         </Link>
       ) : (
         <Link
           href="/quiz?mode=blitz"
           onClick={() => playTap()}
-          className="cyber flex items-center gap-3 rounded-[var(--r-md)] border border-gold-700/50 bg-gold-500/10 p-3.5 active:scale-[0.98]"
+          className="cyber flex items-center gap-3 rounded-[var(--r-md)] bg-gold-500/12 px-4 py-3 active:scale-[0.99]"
         >
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[var(--r-sm)] bg-gold-500/15 text-gold-300">
-            <IconBolt className="h-5 w-5" />
+          <IconBolt className="h-5 w-5 shrink-0 text-gold-300" />
+          <span className="min-w-0 flex-1 truncate text-[13px] font-semibold text-ivory">
+            Blitz 60 giây — phá kỷ lục của chính bạn
           </span>
-          <span className="min-w-0 flex-1">
-            <span className="block text-sm font-bold text-ivory">Thử thách Blitz 60 giây ⚡</span>
-            <span className="block text-[11px] text-taupe">Trả lời nhanh nhất có thể — phá kỷ lục của chính bạn!</span>
-          </span>
-          <IconChevron className="h-5 w-5 shrink-0 text-gold-300" />
+          <IconChevron className="h-4 w-4 shrink-0 text-gold-300" />
         </Link>
       )}
 
-      {/* 4 chế độ — lưới 2×2, icon to, chữ tối giản */}
+      {/* 4 chế độ — lưới 2×2, MỘT kiểu tile cho mọi theme */}
       <section className="grid grid-cols-2 gap-3">
         {MODES.map((m, i) => (
           <motion.div
             key={m.href}
-            initial={{ opacity: 0, y: 16, scale: 0.94 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ ...meta.motion.spring, delay: 0.05 * i }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ ...meta.motion.spring, delay: 0.04 * i }}
           >
             <Link
               href={m.href}
               onClick={() => playTap()}
-              className="cyber group flex flex-col items-start gap-3 rounded-[var(--r-md)] border border-hairline bg-surface p-4 transition active:scale-[0.96]"
+              className="cyber flex flex-col items-start gap-3 rounded-[var(--r-lg)] border border-hairline bg-surface p-4 shadow-lux transition active:scale-[0.97]"
             >
-              <IconTile Icon={m.Icon} tint={m.tint} />
+              <span className="tile h-12 w-12">
+                <m.Icon className="h-6 w-6" />
+              </span>
               <span>
-                <span className="block text-base font-bold leading-tight text-ivory">{m.title}</span>
+                <span className="block text-[15px] font-bold leading-tight text-ivory">{m.title}</span>
                 <span className="mt-0.5 block text-[11px] text-taupe">{m.desc}</span>
               </span>
             </Link>
@@ -173,7 +122,8 @@ export default function Home() {
         ))}
       </section>
 
-      <Link href="/inventory" onClick={() => playTap()} className="cyber card-lux group block p-5 active:scale-[0.99]">
+      {/* Kho — card số liệu phẳng */}
+      <Link href="/inventory" onClick={() => playTap()} className="cyber card-lux block p-4 active:scale-[0.99]">
         <div className="flex items-center justify-between">
           <p className="label-luxe">Kho hàng · Thư viện</p>
           <span className="text-xs font-semibold text-gold-300">Xem kho →</span>
@@ -187,19 +137,19 @@ export default function Home() {
       </Link>
 
       <section className="space-y-3">
-        <div className="flex items-end justify-between">
-          <div>
-            <p className="label-luxe">Các dòng đồng hồ</p>
-            <h2 className="font-display text-xl font-semibold text-ivory">Dòng này để làm gì?</h2>
-          </div>
-          <Link
-            href="/browse?tab=dong"
-            onClick={() => playTap()}
-            className="cyber rounded-[var(--r-sm)] border border-hairline px-3 py-1.5 text-xs font-semibold text-gold-300 active:scale-95"
-          >
-            Xem tất cả {collCount} dòng →
-          </Link>
-        </div>
+        <SectionHeader
+          label="Các dòng đồng hồ"
+          title="Dòng này để làm gì?"
+          action={
+            <Link
+              href="/browse?tab=dong"
+              onClick={() => playTap()}
+              className="cyber chip shrink-0 text-gold-300"
+            >
+              Tất cả {collCount} dòng →
+            </Link>
+          }
+        />
         <div className="grid gap-2.5 md:grid-cols-2">
           {FEATURED.map((c) => (
             <CollectionInfo key={c} collection={c} variant="compact" />
@@ -213,7 +163,7 @@ export default function Home() {
 function Stat({ n, label }: { n: number; label: string }) {
   return (
     <div>
-      <p className="font-tech text-2xl font-extrabold gold-text">{n}</p>
+      <p className="font-tech text-xl font-extrabold text-gold-300">{n}</p>
       <p className="text-[11px] text-taupe">{label}</p>
     </div>
   );

@@ -27,7 +27,7 @@ const DRAG_FEEL: Record<ThemeId, { rot: number; flingDur: number; flingEase: "ea
 
 function BrandTag({ brand }: { brand: Watch["brand"] }) {
   return (
-    <span className="rounded-[var(--r-lg)] border border-hairline px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-luxe text-gold-300">
+    <span className="rounded-[var(--r-full)] bg-gold-400/12 px-2.5 py-1 text-[10px] font-bold uppercase tracking-luxe text-gold-300">
       {brand}
     </span>
   );
@@ -36,7 +36,7 @@ function BrandTag({ brand }: { brand: Watch["brand"] }) {
 function Spec({ label, value, accent }: { label: string; value?: string; accent?: boolean }) {
   if (!value) return null;
   return (
-    <div className="rounded-[var(--r-xs)] border border-hairline px-2 py-1 leading-tight">
+    <div className="rounded-[var(--r-xs)] bg-surface-2 px-2 py-1 leading-tight">
       <span className="label-luxe block text-[9px]">{label}</span>
       <span className={accent ? "text-gold-300" : "text-ivory"}>{value}</span>
     </div>
@@ -252,7 +252,7 @@ export default function SwipeDeck({
               <p className="text-[11px] text-taupe">VN: {current.model}</p>
 
               {current.warning && (
-                <div className="mt-2 rounded-[var(--r-md)] border border-bordeaux bg-bordeaux/15 p-2.5 text-[12px] leading-snug text-ivory">
+                <div className="mt-2 rounded-[var(--r-md)] bg-bordeaux/12 p-2.5 text-[12px] leading-snug text-ivory">
                   <span className="font-extrabold uppercase tracking-luxe text-bordeaux">⚠ Cảnh báo xác thực</span>
                   <span className="mt-0.5 block">{current.warning}</span>
                 </div>
@@ -263,7 +263,7 @@ export default function SwipeDeck({
               )}
 
               {current.nickname && current.nicknameMeaning && (
-                <p className="mt-2 rounded-[var(--r-md)] border border-hairline bg-surface-2 p-3 text-sm text-champagne">
+                <p className="mt-2 rounded-[var(--r-md)] bg-surface-2 p-3 text-sm text-champagne">
                   <span className="font-bold">“{current.nickname}”</span> — {current.nicknameMeaning}
                 </p>
               )}
@@ -288,7 +288,7 @@ export default function SwipeDeck({
               )}
 
               {current.subdials && (
-                <div className="mt-3 rounded-[var(--r-md)] border border-gold-700/40 bg-surface-2 p-3">
+                <div className="mt-3 rounded-[var(--r-md)] bg-surface-2 p-3">
                   <p className="label-luxe text-[9px]">Mặt số &amp; cách dùng · Dials</p>
                   <ul className="mt-1.5 space-y-1 text-[11.5px] leading-snug text-ivory/90">
                     {current.subdials.split(" | ").map((line, i) => (
@@ -303,7 +303,7 @@ export default function SwipeDeck({
 
               <div className="mt-3 flex flex-wrap gap-1.5">
                 {current.materials.map((m) => (
-                  <span key={m} className="rounded-[var(--r-lg)] border border-hairline px-2.5 py-1 text-xs text-taupe">
+                  <span key={m} className="rounded-[var(--r-full)] bg-surface-2 px-2.5 py-1 text-xs text-taupe">
                     {m}
                   </span>
                 ))}
@@ -319,13 +319,13 @@ export default function SwipeDeck({
               </ul>
 
               {current.funFact && (
-                <p className="mt-3 rounded-[var(--r-md)] border border-hairline bg-surface-2 p-3 text-sm text-champagne">
+                <p className="mt-3 rounded-[var(--r-md)] bg-surface-2 p-3 text-sm text-champagne">
                   ✦ {current.funFact}
                 </p>
               )}
 
               {current.tip && (
-                <p className="mt-3 rounded-[var(--r-md)] border border-gold-700/40 bg-gold-500/10 p-2.5 text-xs text-gold-300">
+                <p className="mt-3 rounded-[var(--r-md)] bg-gold-400/10 p-2.5 text-xs text-gold-300">
                   💡 {current.tip}
                 </p>
               )}
@@ -371,7 +371,7 @@ export default function SwipeDeck({
       <Link
         href={`/assistant?id=${current.id}`}
         onClick={() => playTap()}
-        className="cyber mt-3 flex shrink-0 items-center justify-center gap-1.5 rounded-[var(--r-md)] border border-gold-700/50 bg-gold-500/10 py-2 text-xs font-semibold text-gold-300 active:scale-95"
+        className="cyber mt-3 flex shrink-0 items-center justify-center gap-1.5 rounded-[var(--r-md)] bg-gold-400/10 py-2 text-xs font-semibold text-gold-300 active:scale-95"
       >
         <IconChat className="h-4 w-4" /> Hỏi AI về mẫu này
       </Link>
@@ -381,14 +381,14 @@ export default function SwipeDeck({
         <button
           onClick={() => fling(-1)}
           aria-label="Ôn lại"
-          className="grid h-14 w-14 cyber place-items-center rounded-[var(--r-lg)] border border-hairline text-taupe transition active:scale-90"
+          className="grid h-14 w-14 cyber place-items-center rounded-[var(--r-lg)] bg-surface-2 text-taupe transition active:scale-90"
         >
           <IconClose className="h-6 w-6" />
         </button>
         <button
           onClick={onReshuffle}
           aria-label="Xáo trộn"
-          className="grid h-11 w-11 cyber place-items-center rounded-[var(--r-lg)] border border-hairline text-gold-300 transition active:scale-90"
+          className="grid h-11 w-11 cyber place-items-center rounded-[var(--r-lg)] bg-surface-2 text-gold-300 transition active:scale-90"
         >
           <IconShuffle className="h-5 w-5" />
         </button>
