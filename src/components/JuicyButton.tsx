@@ -42,10 +42,9 @@ export default function JuicyButton({
     if (sound) playTap();
     hTap();
     setFxKey((k) => k + 1); // remount hl-sweep + brackets
-    if (theme === "game") {
-      flash.set({ opacity: 0.5 });
-      flash.start({ opacity: 0, transition: { duration: 0.28, ease: "easeOut" } });
-    }
+    // solid highlight màu theme chớp lên khi bấm — mọi theme
+    flash.set({ opacity: theme === "lux" ? 0.4 : 0.52 });
+    flash.start({ opacity: 0, transition: { duration: theme === "cozy" ? 0.34 : 0.26, ease: "easeOut" } });
   }
 
   function fireRelease() {
@@ -75,12 +74,12 @@ export default function JuicyButton({
         variant === "primary" && theme === "cozy" ? "btn3d" : ""
       } ${className}`}
     >
-      {/* chớp trắng mảnh (digital) */}
+      {/* solid highlight màu theme (gold-100 = tint sáng của accent mỗi theme) */}
       <motion.span
         aria-hidden
         initial={{ opacity: 0 }}
         animate={flash}
-        className="pointer-events-none absolute inset-0 z-0 bg-white mix-blend-plus-lighter"
+        className={`pointer-events-none absolute inset-0 z-0 bg-gold-100 ${theme === "game" ? "mix-blend-plus-lighter" : ""}`}
         style={{ borderRadius: "inherit" }}
       />
       {/* vệt sáng quét — CSS theo theme, remount mỗi lần bấm */}

@@ -64,7 +64,7 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
   cozy: {
     id: "cozy",
     name: "Ấm áp",
-    tagline: "Kem bơ & caramel · thock trầm êm · pop tại chỗ",
+    tagline: "Kem bơ & caramel · phím creamy · pop tinh tế",
     emoji: "☕",
     preview: {
       bg: "#f8eedd",
@@ -75,24 +75,25 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
     },
     bar: "#f8eedd",
     motion: {
-      tap: 0.9,
-      spring: { type: "spring", stiffness: 420, damping: 19 },
-      bouncy: { type: "spring", stiffness: 500, damping: 13 },
+      tap: 0.95,
+      spring: { type: "spring", stiffness: 400, damping: 26 },
+      bouncy: { type: "spring", stiffness: 440, damping: 20 },
       pop: {
-        keyframes: { y: [0, -6, 0, -2, 0], scale: [0.9, 1.06, 0.98, 1.015, 1], scaleY: [0.88, 1.08, 0.97, 1.01, 1] },
-        transition: { duration: 0.48, ease: "easeOut" },
+        // squash & stretch TINH TẾ, biên độ nhỏ — dynamic gentle, không nhức đầu
+        keyframes: { scaleX: [0.975, 1.018, 0.996, 1], scaleY: [0.945, 1.03, 0.992, 1] },
+        transition: { duration: 0.4, ease: [0.3, 0.9, 0.4, 1] },
       },
       page: {
-        initial: { opacity: 0, y: 12, scale: 0.985 },
+        initial: { opacity: 0, y: 10, scale: 0.99 },
         animate: { opacity: 1, y: 0, scale: 1 },
-        transition: { type: "spring", stiffness: 400, damping: 22 },
+        transition: { type: "spring", stiffness: 400, damping: 24 },
       },
-      // pop nở từ 0.93 — cảm giác "bong bóng nổi lên" chứ không trượt tới
+      // vào màn: squash nhẹ (scaleY thấp) rồi giãn mềm về — biên độ THẤP, êm
       card: {
-        initial: { opacity: 0, scale: 0.93, y: 10 },
-        animate: { opacity: 1, scale: 1, y: 0 },
-        exit: { opacity: 0, scale: 0.97 },
-        transition: { type: "spring", stiffness: 460, damping: 17 },
+        initial: { opacity: 0, y: 8, scaleX: 0.99, scaleY: 0.93 },
+        animate: { opacity: 1, y: 0, scaleX: 1, scaleY: 1 },
+        exit: { opacity: 0, scaleY: 0.97 },
+        transition: { type: "spring", stiffness: 380, damping: 26 },
       },
     },
   },

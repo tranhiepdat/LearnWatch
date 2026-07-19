@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useMotionValue, useTransform, animate, type PanInfo } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useTransform, animate, type PanInfo } from "framer-motion";
 import type { Watch } from "@/data/types";
 import { hasPhoto } from "@/data/photos";
 import WatchVisual from "./WatchVisual";
@@ -54,7 +54,7 @@ export default function SwipeDeck({
   onToggleLearned: (id: string) => void;
   onReshuffle: () => void;
 }) {
-  const { theme, meta } = useTheme();
+  const { theme } = useTheme();
   const feel = DRAG_FEEL[theme];
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
@@ -186,18 +186,23 @@ export default function SwipeDeck({
               hFlip();
             }
           }}
-          initial={theme === "cozy" ? { scale: 0.7, opacity: 0, y: -46 } : { scale: 0.96, opacity: 0, y: 12 }}
-          animate={{ scale: 1, opacity: 1, y: 0 }}
-          transition={theme === "cozy" ? meta.motion.bouncy : { type: "spring", stiffness: 320, damping: 30 }}
-          className="absolute inset-0 cursor-grab touch-none select-none active:cursor-grabbing [perspective:1600px]"
+          initial={theme === "cozy" ? { scaleX: 0.97, scaleY: 0.92, opacity: 0, y: 10 } : { scale: 0.96, opacity: 0, y: 12 }}
+          animate={{ scale: 1, scaleX: 1, scaleY: 1, opacity: 1, y: 0 }}
+          transition={theme === "cozy" ? { type: "spring", stiffness: 380, damping: 24 } : { type: "spring", stiffness: 320, damping: 30 }}
+          className="absolute inset-0 cursor-grab touch-none select-none active:cursor-grabbing"
         >
-          <motion.div
-            animate={{ rotateY: flipped ? 180 : 0, scale: [1, 1.05, 1] }}
-            transition={{ duration: 0.5, ease: [0.2, 0.8, 0.2, 1], scale: { duration: 0.45, ease: "easeOut" } }}
-            className="relative h-full w-full [transform-style:preserve-3d]"
-          >
-            {/* MAT TRUOC */}
-            <div className="card-lux absolute inset-0 flex flex-col items-center justify-between overflow-hidden p-6 [backface-visibility:hidden]">
+          <div className="relative h-full w-full">
+            <AnimatePresence initial={false}>
+            {!flipped ? (
+            /* MAT TRUOC — scale-highlight vào (không lật 3D, không lắc) */
+            <motion.div
+              key="front"
+              initial={{ opacity: 0, scale: 1.06 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.94 }}
+              transition={{ duration: 0.3, ease: [0.2, 0.8, 0.2, 1] }}
+              className="card-lux absolute inset-0 flex flex-col items-center justify-between overflow-hidden p-6"
+            >
               {current.warning && (
                 <div className="absolute left-3 top-3 z-10 rounded-[var(--r-xs)] bg-bordeaux px-2 py-1 text-[10px] font-extrabold uppercase tracking-luxe text-ivory shadow-glow">
                   ⚠ Custom / Rep
@@ -239,10 +244,17 @@ export default function SwipeDeck({
               </div>
 
               <p className="text-[11px] text-taupe">Chạm để lật · Vuốt phải nếu đã thuộc</p>
-            </div>
-
-            {/* MAT SAU */}
-            <div className="card-lux absolute inset-0 flex flex-col overflow-y-auto p-6 [backface-visibility:hidden] [transform:rotateY(180deg)]">
+            </motion.div>
+            ) : (
+            /* MAT SAU */
+            <motion.div
+              key="back"
+              initial={{ opacity: 0, scale: 1.06 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.94 }}
+              transition={{ duration: 0.3, ease: [0.2, 0.8, 0.2, 1] }}
+              className="card-lux absolute inset-0 flex flex-col overflow-y-auto p-6"
+            >
               <div className="mb-1 flex items-center justify-between">
                 <BrandTag brand={current.brand} />
                 {current.reference && <span className="font-mono text-xs text-taupe">Ref. {current.reference}</span>}
@@ -334,8 +346,10 @@ export default function SwipeDeck({
               <CollectionToggle key={current.id} collection={current.collection} className="mt-3" />
 
               <div className="h-2 shrink-0" />
-            </div>
-          </motion.div>
+            </motion.div>
+            )}
+            </AnimatePresence>
+          </div>
 
           {/* digital: khung chọn outline hiện dần khi kéo thẻ */}
           {theme === "game" && (

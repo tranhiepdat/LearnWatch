@@ -260,152 +260,155 @@ const comboSemi = (combo: number) => PENTA[Math.min(Math.max(combo - 1, 0), PENT
 let tapStep = 0;
 
 // note thường dùng
-const C4 = 261.63, E4 = 329.63, G4 = 392, A4 = 440, C5 = 523.25, D5 = 587.33, E5 = 659.25,
-  G5 = 783.99, A5 = 880, B5 = 987.77, C6 = 1046.5, E6 = 1318.51, G6 = 1567.98, C7 = 2093;
+const G3 = 196, A3 = 220, C4 = 261.63, E4 = 329.63, G4 = 392, A4 = 440, B4 = 493.88,
+  C5 = 523.25, D5 = 587.33, E5 = 659.25, G5 = 783.99, A5 = 880, B5 = 987.77, C6 = 1046.5,
+  E6 = 1318.51;
 
 // ============================================================
 // VOICE 1 — COZY (creamy keyboard: thock trầm, warm, heartful)
 // ============================================================
-/** Thock KEM: noise TỐI ngắn (lowpass sâu) + body gỗ trầm + sub tròn.
- *  Không có kim loại chói — nghe như gõ keycap PBT trên tấm foam. */
-function creamThock(t: number, toneHz = 150, peak = 0.13) {
-  noiseHit(t, 0.02, peak * 0.85, 950, 420, 0.8, "lowpass");
-  tone(hz(toneHz), t, 0.055, { type: "triangle", peak, attack: 0.001, filterStart: 900, filterEnd: 380, q: 1 });
-  tone(hz(toneHz * 0.5), t, 0.075, { type: "sine", peak: peak * 0.7, attack: 0.001 });
+/** Thock KEM: "pock" tròn mid-forward, ÍT sub — như bàn phím lube keycap PBT
+ *  dày. Sáng-ấm, đầm tay nhưng KHÔNG nặng bass (đây là điểm creamy). */
+function creamThock(t: number, toneHz = 235, peak = 0.13) {
+  noiseHit(t, 0.013, peak * 0.5, 2200, 1050, 1, "lowpass");                               // transient mềm mà sáng
+  tone(hz(toneHz), t, 0.046, { type: "triangle", peak, attack: 0.001, filterStart: 2500, filterEnd: 1050, q: 1.1 });
+  tone(hz(toneHz * 1.5), t, 0.024, { type: "sine", peak: peak * 0.36, attack: 0.001 });   // "pock" sáng phía trên
+  tone(hz(toneHz * 0.75), t, 0.028, { type: "sine", peak: peak * 0.24, attack: 0.001 });  // body ấm nhẹ — KHÔNG sub sâu
 }
-/** Marimba ấm âm khu THẤP — thân của mọi nốt nhạc cozy */
+/** Marimba/music-box ấm — sáng vừa đủ creamy, không chìm xuống bass */
 function warmNote(freq: number, t: number, peak = 0.13, dur = 0.4, send = 0.24) {
   const pan = rand(-0.15, 0.15);
-  tone(freq, t, dur, { type: "triangle", peak, attack: 0.002, filterStart: freq * 3.2, filterEnd: freq * 1.4, q: 1, send, pan });
-  tone(freq * 4, t, 0.07, { type: "sine", peak: peak * 0.1, attack: 0.001, pan });
-  noiseHit(t, 0.014, peak * 0.22, 800, 400, 1, "lowpass");
+  tone(freq, t, dur, { type: "triangle", peak, attack: 0.002, filterStart: freq * 3.6, filterEnd: freq * 1.7, q: 1, send, pan });
+  tone(freq * 2, t, 0.06, { type: "sine", peak: peak * 0.14, attack: 0.001, pan });        // hoạ âm 2 → chất music-box
+  noiseHit(t, 0.011, peak * 0.16, 1300, 650, 1, "lowpass");
 }
 const cozy = {
   tap(t: number) {
-    const tones = [148, 158, 168, 140];
+    const tones = [222, 240, 262, 210];
     creamThock(t, tones[tapStep++ % tones.length], 0.14);
   },
   pop(t: number) {
-    creamThock(t, 175, 0.1);
+    creamThock(t, 258, 0.1);
   },
   flip(t: number) {
-    creamThock(t, 150, 0.12);
-    warmNote(hz(C4 * 2), t + 0.04, 0.1, 0.3);
-    noiseHit(t + 0.01, 0.05, 0.018, 850, 480, 0.8, "lowpass"); // sột soạt giấy
+    creamThock(t, 232, 0.12);
+    warmNote(hz(C5), t + 0.04, 0.1, 0.3);
+    noiseHit(t + 0.01, 0.05, 0.018, 900, 520, 0.8, "lowpass"); // sột soạt giấy
   },
   swipe(t: number) {
-    noiseHit(t, 0.11, 0.035, 900, 380, 0.8, "lowpass");
-    creamThock(t + 0.1, 132, 0.1);
+    noiseHit(t, 0.11, 0.035, 950, 420, 0.8, "lowpass");
+    creamThock(t + 0.1, 205, 0.1);
   },
   correct(t: number, combo: number) {
-    const up = Math.min(comboSemi(combo), 14); // giữ âm khu ấm, không chói
-    creamThock(t, 155, 0.13);
-    warmNote(semi(hz(C4), up), t + 0.015, 0.14, 0.42);
-    warmNote(semi(hz(E4), up), t + 0.085, 0.13, 0.44);
-    warmNote(semi(hz(G4), up), t + 0.155, 0.13, 0.52, 0.3);
-    if (combo >= 5) warmNote(semi(hz(C5), up), t + 0.24, 0.1, 0.55, 0.32);
+    const up = Math.min(comboSemi(combo), 12); // giữ âm khu sáng-ấm, không chói
+    creamThock(t, 238, 0.12);
+    warmNote(semi(hz(C5), up), t + 0.015, 0.14, 0.42);
+    warmNote(semi(hz(E5), up), t + 0.085, 0.13, 0.44);
+    warmNote(semi(hz(G5), up), t + 0.155, 0.13, 0.52, 0.3);
+    if (combo >= 5) warmNote(semi(hz(C6), up), t + 0.24, 0.1, 0.55, 0.32);
   },
   wrong(t: number) {
-    // "uh-uh" hai gõ trầm — dịu, không rên rỉ
-    creamThock(t, 120, 0.13);
-    creamThock(t + 0.14, 100, 0.14);
-    tone(hz(196), t + 0.02, 0.2, { type: "sine", peak: 0.055, glide: 168, send: 0.15 });
+    // "uh-uh" hai gõ trầm hơn tap chút — dịu, không rên rỉ
+    creamThock(t, 150, 0.13);
+    creamThock(t + 0.14, 128, 0.14);
+    tone(hz(220), t + 0.02, 0.2, { type: "sine", peak: 0.05, glide: 186, send: 0.15 });
   },
   complete(t: number) {
-    // music-box ấm + vỗ tay lụp bụp
-    [C4, E4, G4, A4, G4, C5].forEach((f, i) => warmNote(hz(f), t + i * 0.085, 0.13, 0.5, 0.28));
-    [C4 / 2, E4 / 2, G4 / 2].forEach((f) => tone(hz(f * 2), t + 0.55, 0.8, { type: "triangle", peak: 0.055, attack: 0.03, send: 0.3 }));
-    [0.62, 0.72, 0.84].forEach((d) => noiseHit(t + d, 0.05, 0.05, 950, 600, 1, "bandpass", 0.2));
+    // music-box sáng ấm + vỗ tay lụp bụp
+    [C5, E5, G5, A5, G5, C6].forEach((f, i) => warmNote(hz(f), t + i * 0.085, 0.13, 0.5, 0.28));
+    [C4, E4, G4].forEach((f) => tone(hz(f), t + 0.55, 0.8, { type: "triangle", peak: 0.05, attack: 0.03, send: 0.3 }));
+    [0.62, 0.72, 0.84].forEach((d) => noiseHit(t + d, 0.05, 0.05, 1000, 650, 1, "bandpass", 0.2));
   },
   levelup(t: number) {
-    [C4, D5 / 2, E4, G4, A4, C5, D5, E5].forEach((f, i) => warmNote(hz(f), t + i * 0.06, 0.12, 0.45, 0.3));
-    [C4, E4, G4].forEach((f) => tone(hz(f), t + 0.52, 0.7, { type: "triangle", peak: 0.075, attack: 0.02, send: 0.3 }));
-    [0.78, 0.88, 1.0, 1.1].forEach((d) => noiseHit(t + d, 0.05, 0.045, 950, 600, 1, "bandpass", 0.2));
+    [C5, D5, E5, G5, A5, C6, D5 * 2, E6].forEach((f, i) => warmNote(hz(f), t + i * 0.06, 0.12, 0.45, 0.3));
+    [C4, E4, G4].forEach((f) => tone(hz(f), t + 0.52, 0.7, { type: "triangle", peak: 0.06, attack: 0.02, send: 0.3 }));
+    [0.78, 0.88, 1.0, 1.1].forEach((d) => noiseHit(t + d, 0.05, 0.045, 1000, 650, 1, "bandpass", 0.2));
   },
   goal(t: number) {
-    [E4, G4, C5].forEach((f, i) => warmNote(hz(f), t + i * 0.08, 0.13, 0.5, 0.3));
-    [0.34, 0.44].forEach((d) => noiseHit(t + d, 0.045, 0.04, 950, 600, 1, "bandpass", 0.2));
+    [E5, G5, C6].forEach((f, i) => warmNote(hz(f), t + i * 0.08, 0.13, 0.5, 0.3));
+    [0.34, 0.44].forEach((d) => noiseHit(t + d, 0.045, 0.04, 1000, 650, 1, "bandpass", 0.2));
   },
   tick(t: number) {
-    creamThock(t, 185, 0.07);
+    creamThock(t, 288, 0.07);
   },
   timeup(t: number) {
-    warmNote(hz(G4), t, 0.11, 0.3);
-    warmNote(hz(E4), t + 0.16, 0.12, 0.45);
+    warmNote(hz(G5), t, 0.11, 0.3);
+    warmNote(hz(E5), t + 0.16, 0.12, 0.45);
   },
   switch_(t: number) {
-    [C4, E4, G4, C5].forEach((f, i) => warmNote(hz(f), t + i * 0.055, 0.11, 0.4, 0.3));
-    creamThock(t, 150, 0.12);
+    [C5, E5, G5, C6].forEach((f, i) => warmNote(hz(f), t + i * 0.055, 0.11, 0.4, 0.3));
+    creamThock(t, 232, 0.12);
   },
 };
 
 // ============================================================
 // VOICE 2 — GAME (digital: blip chính xác, khô, dứt khoát)
 // ============================================================
-/** Blip thiết bị: square cực ngắn qua lowpass + click định vị */
+/** Blip thiết bị: square ngắn qua lowpass + click định vị nhẹ (đã hạ độ chói) */
 function blip(freq: number, t: number, dur = 0.05, peak = 0.08, send = 0.08) {
-  tone(freq, t, dur, { type: "square", peak, attack: 0.001, filterStart: freq * 4, filterEnd: freq * 2, q: 1.5, send });
-  noiseHit(t, 0.008, peak * 0.35, 5200, 3200, 2);
+  tone(freq, t, dur, { type: "square", peak, attack: 0.001, filterStart: freq * 3, filterEnd: freq * 1.6, q: 1.2, send });
+  noiseHit(t, 0.007, peak * 0.22, 3200, 2000, 2);
 }
 const game = {
   tap(t: number) {
-    const roots = [980, 1108, 1244];
+    // hạ xuống ~1 quãng tám: gọn, chắc, không chói tai
+    const roots = [494, 554, 622];
     blip(hz(roots[tapStep++ % roots.length]), t, 0.045, 0.08);
-    tone(hz(210), t, 0.03, { type: "sine", peak: 0.06, attack: 0.001 });
+    tone(hz(150), t, 0.032, { type: "sine", peak: 0.07, attack: 0.001 });
   },
   pop(t: number) {
-    blip(hz(880), t, 0.04, 0.06);
+    blip(hz(440), t, 0.04, 0.06);
   },
   flip(t: number) {
-    blip(hz(740), t, 0.05, 0.075);
-    blip(hz(1180), t + 0.06, 0.05, 0.07);
+    blip(hz(392), t, 0.05, 0.075);
+    blip(hz(587), t + 0.06, 0.05, 0.07);
   },
   swipe(t: number) {
-    noiseHit(t, 0.08, 0.04, 4600, 1400, 1.2, "bandpass", 0.06);
-    blip(hz(660), t + 0.07, 0.04, 0.06);
+    noiseHit(t, 0.08, 0.04, 3200, 1000, 1.2, "bandpass", 0.06);
+    blip(hz(392), t + 0.07, 0.04, 0.06);
   },
   correct(t: number, combo: number) {
     const up = comboSemi(combo);
-    tone(hz(140), t, 0.09, { type: "sine", peak: 0.13, glide: 58, attack: 0.001 });
-    blip(semi(hz(E5), up), t + 0.015, 0.06, 0.1, 0.1);
-    blip(semi(hz(B5), up), t + 0.075, 0.07, 0.1, 0.12);
-    tone(semi(hz(E6 * 2), up), t + 0.13, 0.12, { type: "sine", peak: 0.045, send: 0.2 });
+    tone(hz(130), t, 0.09, { type: "sine", peak: 0.14, glide: 55, attack: 0.001 });
+    blip(semi(hz(E4), up), t + 0.015, 0.07, 0.11, 0.1);
+    blip(semi(hz(B4), up), t + 0.08, 0.08, 0.11, 0.12);
+    tone(semi(hz(E5), up), t + 0.14, 0.14, { type: "sine", peak: 0.055, send: 0.2 });
     if (combo >= 5) {
-      [0, 4, 7, 12].forEach((s, i) => blip(semi(hz(E6), up + s), t + 0.17 + i * 0.038, 0.04, 0.05, 0.15));
+      [0, 4, 7, 12].forEach((s, i) => blip(semi(hz(E5), up + s), t + 0.18 + i * 0.04, 0.045, 0.05, 0.15));
     }
   },
   wrong(t: number) {
     // "denied" — 2 blip trầm cụt, lowpass cho đỡ gắt
-    tone(hz(240), t, 0.08, { type: "square", peak: 0.09, filterStart: 900, filterEnd: 400, q: 2 });
-    tone(hz(196), t + 0.1, 0.12, { type: "square", peak: 0.09, filterStart: 700, filterEnd: 300, q: 2 });
-    tone(hz(110), t, 0.1, { type: "sine", peak: 0.08 });
+    tone(hz(220), t, 0.08, { type: "square", peak: 0.09, filterStart: 800, filterEnd: 360, q: 2 });
+    tone(hz(174), t + 0.1, 0.12, { type: "square", peak: 0.09, filterStart: 640, filterEnd: 280, q: 2 });
+    tone(hz(98), t, 0.1, { type: "sine", peak: 0.08 });
   },
   complete(t: number) {
-    tone(hz(130), t, 0.1, { type: "sine", peak: 0.12, glide: 60 });
-    [G4, C5, E5, G5, C6].forEach((f, i) => blip(hz(f * 1.5), t + 0.04 + i * 0.07, 0.06, 0.085, 0.12));
-    tone(hz(C7 * 1.5), t + 0.42, 0.2, { type: "sine", peak: 0.045, send: 0.25 });
-    noiseHit(t + 0.4, 0.14, 0.025, 5200, 8600, 1, "highpass", 0.2);
+    tone(hz(120), t, 0.1, { type: "sine", peak: 0.13, glide: 56 });
+    [G3, C4, E4, G4, C5].forEach((f, i) => blip(hz(f), t + 0.04 + i * 0.07, 0.07, 0.09, 0.12));
+    tone(hz(C6), t + 0.42, 0.22, { type: "sine", peak: 0.05, send: 0.25 });
+    noiseHit(t + 0.4, 0.13, 0.02, 3600, 6200, 1, "highpass", 0.2);
   },
   levelup(t: number) {
-    // data riser: chuỗi blip leo nhanh + fanfare
-    [0, 2, 4, 5, 7, 9, 11, 12].forEach((s, i) => blip(semi(hz(A4), s), t + i * 0.045, 0.035, 0.055, 0.08));
-    tone(hz(140), t + 0.4, 0.1, { type: "sine", peak: 0.12, glide: 60 });
-    [C5, E5, G5, C6].forEach((f, i) => duo(hz(f * 1.5), t + 0.42 + i * 0.075, 0.2, { type: "square", peak: 0.075, filterStart: 3200, filterEnd: 5600, q: 1.5, send: 0.12 }, 6));
+    // data riser: chuỗi blip leo nhanh + fanfare (âm khu vừa, không chói)
+    [0, 2, 4, 5, 7, 9, 11, 12].forEach((s, i) => blip(semi(hz(A3), s), t + i * 0.045, 0.04, 0.06, 0.08));
+    tone(hz(120), t + 0.4, 0.1, { type: "sine", peak: 0.13, glide: 56 });
+    [C4, E4, G4, C5].forEach((f, i) => duo(hz(f), t + 0.42 + i * 0.075, 0.22, { type: "square", peak: 0.08, filterStart: 2200, filterEnd: 3800, q: 1.3, send: 0.12 }, 6));
   },
   goal(t: number) {
-    [E5, A5, C6].forEach((f, i) => blip(hz(f * 1.5), t + i * 0.06, 0.05, 0.08, 0.1));
+    [E4, A4, C5].forEach((f, i) => blip(hz(f), t + i * 0.06, 0.055, 0.085, 0.1));
   },
   tick(t: number) {
-    noiseHit(t, 0.01, 0.05, 3400, 2200, 2.4);
+    noiseHit(t, 0.01, 0.045, 2400, 1500, 2.4);
   },
   timeup(t: number) {
-    tone(hz(330), t, 0.22, { type: "square", peak: 0.09, glide: 240, filterStart: 1400, filterEnd: 500, q: 2 });
-    tone(hz(165), t + 0.16, 0.24, { type: "square", peak: 0.08, glide: 116, filterStart: 800, filterEnd: 300, q: 2 });
+    tone(hz(294), t, 0.22, { type: "square", peak: 0.09, glide: 210, filterStart: 1200, filterEnd: 440, q: 2 });
+    tone(hz(147), t + 0.16, 0.24, { type: "square", peak: 0.08, glide: 104, filterStart: 720, filterEnd: 260, q: 2 });
   },
   switch_(t: number) {
     // data burst: 3 blip nhanh + noise mảnh
-    [880, 1244, 1760].forEach((f, i) => blip(hz(f), t + i * 0.05, 0.04, 0.07, 0.1));
-    noiseHit(t + 0.16, 0.09, 0.03, 3800, 7200, 1, "highpass", 0.15);
+    [494, 660, 880].forEach((f, i) => blip(hz(f), t + i * 0.05, 0.04, 0.07, 0.1));
+    noiseHit(t + 0.16, 0.09, 0.025, 2800, 5200, 1, "highpass", 0.15);
   },
 };
 
