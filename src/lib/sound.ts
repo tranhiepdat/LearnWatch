@@ -261,13 +261,13 @@ const A3 = 220, C4 = 261.63, E4 = 329.63, G4 = 392, A4 = 440,
 // ============================================================
 // VOICE 1 — COZY (creamy keyboard: thock trầm, warm, heartful)
 // ============================================================
-/** Thock KEM: "pock" tròn mid-forward, ÍT sub — như bàn phím lube keycap PBT
- *  dày. Sáng-ấm, đầm tay nhưng KHÔNG nặng bass (đây là điểm creamy). */
-function creamThock(t: number, toneHz = 235, peak = 0.13) {
-  noiseHit(t, 0.013, peak * 0.5, 2200, 1050, 1, "lowpass");                               // transient mềm mà sáng
-  tone(hz(toneHz), t, 0.046, { type: "triangle", peak, attack: 0.001, filterStart: 2500, filterEnd: 1050, q: 1.1 });
-  tone(hz(toneHz * 1.5), t, 0.024, { type: "sine", peak: peak * 0.36, attack: 0.001 });   // "pock" sáng phía trên
-  tone(hz(toneHz * 0.75), t, 0.028, { type: "sine", peak: peak * 0.24, attack: 0.001 });  // body ấm nhẹ — KHÔNG sub sâu
+/** Thock KEM CREAMY: "poof" tròn mềm — noise TỐI decay hơi dài + body triangle
+ *  attack MỀM + sine tròn. BỎ partial sáng gây tiếng "cọc"; nghe muffled ấm
+ *  như gõ trên deskmat foam, keycap PBT lube — không đanh, không kim loại. */
+function creamThock(t: number, toneHz = 232, peak = 0.13) {
+  noiseHit(t, 0.026, peak * 0.38, 1100, 460, 0.7, "lowpass");                             // poof tối mềm, hơi dài
+  tone(hz(toneHz), t, 0.064, { type: "triangle", peak: peak * 0.95, attack: 0.006, filterStart: 1350, filterEnd: 620, q: 0.8 });
+  tone(hz(toneHz * 0.75), t, 0.05, { type: "sine", peak: peak * 0.55, attack: 0.005 });   // thân tròn ấm (rounded, không click)
 }
 /** Marimba/music-box ấm — sáng vừa đủ creamy, không chìm xuống bass */
 function warmNote(freq: number, t: number, peak = 0.13, dur = 0.4, send = 0.24) {

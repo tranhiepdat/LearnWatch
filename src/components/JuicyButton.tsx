@@ -74,16 +74,16 @@ export default function JuicyButton({
         variant === "primary" && theme === "cozy" ? "btn3d" : ""
       } ${className}`}
     >
-      {/* solid highlight màu theme (gold-100 = tint sáng của accent mỗi theme) */}
+      {/* SOLID highlight — phủ kín màu đặc rồi tắt (không gradient, không mờ) */}
       <motion.span
         aria-hidden
         initial={{ opacity: 0 }}
         animate={flash}
-        className={`pointer-events-none absolute inset-0 z-0 bg-gold-100 ${theme === "game" ? "mix-blend-plus-lighter" : ""}`}
+        className={`pointer-events-none absolute inset-0 z-0 ${theme === "game" ? "bg-gold-300 mix-blend-plus-lighter" : "bg-white"}`}
         style={{ borderRadius: "inherit" }}
       />
-      {/* vệt sáng quét — CSS theo theme, remount mỗi lần bấm */}
-      {fxKey > 0 && <span key={`sw${fxKey}`} aria-hidden className="hl-sweep" />}
+      {/* scanline sắc quét — CHỈ digital (cyberpunk), các theme khác không dùng vệt gradient */}
+      {theme === "game" && fxKey > 0 && <span key={`sw${fxKey}`} aria-hidden className="hl-sweep" />}
       {/* khung chọn 4 góc (digital) */}
       {theme === "game" && fxKey > 0 && (
         <span key={`br${fxKey}`} aria-hidden className="pointer-events-none absolute inset-0 z-[5]">

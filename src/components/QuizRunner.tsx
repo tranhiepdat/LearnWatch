@@ -416,8 +416,8 @@ export default function QuizRunner({
                   const isSelected = i === selected;
                   let cls = "border-hairline text-ivory";
                   if (answered) {
-                    if (isCorrect) cls = "border-gold-400 bg-gold-500/12 text-champagne neon-correct";
-                    else if (isSelected) cls = "border-bordeaux bg-bordeaux/10 text-ivory wrong-pick";
+                    if (isCorrect) cls = "border-gold-400 bg-gold-400 font-bold text-onaccent neon-correct";
+                    else if (isSelected) cls = "border-bordeaux bg-bordeaux font-semibold text-white wrong-pick";
                     else cls = "border-hairline text-taupe opacity-55";
                   }
                   return (
@@ -428,12 +428,13 @@ export default function QuizRunner({
                       transition={{ ...meta.motion.spring, delay: 0.05 + i * 0.045 }}
                       onClick={() => choose(i)}
                       disabled={answered}
+                      data-no-pop
                       whileTap={{ scale: answered ? 1 : theme === "cozy" ? 0.94 : 0.97 }}
                       className={`cyber flex items-center justify-between rounded-[var(--r-md)] border px-4 py-3 text-left text-sm font-medium transition ${cls}`}
                     >
                       <span>{opt}</span>
-                      {answered && isCorrect && <IconCheck className="h-5 w-5 text-gold-300" />}
-                      {answered && isSelected && !isCorrect && <IconClose className="h-5 w-5 text-bordeaux" />}
+                      {answered && isCorrect && <IconCheck className="h-5 w-5 text-onaccent" />}
+                      {answered && isSelected && !isCorrect && <IconClose className="h-5 w-5 text-white" />}
                     </motion.button>
                   );
                 })}
