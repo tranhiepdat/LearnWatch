@@ -106,7 +106,7 @@ export default function ThemeSwitcher() {
                         style={{
                           background: m.preview.card,
                           // preview nói đúng ngôn ngữ bo góc của từng theme
-                          borderRadius: id === "cozy" ? 20 : id === "apple" ? 12 : id === "dreamy" ? 14 : 0,
+                          borderRadius: id === "cozy" ? 20 : id === "lux" ? 10 : 0,
                           border: `1px solid ${m.preview.accent}44`,
                         }}
                       >

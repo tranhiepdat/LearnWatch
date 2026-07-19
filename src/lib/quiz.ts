@@ -2,7 +2,6 @@ import { visibleWatches as watches } from "@/data/watches";
 import { terms } from "@/data/terms";
 import { watchPhotos } from "@/data/photos";
 import { collectionInfos } from "@/data/collections";
-import { colorName } from "@/lib/partColors";
 import { englishName } from "@/lib/name";
 import type { Brand } from "@/data/types";
 
@@ -60,6 +59,10 @@ export function buildPool(): QuizQuestion[] {
   const allNicknames = watches.map((w) => w.nickname).filter(Boolean) as string[];
 
   for (const w of watches) {
+    // ảnh chỉ đính kèm khi mẫu THẬT SỰ có ảnh (tránh 404); câu "ref → biệt danh"
+    // để dạng chữ thuần — nhìn ảnh đoán biệt danh đã có dạng imgnick riêng
+    const img = watchPhotos.has(w.id) ? `/watches/${w.id}.jpg` : undefined;
+
     if (w.nickname && w.reference) {
       const sameBrandNicks = watches
         .filter((x) => x.brand === w.brand && x.nickname && x.id !== w.id)
@@ -73,7 +76,6 @@ export function buildPool(): QuizQuestion[] {
         [...sameBrandNicks, ...allNicknames],
         `${w.model}${w.nicknameMeaning ? `: ${w.nicknameMeaning}` : ""}`,
         w.id,
-        `/watches/${w.id}.jpg`,
       );
       if (q1) out.push(q1);
 
@@ -89,7 +91,6 @@ export function buildPool(): QuizQuestion[] {
         sameBrandRefs,
         `${w.nickname} = ${w.brand} ${w.collection}, ref ${w.reference}.`,
         w.id,
-        `/watches/${w.id}.jpg`,
       );
       if (q2) out.push(q2);
     }
@@ -105,7 +106,7 @@ export function buildPool(): QuizQuestion[] {
         pool,
         `${w.model}.`,
         w.id,
-        `/watches/${w.id}.jpg`,
+        img,
       );
       if (q5) out.push(q5);
     }
@@ -196,43 +197,39 @@ export function buildPool(): QuizQuestion[] {
     }
   }
 
-  // ====== MỞ RỘNG: nhiều dạng câu hỏi mới (thư viện lớn) ======
-  const allBrands = Array.from(new Set(watches.map((w) => w.brand)));
+  // ====== MỞ RỘNG: các dạng câu CÓ GIÁ TRỊ BÁN HÀNG ======
+  // (Đã BỎ: "ảnh này HÃNG nào" — quá hiển nhiên; "mặt số màu ĐEN/TRẮNG/ĐỎ" —
+  //  màu cơ bản ai cũng thấy. Thứ đáng học là TÊN MÀU TIẾNG ANH/biệt danh màu
+  //  mà khách và dân chơi dùng: Ice blue, Coke, Meteorite, Tiffany…)
   const allColls = Array.from(new Set(watches.map((w) => w.collection)));
-  const DIAL_PALETTE = ["Đen", "Trắng / bạc", "Xám", "Xanh dương", "Xanh lá", "Vàng / champagne", "Nâu", "Hồng", "Xanh ngọc", "Đỏ"];
-  const baseColor = (hex?: string): string => {
-    const n = colorName(hex);
-    if (!n) return "";
-    if (/đen/i.test(n)) return "Đen";
-    if (/trắng|bạc/i.test(n)) return "Trắng / bạc";
-    if (/xám|slate/i.test(n)) return "Xám";
-    if (/xanh ngọc|turquoise/i.test(n)) return "Xanh ngọc";
-    if (/xanh lá/i.test(n)) return "Xanh lá";
-    if (/xanh dương/i.test(n)) return "Xanh dương";
-    if (/champagne|vàng/i.test(n)) return "Vàng / champagne";
-    if (/nâu|chocolate|đồng/i.test(n)) return "Nâu";
-    if (/hồng/i.test(n)) return "Hồng";
-    if (/đỏ/i.test(n)) return "Đỏ";
-    if (/tím/i.test(n)) return "Tím";
-    return "";
-  };
 
-  // 1) Nhìn hình -> HÃNG / DÒNG / MÀU MẶT SỐ
   for (const w of watches) {
     if (!watchPhotos.has(w.id)) continue;
     const img = `/watches/${w.id}.jpg`;
 
-    const qBrand = assemble(`imgbrand-${w.id}`, w.brand, "Nhìn hình", "Đồng hồ trong ảnh là HÃNG nào?", w.brand, allBrands, `${englishName(w)}.`, w.id, img);
-    if (qBrand) out.push(qBrand);
-
+    // DÒNG (collection) — kiến thức nền khi tư vấn
     const collDistract = watches.filter((x) => x.brand === w.brand && x.collection !== w.collection).map((x) => x.collection);
     const qColl = assemble(`imgcoll-${w.id}`, w.brand, "Nhìn hình", "Đồng hồ trong ảnh thuộc DÒNG (collection) nào?", w.collection, [...collDistract, ...allColls], `${englishName(w)}.`, w.id, img);
     if (qColl) out.push(qColl);
 
-    const dc = baseColor(w.dialColor);
-    if (dc) {
-      const qDial = assemble(`imgdial-${w.id}`, w.brand, "Nhìn hình", "Mặt số (dial) trong ảnh chủ yếu màu gì?", dc, DIAL_PALETTE, `${w.brand} ${w.model} — mặt ${dc.toLowerCase()}.`, w.id, img);
-      if (qDial) out.push(qDial);
+    // TÊN MÀU TIẾNG ANH — cách gọi chuẩn khi báo khách / lên bill
+    if (w.colorEn) {
+      const sameBrandColors = watches
+        .filter((x) => x.id !== w.id && x.brand === w.brand && x.colorEn && x.colorEn !== w.colorEn)
+        .map((x) => x.colorEn!);
+      const allColors = watches.filter((x) => x.id !== w.id && x.colorEn && x.colorEn !== w.colorEn).map((x) => x.colorEn!);
+      const qColor = assemble(
+        `imgcolor-${w.id}`,
+        w.brand,
+        "Nhìn hình",
+        "Mặt số này gọi theo TIẾNG ANH / tên màu dân chơi là gì?",
+        w.colorEn,
+        sameBrandColors.length >= 3 ? sameBrandColors : [...sameBrandColors, ...allColors],
+        `${w.brand} ${w.model} — “${w.colorEn}”.`,
+        w.id,
+        img,
+      );
+      if (qColor) out.push(qColor);
     }
   }
 
@@ -295,5 +292,30 @@ export function generateQuiz(count = 10, filter: QuizFilter = {}): QuizQuestion[
     const set = new Set(filter.ids);
     pool = pool.filter((q) => q.watchId && set.has(q.watchId));
   }
-  return shuffle(pool).slice(0, count);
+
+  // CHỐNG "SAME SAME": trong một bài, mỗi MẪU đồng hồ chỉ được hỏi 1 lần
+  // (trước đây 1 mẫu có thể dính 3-4 câu: mẫu nào / biệt danh / dòng…)
+  const shuffled = shuffle(pool);
+  const seenWatch = new Set<string>();
+  const picked: QuizQuestion[] = [];
+  for (const q of shuffled) {
+    if (picked.length >= count) break;
+    if (q.watchId) {
+      if (seenWatch.has(q.watchId)) continue;
+      seenWatch.add(q.watchId);
+    }
+    picked.push(q);
+  }
+  // pool hẹp (vd ôn lỗi sai chỉ vài mẫu) → cho phép lặp mẫu để đủ số câu
+  if (picked.length < count) {
+    const have = new Set(picked.map((q) => q.id));
+    for (const q of shuffled) {
+      if (picked.length >= count) break;
+      if (!have.has(q.id)) {
+        have.add(q.id);
+        picked.push(q);
+      }
+    }
+  }
+  return picked;
 }

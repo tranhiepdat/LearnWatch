@@ -7,12 +7,11 @@ import { playTap } from "@/lib/sound";
 import { hTap } from "@/lib/haptics";
 
 /**
- * Nút chính "mọng nước" — cùng MỘT khung hành vi, tính cách đổi theo theme:
- *  · đè      → lún (scale theo meta.motion.tap; cozy squash thêm scaleY)
- *  · bấm     → vệt sáng hl-sweep quét qua (màu/tốc độ theo --hl-sheen/--hl-dur)
- *              + hiệu ứng chữ ký riêng: game chớp neon · dreamy bloom tím
- *              · studio khung chọn 4 góc
- *  · thả     → cú nảy DỌC từ meta.motion.pop (scale/y, KHÔNG rotate, KHÔNG lắc)
+ * Nút chính — cùng MỘT khung hành vi, tính cách theo theme:
+ *  · cozy — KEYCAP kem: lún sâu 3D, thả ra nảy squash & stretch (bubbly)
+ *  · game — DIGITAL: phẳng, khung chọn 4 góc chớp + làn kẻ sắc quét qua
+ *  · lux  — BOUTIQUE: glow champagne, vệt sáng lụa quét chậm
+ * Mọi phản hồi đều scale/y TẠI CHỖ — không rotate, không lắc ngang.
  */
 export default function JuicyButton({
   children,
@@ -42,13 +41,10 @@ export default function JuicyButton({
     if (disabled) return;
     if (sound) playTap();
     hTap();
-    setFxKey((k) => k + 1); // remount hl-sweep + bloom/bracket
+    setFxKey((k) => k + 1); // remount hl-sweep + brackets
     if (theme === "game") {
-      flash.set({ opacity: 0.7 });
-      flash.start({ opacity: 0, transition: { duration: 0.32, ease: "easeOut" } });
-    } else if (theme === "apple") {
-      flash.set({ opacity: 0.2 });
-      flash.start({ opacity: 0, transition: { duration: 0.4 } });
+      flash.set({ opacity: 0.5 });
+      flash.start({ opacity: 0, transition: { duration: 0.28, ease: "easeOut" } });
     }
   }
 
@@ -75,26 +71,22 @@ export default function JuicyButton({
       onPointerLeave={fireRelease}
       whileTap={press}
       animate={body}
-      className={`relative isolate ${theme === "studio" ? "" : "overflow-hidden"} ${
-        variant === "primary" && theme !== "apple" && theme !== "dreamy" ? "btn3d" : ""
+      className={`relative isolate ${theme === "game" ? "" : "overflow-hidden"} ${
+        variant === "primary" && theme === "cozy" ? "btn3d" : ""
       } ${className}`}
     >
-      {/* chớp màu (game) / tint kính (apple) */}
+      {/* chớp trắng mảnh (digital) */}
       <motion.span
         aria-hidden
         initial={{ opacity: 0 }}
         animate={flash}
-        className={`pointer-events-none absolute inset-0 z-0 ${
-          theme === "game" ? "bg-gold-300 mix-blend-plus-lighter" : "bg-white"
-        }`}
+        className="pointer-events-none absolute inset-0 z-0 bg-white mix-blend-plus-lighter"
         style={{ borderRadius: "inherit" }}
       />
       {/* vệt sáng quét — CSS theo theme, remount mỗi lần bấm */}
-      {fxKey > 0 && theme !== "studio" && <span key={`sw${fxKey}`} aria-hidden className="hl-sweep" />}
-      {/* bloom hồng-tím nở từ tâm (dreamy) */}
-      {theme === "dreamy" && fxKey > 0 && <span key={`bl${fxKey}`} aria-hidden className="bloom" style={{ borderRadius: "inherit" }} />}
-      {/* khung chọn flash 4 góc (studio) */}
-      {theme === "studio" && fxKey > 0 && (
+      {fxKey > 0 && <span key={`sw${fxKey}`} aria-hidden className="hl-sweep" />}
+      {/* khung chọn 4 góc (digital) */}
+      {theme === "game" && fxKey > 0 && (
         <span key={`br${fxKey}`} aria-hidden className="pointer-events-none absolute inset-0 z-[5]">
           <span className="brk brk-tl" style={{ "--ox": "-6px", "--oy": "-6px" } as React.CSSProperties} />
           <span className="brk brk-tr" style={{ "--ox": "6px", "--oy": "-6px" } as React.CSSProperties} />

@@ -20,11 +20,9 @@ import CollectionToggle from "./CollectionToggle";
 /* Xoay chỉ khi NGƯỜI DÙNG kéo (bám theo ngón tay — không tự dao động),
    biên độ vừa phải để không chóng mặt */
 const DRAG_FEEL: Record<ThemeId, { rot: number; flingDur: number; flingEase: "easeIn" | "easeOut" }> = {
-  game: { rot: 12, flingDur: 0.22, flingEase: "easeIn" },   // dứt khoát, giật
-  apple: { rot: 8, flingDur: 0.32, flingEase: "easeOut" },  // lướt êm như kính
-  cozy: { rot: 18, flingDur: 0.3, flingEase: "easeIn" },    // vui nhộn nhưng tiết chế
-  dreamy: { rot: 10, flingDur: 0.4, flingEase: "easeOut" }, // trôi đi nhẹ bẫng
-  studio: { rot: 8, flingDur: 0.18, flingEase: "easeIn" },  // snap gọn
+  cozy: { rot: 16, flingDur: 0.3, flingEase: "easeIn" },  // vui nhộn nhưng tiết chế
+  game: { rot: 8, flingDur: 0.2, flingEase: "easeIn" },   // snap phẳng dứt khoát
+  lux: { rot: 10, flingDur: 0.34, flingEase: "easeOut" }, // lướt êm như khay nhung
 };
 
 function BrandTag({ brand }: { brand: Watch["brand"] }) {
@@ -339,13 +337,13 @@ export default function SwipeDeck({
             </div>
           </motion.div>
 
-          {/* studio: khung chọn trắng hiện dần khi kéo thẻ */}
-          {theme === "studio" && (
+          {/* digital: khung chọn outline hiện dần khi kéo thẻ */}
+          {theme === "game" && (
             <motion.div style={{ opacity: frameOpacity }} className="pointer-events-none absolute -inset-1 z-20">
-              <span className="absolute inset-0 border-[1.5px] border-white/90" />
+              <span className="absolute inset-0 border border-gold-400/90" />
               {["-left-[4px] -top-[4px]", "-right-[4px] -top-[4px]", "-left-[4px] -bottom-[4px]", "-right-[4px] -bottom-[4px]"].map(
                 (pos) => (
-                  <span key={pos} className={`absolute h-[8px] w-[8px] bg-white ${pos}`} />
+                  <span key={pos} className={`absolute h-[7px] w-[7px] border border-white bg-transparent ${pos}`} />
                 ),
               )}
             </motion.div>
