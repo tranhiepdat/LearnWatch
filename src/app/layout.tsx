@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Be_Vietnam_Pro, Orbitron, Baloo_2 } from "next/font/google";
+import { Be_Vietnam_Pro, Orbitron, Baloo_2, Quicksand, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import TopBar from "@/components/TopBar";
 import BottomNav from "@/components/BottomNav";
@@ -30,6 +30,22 @@ const round = Baloo_2({
   display: "swap",
 });
 
+// Font mềm bay bổng cho theme Mộng mơ.
+const dream = Quicksand({
+  subsets: ["latin", "vietnamese"],
+  weight: ["500", "600", "700"],
+  variable: "--font-dream",
+  display: "swap",
+});
+
+// Font mono kỹ thuật cho SỐ & nhãn theme Xưởng (design-tool).
+const mono2 = IBM_Plex_Mono({
+  subsets: ["latin", "vietnamese"],
+  weight: ["500", "600", "700"],
+  variable: "--font-mono2",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "LearnWatch — Học đồng hồ cho Sale",
   description:
@@ -37,7 +53,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#050818",
+  themeColor: "#070312",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -47,11 +63,16 @@ export const viewport: Viewport = {
 };
 
 // Đặt data-theme TRƯỚC khi React chạy → không chớp màu khi mở app
-const themeInit = `(function(){try{var ok=["game","apple","cozy","dreamy","studio"];var t=localStorage.getItem("lw_theme");if(ok.indexOf(t)<0)t="game";document.documentElement.setAttribute("data-theme",t);var m={game:"#050818",apple:"#5b86f7",cozy:"#ffefd6",dreamy:"#f2e7fe",studio:"#052014"};var el=document.querySelector('meta[name="theme-color"]');if(el)el.setAttribute("content",m[t]);}catch(e){document.documentElement.setAttribute("data-theme","game")}})()`;
+const themeInit = `(function(){try{var ok=["game","apple","cozy","dreamy","studio"];var t=localStorage.getItem("lw_theme");if(ok.indexOf(t)<0)t="game";document.documentElement.setAttribute("data-theme",t);var m={game:"#070312",apple:"#7fa4ff",cozy:"#f8eedd",dreamy:"#f3eeff",studio:"#04190f"};var el=document.querySelector('meta[name="theme-color"]');if(el)el.setAttribute("content",m[t]);}catch(e){document.documentElement.setAttribute("data-theme","game")}})()`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="vi" data-theme="game" suppressHydrationWarning className={`${sans.variable} ${tech.variable} ${round.variable}`}>
+    <html
+      lang="vi"
+      data-theme="game"
+      suppressHydrationWarning
+      className={`${sans.variable} ${tech.variable} ${round.variable} ${dream.variable} ${mono2.variable}`}
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
       </head>

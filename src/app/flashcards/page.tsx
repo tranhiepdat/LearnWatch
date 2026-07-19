@@ -37,8 +37,14 @@ function CoachOverlay({ onDone }: { onDone: () => void }) {
               className="flex items-center gap-3 rounded-[var(--r-md)] border border-hairline bg-surface p-3"
             >
               <motion.span
-                animate={r.dir !== 0 ? { x: [0, r.dir, 0] } : { y: [0, -7, 0] }}
-                transition={{ duration: 1.15, repeat: Infinity, ease: "easeInOut", delay: i * 0.2 }}
+                // gợi ý MỘT CHIỀU: trôi theo hướng vuốt rồi fade, quay lại bằng
+                // opacity (không kéo ngược) — chỉ hướng mà không lắc qua lại
+                animate={
+                  r.dir !== 0
+                    ? { x: [0, r.dir * 0.55, r.dir], opacity: [1, 1, 0] }
+                    : { y: [0, -6, 0], opacity: [1, 1, 1] }
+                }
+                transition={{ duration: 1.3, repeat: Infinity, repeatDelay: 0.45, ease: "easeOut", delay: i * 0.2 }}
                 className="text-2xl"
               >
                 {r.icon}

@@ -3,90 +3,91 @@
 @tailwind utilities;
 
 /* ============================================================
-   DESIGN SYSTEM — 5 theme, MỘT hệ thống
-   Nguyên tắc:
-   · Layout & component GIỐNG NHAU mọi theme — theme chỉ đổi "da"
-     (màu, bo góc, font, chất bóng đổ, tiếng)
-   · NỀN TĨNH — không animation chạy vô hạn; motion chỉ khi TƯƠNG TÁC
-   · Card ĐỤC — nội dung luôn đọc rõ, nền không xuyên lên chữ
-   · Viền tiết chế: card có viền/bóng, phần tử BÊN TRONG dùng fill
+   DESIGN SYSTEM — 5 thế giới, MỘT bộ khung
+   · Layout & component dùng chung — theme đổi DA + CHẤT LIỆU + FONT
+   · Nền TĨNH tuyệt đối (không animation vô hạn) — motion chỉ khi tương tác
+   · Motion: dọc + scale, KHÔNG lắc ngang, KHÔNG xoay mảng lớn
+   · Highlight: mỗi tương tác quan trọng có "khoảnh khắc sáng" riêng theme
    Màu ở dạng "R G B" để Tailwind ghép alpha: rgb(var(--x) / a)
    ============================================================ */
 
+/* ===== NEON (id "game") — arcade đêm: tím-đen, cyan × magenta ===== */
 :root,
 :root[data-theme="game"] {
   color-scheme: dark;
-  --c-bg: 6 9 26;
-  --c-bg2: 10 14 36;
-  --c-surface: 15 21 48;
-  --c-surface2: 24 32 68;
-  --c-surface3: 33 44 92;
-  --c-fg: 232 238 255;
-  --c-muted: 148 158 200;
-  --c-soft: 185 232 255;
+  --c-bg: 7 3 18;
+  --c-bg2: 13 7 34;
+  --c-surface: 21 12 46;
+  --c-surface2: 30 18 64;
+  --c-surface3: 42 26 88;
+  --c-fg: 242 237 255;
+  --c-muted: 157 146 200;
+  --c-soft: 255 225 77;
   --c-accent-50: 230 252 255;
-  --c-accent-100: 200 246 255;
-  --c-accent-hi: 98 233 255;
-  --c-accent: 0 217 255;
-  --c-accent-lo: 0 179 230;
-  --c-accent-600: 0 144 191;
-  --c-accent-700: 0 107 147;
-  --c-second: 163 245 83;
-  --c-danger: 255 92 120;
-  --c-on-accent: 4 16 34;
-  --c-hairline: rgba(0, 217, 255, 0.18);
+  --c-accent-100: 190 246 255;
+  --c-accent-hi: 125 240 255;
+  --c-accent: 34 228 255;
+  --c-accent-lo: 0 200 234;
+  --c-accent-600: 0 161 192;
+  --c-accent-700: 0 122 149;
+  --c-second: 255 61 240;
+  --c-danger: 255 64 102;
+  --c-on-accent: 8 5 24;
+  --c-hairline: rgba(34, 228, 255, 0.2);
 
-  --bg-wash: radial-gradient(120% 80% at 50% -10%, #141d45 0%, #06091a 58%);
-  --grad-primary: linear-gradient(135deg, #5cf2ff 0%, #00cfff 45%, #8a5cff 100%);
-  --grad-line: linear-gradient(90deg, transparent, rgba(0, 217, 255, 0.5), transparent);
-  --sh-glow: 0 0 20px -4px rgba(0, 217, 255, 0.45);
-  --sh-ring: 0 0 0 1px rgba(0, 217, 255, 0.2), 0 10px 30px -14px rgba(0, 0, 0, 0.7);
-  --sh-lux: 0 20px 50px -24px rgba(0, 0, 0, 0.75);
-  --btn-edge: rgba(0, 90, 130, 0.9);
+  --bg-wash: radial-gradient(130% 75% at 50% -14%, #221255 0%, #0c0624 46%, #070312 100%);
+  --grad-primary: linear-gradient(135deg, #41f0ff 0%, #7a5bff 52%, #ff3df0 100%);
+  --grad-line: linear-gradient(90deg, transparent, rgba(34, 228, 255, 0.55), transparent);
+  --sh-glow: 0 0 22px -4px rgba(34, 228, 255, 0.5);
+  --sh-ring: 0 0 0 1px rgba(34, 228, 255, 0.22), 0 10px 30px -14px rgba(0, 0, 0, 0.75);
+  --sh-lux: 0 20px 50px -24px rgba(0, 0, 0, 0.8);
+  --btn-edge: rgba(0, 96, 140, 0.95);
 
   --r-xs: 0px; --r-sm: 0px; --r-md: 0px; --r-lg: 0px; --r-xl: 0px; --r-full: 0px;
   --track-luxe: 0.2em;
   --font-display-active: var(--font-sans);
   --font-tech-active: var(--font-tech);
 
-  --fx-ripple: rgba(0, 217, 255, 0.32);
+  --fx-ripple: rgba(34, 228, 255, 0.3);
   --fx-ripple-blend: plus-lighter;
-  --sel-bg: rgba(0, 217, 255, 0.35);
+  --sel-bg: rgba(34, 228, 255, 0.35);
+  --hl-sheen: rgba(255, 255, 255, 0.7);
+  --hl-dur: 0.38s;
 }
 
-/* ===== KÍNH MỜ (id "apple") — frosted glass XANH ĐẬM, đục & dịu ===== */
+/* ===== THUỶ TINH (id "apple") — kính băng xanh, trong & lạnh ===== */
 :root[data-theme="apple"] {
   color-scheme: dark;
-  --c-bg: 84 122 235;
-  --c-bg2: 68 102 214;
-  /* surface TỐI hơn nền → list/menu/nav luôn đọc rõ chữ trắng */
-  --c-surface: 44 66 148;
-  --c-surface2: 56 82 172;
-  --c-surface3: 70 100 196;
+  --c-bg: 91 131 242;
+  --c-bg2: 74 110 224;
+  /* surface TỐI hơn nền → chữ trắng luôn đọc rõ */
+  --c-surface: 40 62 142;
+  --c-surface2: 52 78 168;
+  --c-surface3: 66 96 194;
   --c-fg: 255 255 255;
-  --c-muted: 205 220 255;
-  --c-soft: 234 242 255;
-  --c-accent-50: 20 45 110;
-  --c-accent-100: 32 64 150;
-  --c-accent-hi: 240 247 255;
+  --c-muted: 206 221 255;
+  --c-soft: 236 244 255;
+  --c-accent-50: 22 46 112;
+  --c-accent-100: 34 66 152;
+  --c-accent-hi: 245 250 255;
   --c-accent: 255 255 255;
-  --c-accent-lo: 226 238 255;
-  --c-accent-600: 196 218 255;
-  --c-accent-700: 168 198 255;
-  --c-second: 129 248 195;
+  --c-accent-lo: 228 240 255;
+  --c-accent-600: 198 220 255;
+  --c-accent-700: 170 200 255;
+  --c-second: 125 255 196;
   --c-danger: 255 122 143;
-  --c-on-accent: 29 78 216;
-  --c-hairline: rgba(255, 255, 255, 0.28);
+  --c-on-accent: 27 74 214;
+  --c-hairline: rgba(255, 255, 255, 0.3);
 
-  --bg-wash: linear-gradient(175deg, #7ba0f6 0%, #547aeb 55%, #4568d6 100%);
-  --grad-primary: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(220, 234, 255, 0.94) 100%);
+  --bg-wash: linear-gradient(175deg, #82a8ff 0%, #5b83f2 52%, #4160d6 100%);
+  --grad-primary: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(224, 238, 255, 0.94) 100%);
   --grad-line: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
-  --sh-glow: 0 10px 26px -8px rgba(18, 40, 110, 0.4);
+  --sh-glow: 0 12px 30px -10px rgba(16, 38, 110, 0.45);
   --sh-ring: 0 0 0 1px rgba(255, 255, 255, 0.25), 0 12px 30px -16px rgba(18, 38, 105, 0.5);
   --sh-lux: 0 20px 48px -22px rgba(15, 32, 95, 0.5);
   --btn-edge: rgba(120, 150, 220, 0.5);
 
-  --r-xs: 7px; --r-sm: 11px; --r-md: 15px; --r-lg: 18px; --r-xl: 26px; --r-full: 9999px;
+  --r-xs: 8px; --r-sm: 12px; --r-md: 16px; --r-lg: 20px; --r-xl: 28px; --r-full: 9999px;
   --track-luxe: 0.14em;
   --font-display-active: var(--font-sans);
   --font-tech-active: var(--font-sans);
@@ -94,129 +95,137 @@
   --fx-ripple: rgba(255, 255, 255, 0.22);
   --fx-ripple-blend: normal;
   --sel-bg: rgba(255, 255, 255, 0.3);
+  --hl-sheen: rgba(255, 255, 255, 0.95);
+  --hl-dur: 0.6s;
 }
 
-/* ===== ĐẤT SÉT (cozy) — MÀU ĐẶC, clay, ấm ===== */
+/* ===== ẤM ÁP (cozy) — caramel & mật ong, tiệm bánh chiều đông ===== */
 :root[data-theme="cozy"] {
   color-scheme: light;
-  --c-bg: 255 240 217;
-  --c-bg2: 255 228 190;
-  --c-surface: 255 255 255;
-  --c-surface2: 255 243 226;
-  --c-surface3: 255 230 200;
-  --c-fg: 74 46 30;
-  --c-muted: 152 106 72;
-  --c-soft: 234 88 40;
-  --c-accent-50: 255 238 230;
-  --c-accent-100: 255 216 200;
-  --c-accent-hi: 222 60 26;
-  --c-accent: 255 94 58;
-  --c-accent-lo: 240 74 40;
-  --c-accent-600: 209 58 26;
-  --c-accent-700: 168 46 20;
-  --c-second: 0 186 132;
-  --c-danger: 230 62 92;
-  --c-on-accent: 255 251 245;
-  --c-hairline: rgba(120, 70, 40, 0.12);
+  --c-bg: 248 238 221;
+  --c-bg2: 241 226 200;
+  --c-surface: 255 253 248;
+  --c-surface2: 246 236 220;
+  --c-surface3: 238 221 196;
+  --c-fg: 63 45 32;
+  --c-muted: 138 111 88;
+  --c-soft: 181 105 26;
+  --c-accent-50: 255 244 229;
+  --c-accent-100: 255 228 194;
+  --c-accent-hi: 181 105 26;
+  --c-accent: 239 155 63;
+  --c-accent-lo: 224 134 42;
+  --c-accent-600: 196 113 24;
+  --c-accent-700: 156 89 16;
+  --c-second: 111 174 127;
+  --c-danger: 217 93 85;
+  --c-on-accent: 61 36 14;
+  --c-hairline: rgba(120, 80, 44, 0.14);
 
-  --bg-wash: linear-gradient(#fff0d9, #fff0d9); /* SOLID */
-  --grad-primary: linear-gradient(#ff5e3a, #ff5e3a); /* SOLID coral */
-  --grad-line: linear-gradient(90deg, transparent, rgba(255, 94, 58, 0.45), transparent);
-  --sh-glow: 0 8px 18px -8px rgba(255, 94, 58, 0.45);
-  --sh-ring: 0 10px 22px -12px rgba(180, 110, 50, 0.3);
-  --sh-lux: 0 14px 32px -16px rgba(180, 110, 50, 0.3);
-  --btn-edge: rgba(196, 52, 22, 1);
+  --bg-wash: linear-gradient(180deg, #faf2e4 0%, #f8eedd 55%, #f2e2c8 100%);
+  --grad-primary: linear-gradient(135deg, #ffc06a 0%, #ef9b3f 55%, #e0862a 100%);
+  --grad-line: linear-gradient(90deg, transparent, rgba(224, 134, 42, 0.5), transparent);
+  --sh-glow: 0 10px 22px -8px rgba(224, 134, 42, 0.45);
+  --sh-ring: 0 10px 24px -12px rgba(150, 100, 50, 0.28);
+  --sh-lux: 0 16px 36px -18px rgba(150, 100, 50, 0.3);
+  --btn-edge: rgba(173, 104, 22, 1);
 
-  --r-xs: 12px; --r-sm: 16px; --r-md: 20px; --r-lg: 24px; --r-xl: 30px; --r-full: 9999px;
-  --track-luxe: 0.1em;
+  --r-xs: 14px; --r-sm: 18px; --r-md: 22px; --r-lg: 28px; --r-xl: 34px; --r-full: 9999px;
+  --track-luxe: 0.08em;
   --font-display-active: var(--font-round);
   --font-tech-active: var(--font-round);
 
-  --fx-ripple: rgba(255, 180, 80, 0.3);
+  --fx-ripple: rgba(239, 155, 63, 0.26);
   --fx-ripple-blend: normal;
-  --sel-bg: rgba(255, 94, 58, 0.3);
+  --sel-bg: rgba(239, 155, 63, 0.32);
+  --hl-sheen: rgba(255, 238, 205, 0.95);
+  --hl-dur: 0.5s;
 }
 
-/* ===== MỘNG MƠ (dreamy) — lilac thanh khiết ===== */
+/* ===== MỘNG MƠ (dreamy) — bình minh pastel, ánh ngọc trai ===== */
 :root[data-theme="dreamy"] {
   color-scheme: light;
-  --c-bg: 246 240 251;
-  --c-bg2: 238 228 250;
+  --c-bg: 243 238 255;
+  --c-bg2: 251 232 246;
   --c-surface: 255 255 255;
   --c-surface2: 248 243 253;
-  --c-surface3: 238 227 250;
-  --c-fg: 59 44 79;
-  --c-muted: 128 108 158;
-  --c-soft: 124 58 237;
-  --c-accent-50: 245 235 255;
-  --c-accent-100: 233 213 255;
-  --c-accent-hi: 122 34 224;
-  --c-accent: 168 85 247;
-  --c-accent-lo: 147 51 234;
-  --c-accent-600: 126 34 206;
-  --c-accent-700: 107 33 168;
-  --c-second: 236 72 153;
-  --c-danger: 235 75 75;
+  --c-surface3: 240 231 250;
+  --c-fg: 67 49 94;
+  --c-muted: 143 124 174;
+  --c-soft: 197 74 154;
+  --c-accent-50: 246 240 255;
+  --c-accent-100: 234 220 254;
+  --c-accent-hi: 116 52 216;
+  --c-accent: 160 107 245;
+  --c-accent-lo: 140 84 233;
+  --c-accent-600: 118 60 210;
+  --c-accent-700: 96 42 178;
+  --c-second: 240 134 200;
+  --c-danger: 235 87 100;
   --c-on-accent: 255 255 255;
-  --c-hairline: rgba(122, 60, 200, 0.13);
+  --c-hairline: rgba(140, 90, 220, 0.14);
 
-  --bg-wash: linear-gradient(165deg, #faf6ff 0%, #f3e9fe 48%, #ecdcfd 100%);
-  --grad-primary: linear-gradient(135deg, #c084fc 0%, #a855f7 46%, #7c3aed 100%);
-  --grad-line: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.35), transparent);
-  --sh-glow: 0 10px 24px -10px rgba(168, 85, 247, 0.35);
+  --bg-wash: linear-gradient(170deg, #f6f1ff 0%, #fdeaf7 46%, #ffefe2 100%);
+  --grad-primary: linear-gradient(120deg, #9d67f2 0%, #e468b4 52%, #6b93e8 100%);
+  --grad-line: linear-gradient(90deg, transparent, rgba(160, 107, 245, 0.4), transparent);
+  --sh-glow: 0 10px 26px -10px rgba(160, 107, 245, 0.4);
   --sh-ring: 0 12px 28px -16px rgba(122, 60, 200, 0.25);
-  --sh-lux: 0 16px 40px -20px rgba(122, 60, 200, 0.25);
+  --sh-lux: 0 16px 40px -20px rgba(122, 60, 200, 0.22);
   --btn-edge: rgba(107, 33, 168, 0.45);
 
-  --r-xs: 8px; --r-sm: 12px; --r-md: 16px; --r-lg: 20px; --r-xl: 26px; --r-full: 9999px;
+  --r-xs: 10px; --r-sm: 14px; --r-md: 18px; --r-lg: 24px; --r-xl: 30px; --r-full: 9999px;
   --track-luxe: 0.18em;
-  --font-display-active: var(--font-sans);
+  --font-display-active: var(--font-dream);
   --font-tech-active: var(--font-sans);
 
-  --fx-ripple: rgba(168, 85, 247, 0.14);
+  --fx-ripple: rgba(160, 107, 245, 0.15);
   --fx-ripple-blend: normal;
-  --sel-bg: rgba(168, 85, 247, 0.25);
+  --sel-bg: rgba(160, 107, 245, 0.25);
+  --hl-sheen: rgba(255, 255, 255, 0.9);
+  --hl-dur: 0.7s;
 }
 
-/* ===== STUDIO — xanh rêu design-tool, vuông tuyệt đối ===== */
+/* ===== XƯỞNG (studio) — design-tool xanh rêu, vuông tuyệt đối ===== */
 :root[data-theme="studio"] {
   color-scheme: dark;
-  --c-bg: 6 34 21;
-  --c-bg2: 10 46 29;
-  --c-surface: 12 53 34;
-  --c-surface2: 18 68 44;
-  --c-surface3: 24 84 55;
+  --c-bg: 4 25 15;
+  --c-bg2: 8 36 22;
+  --c-surface: 11 44 28;
+  --c-surface2: 16 58 37;
+  --c-surface3: 22 74 48;
   --c-fg: 234 247 238;
-  --c-muted: 146 184 161;
+  --c-muted: 143 182 158;
   --c-soft: 217 249 157;
   --c-accent-50: 236 253 243;
-  --c-accent-100: 209 250 224;
-  --c-accent-hi: 122 243 168;
-  --c-accent: 83 224 139;
-  --c-accent-lo: 46 204 113;
-  --c-accent-600: 26 168 92;
-  --c-accent-700: 17 128 70;
+  --c-accent-100: 205 250 222;
+  --c-accent-hi: 122 240 168;
+  --c-accent: 74 222 135;
+  --c-accent-lo: 42 200 106;
+  --c-accent-600: 24 168 84;
+  --c-accent-700: 16 128 64;
   --c-second: 255 138 92;
   --c-danger: 255 107 107;
-  --c-on-accent: 4 38 22;
-  --c-hairline: rgba(255, 255, 255, 0.18);
+  --c-on-accent: 3 30 17;
+  --c-hairline: rgba(255, 255, 255, 0.16);
 
-  --bg-wash: radial-gradient(120% 85% at 50% -10%, #0d4229 0%, #062215 60%);
-  --grad-primary: linear-gradient(135deg, #a8f5c6 0%, #53e08b 50%, #1fa866 100%);
+  --bg-wash: radial-gradient(120% 85% at 50% -10%, #0c3a24 0%, #04190f 60%);
+  --grad-primary: linear-gradient(135deg, #a7f3c4 0%, #4ade87 50%, #1ea45e 100%);
   --grad-line: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
-  --sh-glow: 0 0 20px -6px rgba(83, 224, 139, 0.45);
+  --sh-glow: 0 0 20px -6px rgba(74, 222, 135, 0.45);
   --sh-ring: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 12px 30px -14px rgba(0, 0, 0, 0.6);
   --sh-lux: 0 20px 50px -24px rgba(0, 0, 0, 0.7);
   --btn-edge: rgba(14, 96, 54, 0.95);
 
   --r-xs: 0px; --r-sm: 0px; --r-md: 0px; --r-lg: 0px; --r-xl: 0px; --r-full: 0px;
-  --track-luxe: 0.18em;
+  --track-luxe: 0.16em;
   --font-display-active: var(--font-sans);
-  --font-tech-active: var(--font-sans);
+  --font-tech-active: var(--font-mono2);
 
-  --fx-ripple: rgba(255, 255, 255, 0.2);
+  --fx-ripple: rgba(255, 255, 255, 0.18);
   --fx-ripple-blend: normal;
-  --sel-bg: rgba(83, 224, 139, 0.35);
+  --sel-bg: rgba(74, 222, 135, 0.35);
+  --hl-sheen: rgba(255, 255, 255, 0.75);
+  --hl-dur: 0.3s;
 }
 
 * {
@@ -254,9 +263,9 @@ body::before {
 }
 [data-theme="game"] body::before { opacity: 0.03; }
 [data-theme="studio"] body::before { opacity: 0.04; }
-[data-theme="cozy"] body::before { opacity: 0.035; mix-blend-mode: multiply; }
+[data-theme="cozy"] body::before { opacity: 0.05; mix-blend-mode: multiply; }
 
-/* Lưới canvas TĨNH — nhận diện game/studio, mờ hơn trước */
+/* Lưới canvas TĨNH — nhận diện game/studio */
 body::after {
   content: "";
   position: fixed;
@@ -267,9 +276,11 @@ body::after {
 }
 [data-theme="game"] body::after {
   opacity: 1;
-  background-image: linear-gradient(rgba(0, 217, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 217, 255, 0.035) 1px, transparent 1px);
+  background-image: linear-gradient(rgba(34, 228, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 228, 255, 0.04) 1px, transparent 1px);
   background-size: 44px 44px;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 100%);
 }
 [data-theme="studio"] body::after {
   opacity: 1;
@@ -325,65 +336,120 @@ body::after {
   }
 }
 
-/* Card theo theme — vẫn MỘT class .card-lux, chỉ đổi "chất" */
-/* Kính mờ: frosted TỐI & ĐỤC (nền chỉ hé mờ, chữ trắng luôn rõ) */
+/* ---- Chất card theo theme — vẫn MỘT class .card-lux, chỉ đổi "chất" ---- */
+/* Thuỷ tinh: frosted tối & đục, mép trên bắt sáng như cạnh kính */
 [data-theme="apple"] .card-lux {
-  background: rgba(28, 46, 110, 0.62);
+  background: rgba(30, 48, 116, 0.62);
   backdrop-filter: blur(24px) saturate(1.3);
   -webkit-backdrop-filter: blur(24px) saturate(1.3);
   border-color: rgba(255, 255, 255, 0.22);
-  box-shadow: var(--sh-lux), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  box-shadow: var(--sh-lux), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
-/* Đất sét: không viền, bóng mềm + highlight nặn tay */
+/* Ấm áp: không viền, bóng mềm + mép kem nặn tay */
 [data-theme="cozy"] .card-lux {
   border: none;
-  box-shadow: var(--sh-lux), inset 0 2px 0 rgba(255, 255, 255, 0.85);
+  box-shadow: var(--sh-lux), inset 0 2px 0 rgba(255, 255, 255, 0.9);
 }
-/* Mộng mơ: trắng đục, bóng tím rất nhẹ */
+/* Mộng mơ: trắng ngọc trai, mép trên ánh iridescent rất nhẹ */
 [data-theme="dreamy"] .card-lux {
-  background: rgb(var(--c-surface));
+  background:
+    linear-gradient(rgb(var(--c-surface)), rgb(var(--c-surface))) padding-box,
+    linear-gradient(120deg, rgba(183, 140, 250, 0.5), rgba(240, 134, 200, 0.4), rgba(142, 197, 255, 0.5)) border-box;
+  border: 1px solid transparent;
+}
+/* Neon: mép trên có vệt sáng cyan mảnh */
+[data-theme="game"] .card-lux {
+  box-shadow: var(--sh-lux), inset 0 1px 0 rgba(34, 228, 255, 0.18);
 }
 
-/* ===== Đáp án đúng — nháy 2 nhịp rồi ĐỨNG YÊN (không lặp vô hạn) ===== */
+/* ============================================================
+   HIGHLIGHT FX — khoảnh khắc sáng theo theme (event-based, chạy 1 lần)
+   ============================================================ */
+
+/* Vệt sáng quét qua nút chính khi bấm — màu & tốc độ theo theme */
+.hl-sweep {
+  position: absolute;
+  top: -30%;
+  bottom: -30%;
+  left: -45%;
+  width: 40%;
+  z-index: 4;
+  pointer-events: none;
+  transform: skewX(-16deg);
+  background: linear-gradient(90deg, transparent, var(--hl-sheen), transparent);
+  filter: blur(4px);
+  animation: hlsweep var(--hl-dur) ease-out forwards;
+}
+@keyframes hlsweep {
+  to { left: 110%; }
+}
+
+/* ===== Đáp án ĐÚNG — mỗi theme một khoảnh khắc, chạy vài nhịp rồi ĐỨNG YÊN ===== */
 @keyframes neonpulse {
   0%, 100% { box-shadow: 0 0 0 1px rgb(var(--c-accent) / 0.5), 0 0 14px -4px rgb(var(--c-accent) / 0.45); }
-  50%      { box-shadow: 0 0 0 1px rgb(var(--c-accent) / 0.9), 0 0 24px -2px rgb(var(--c-accent) / 0.7); }
+  50%      { box-shadow: 0 0 0 1.5px rgb(var(--c-accent) / 1), 0 0 26px -2px rgb(var(--c-accent) / 0.8); }
 }
 @keyframes softring {
-  0%   { box-shadow: 0 0 0 0 rgb(var(--c-second) / 0.4); }
-  100% { box-shadow: 0 0 0 10px rgb(var(--c-second) / 0); }
+  0%   { box-shadow: 0 0 0 0 rgb(var(--c-second) / 0.45); }
+  100% { box-shadow: 0 0 0 12px rgb(var(--c-second) / 0); }
 }
+@keyframes fillflash {
+  0%   { background-color: rgb(var(--c-accent) / 0.38); }
+  100% { background-color: rgb(var(--c-accent) / 0.12); }
+}
+/* nảy dọc kiểu thạch — squash & stretch, KHÔNG lắc ngang */
 @keyframes jellypop {
   0%   { transform: scale(1); }
-  30%  { transform: scale(1.05, 0.93); }
-  55%  { transform: scale(0.97, 1.04); }
-  75%  { transform: scale(1.01, 0.99); }
+  30%  { transform: scale(1.04, 0.94); }
+  55%  { transform: scale(0.98, 1.03); }
+  75%  { transform: scale(1.008, 0.995); }
   100% { transform: scale(1); }
 }
 .neon-correct {
   border-color: rgb(var(--c-accent)) !important;
 }
-[data-theme="game"] .neon-correct,
-[data-theme="studio"] .neon-correct {
-  animation: neonpulse 0.9s ease-in-out 2;
+[data-theme="game"] .neon-correct {
+  animation: neonpulse 0.55s ease-in-out 2, fillflash 0.9s ease-out 1;
 }
 [data-theme="studio"] .neon-correct {
-  border-color: rgba(255, 255, 255, 0.85) !important;
+  border-color: rgba(255, 255, 255, 0.9) !important;
+  animation: fillflash 0.8s ease-out 1;
+  /* 4 "handle" trắng ở góc — ngôn ngữ select-frame của design tool */
+  background-image:
+    linear-gradient(#fff, #fff), linear-gradient(#fff, #fff),
+    linear-gradient(#fff, #fff), linear-gradient(#fff, #fff);
+  background-size: 7px 7px;
+  background-repeat: no-repeat;
+  background-position: -2px -2px, calc(100% + 2px) -2px, -2px calc(100% + 2px), calc(100% + 2px) calc(100% + 2px);
 }
 [data-theme="apple"] .neon-correct {
   animation: softring 0.9s ease-out 2;
   border-color: rgba(255, 255, 255, 0.9) !important;
-  background: rgba(255, 255, 255, 0.16) !important;
+  background: rgba(255, 255, 255, 0.18) !important;
 }
 [data-theme="dreamy"] .neon-correct {
-  animation: softring 1s ease-out 2;
+  animation: softring 1s ease-out 2, jellypop 0.7s cubic-bezier(0.34, 1.3, 0.64, 1) 1;
+  background:
+    linear-gradient(rgb(var(--c-accent-50)), rgb(var(--c-accent-50))) padding-box,
+    var(--grad-primary) border-box !important;
+  border: 1px solid transparent !important;
 }
 [data-theme="cozy"] .neon-correct {
   animation: jellypop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 1, softring 0.9s ease-out 2;
   border-color: rgb(var(--c-second)) !important;
+  background: rgb(var(--c-second) / 0.14) !important;
 }
 
-/* ===== Ripple từ điểm chạm — phản hồi tương tác duy nhất ở mức toàn cục ===== */
+/* Đáp án SAI đã chọn — flash đỏ dịu rồi lắng, không rung */
+@keyframes wrongfill {
+  0%   { background-color: rgb(var(--c-danger) / 0.32); }
+  100% { background-color: rgb(var(--c-danger) / 0.1); }
+}
+.wrong-pick {
+  animation: wrongfill 0.55s ease-out 1;
+}
+
+/* ===== Ripple từ điểm chạm — phản hồi tương tác toàn cục ===== */
 .cyber {
   position: relative;
   overflow: hidden;
@@ -406,7 +472,7 @@ body::after {
   }
 }
 
-/* ===== Nút 3D lún (chỉ nút chính; kính & mộng mơ nổi bằng glow) ===== */
+/* ===== Nút 3D lún (game/cozy/studio; kính & mộng mơ nổi bằng glow) ===== */
 .btn3d {
   box-shadow: 0 4px 0 0 var(--btn-edge), var(--sh-glow);
   transition: box-shadow 0.09s ease, transform 0.09s ease;
@@ -424,11 +490,11 @@ body::after {
   transform: none;
 }
 [data-theme="cozy"] .btn3d {
-  box-shadow: 0 5px 0 0 var(--btn-edge), var(--sh-glow), inset 0 2px 0 rgba(255, 255, 255, 0.35);
+  box-shadow: 0 5px 0 0 var(--btn-edge), var(--sh-glow), inset 0 2px 0 rgba(255, 255, 255, 0.4);
 }
 [data-theme="cozy"] .btn3d:active {
   transform: translateY(4px) scale(0.99, 0.97);
-  box-shadow: 0 1px 0 0 var(--btn-edge), var(--sh-glow), inset 0 3px 6px rgba(120, 40, 10, 0.22);
+  box-shadow: 0 1px 0 0 var(--btn-edge), var(--sh-glow), inset 0 3px 6px rgba(120, 60, 10, 0.22);
 }
 
 [data-theme="cozy"] .jelly-release {
@@ -456,18 +522,18 @@ body::after {
   100% { opacity: 0; transform: translate(0, 0) scale(1); }
 }
 
-/* bloom tím khi bấm nút chính (dreamy) — 1 nhịp */
+/* quầng bloom nở từ tâm khi bấm nút chính (dreamy) — 1 nhịp */
 .bloom {
   position: absolute;
   inset: -30%;
   pointer-events: none;
   z-index: 0;
-  background: radial-gradient(circle, rgba(196, 132, 252, 0.45) 0%, transparent 62%);
+  background: radial-gradient(circle, rgba(240, 134, 200, 0.4) 0%, rgba(183, 140, 250, 0.3) 40%, transparent 65%);
   opacity: 0;
   animation: bloomout 0.6s ease-out forwards;
 }
 @keyframes bloomout {
-  0%   { opacity: 0.85; transform: scale(0.35); }
+  0%   { opacity: 0.9; transform: scale(0.35); }
   100% { opacity: 0; transform: scale(1.2); }
 }
 
@@ -481,7 +547,7 @@ body::after {
   animation: xpfloat 0.95s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
 }
 
-/* Viền đỏ nháy khi sai — 1 nhịp, dịu */
+/* Viền đỏ thở MỘT nhịp khi sai — cảm nhận "hụt", không rung lắc */
 @keyframes dangeredge {
   0%   { opacity: 0.55; }
   100% { opacity: 0; }
@@ -492,7 +558,7 @@ body::after {
   z-index: 70;
   pointer-events: none;
   box-shadow: inset 0 0 44px 4px rgb(var(--c-danger) / 0.4);
-  animation: dangeredge 0.45s ease-out forwards;
+  animation: dangeredge 0.5s ease-out forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {

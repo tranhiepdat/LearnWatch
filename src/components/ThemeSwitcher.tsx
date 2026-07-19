@@ -106,7 +106,7 @@ export default function ThemeSwitcher() {
                         style={{
                           background: m.preview.card,
                           // preview nói đúng ngôn ngữ bo góc của từng theme
-                          borderRadius: id === "cozy" ? 18 : id === "apple" ? 12 : id === "dreamy" ? 10 : 0,
+                          borderRadius: id === "cozy" ? 20 : id === "apple" ? 12 : id === "dreamy" ? 14 : 0,
                           border: `1px solid ${m.preview.accent}44`,
                         }}
                       >
@@ -161,10 +161,10 @@ export default function ThemeSwitcher() {
                   marginLeft: -20,
                   marginTop: -20,
                   background: morph.color,
-                  borderRadius: "42% 58% 55% 45% / 55% 42% 58% 45%",
+                  borderRadius: "50%",
                 }}
-                initial={{ scale: 0, opacity: 1, rotate: 0 }}
-                animate={{ scale: 90, opacity: 1, rotate: 90, borderRadius: "50%" }}
+                initial={{ scale: 0, opacity: 1 }}
+                animate={{ scale: 90, opacity: 1 }}
                 exit={{ opacity: 0, transition: { duration: 0.35 } }}
                 transition={{ duration: 0.55, ease: [0.3, 0.6, 0.2, 1] }}
               />

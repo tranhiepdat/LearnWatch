@@ -17,12 +17,14 @@ import ColorTable from "./ColorTable";
 import CollectionToggle from "./CollectionToggle";
 
 /** "Tính cách" kéo-văng thẻ theo theme: biên độ xoay + thời gian bay khác nhau */
+/* Xoay chỉ khi NGƯỜI DÙNG kéo (bám theo ngón tay — không tự dao động),
+   biên độ vừa phải để không chóng mặt */
 const DRAG_FEEL: Record<ThemeId, { rot: number; flingDur: number; flingEase: "easeIn" | "easeOut" }> = {
-  game: { rot: 16, flingDur: 0.22, flingEase: "easeIn" },   // dứt khoát, giật
+  game: { rot: 12, flingDur: 0.22, flingEase: "easeIn" },   // dứt khoát, giật
   apple: { rot: 8, flingDur: 0.32, flingEase: "easeOut" },  // lướt êm như kính
-  cozy: { rot: 26, flingDur: 0.3, flingEase: "easeIn" },    // lật nhào vui nhộn
-  dreamy: { rot: 12, flingDur: 0.4, flingEase: "easeOut" }, // trôi đi nhẹ bẫng
-  studio: { rot: 10, flingDur: 0.18, flingEase: "easeIn" }, // snap gọn
+  cozy: { rot: 18, flingDur: 0.3, flingEase: "easeIn" },    // vui nhộn nhưng tiết chế
+  dreamy: { rot: 10, flingDur: 0.4, flingEase: "easeOut" }, // trôi đi nhẹ bẫng
+  studio: { rot: 8, flingDur: 0.18, flingEase: "easeIn" },  // snap gọn
 };
 
 function BrandTag({ brand }: { brand: Watch["brand"] }) {

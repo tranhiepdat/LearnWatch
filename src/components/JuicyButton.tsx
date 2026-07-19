@@ -7,12 +7,12 @@ import { playTap } from "@/lib/sound";
 import { hTap } from "@/lib/haptics";
 
 /**
- * Nút "mọng nước" — 5 tính cách theo theme:
- *  · game   — 3D lún + chớp neon + tia quét chéo (spark từ FxProvider)
- *  · apple  — kính: sheen trắng chạy chậm + nảy nhẹ như bong bóng
- *  · cozy   — đất sét: lún sâu inset + squash & stretch thả tay
- *  · dreamy — quầng bloom tím nở từ tâm + nghiêng nhẹ mơ màng
- *  · studio — KHUNG CHỌN trắng flash quanh nút + snap dứt khoát
+ * Nút chính "mọng nước" — cùng MỘT khung hành vi, tính cách đổi theo theme:
+ *  · đè      → lún (scale theo meta.motion.tap; cozy squash thêm scaleY)
+ *  · bấm     → vệt sáng hl-sweep quét qua (màu/tốc độ theo --hl-sheen/--hl-dur)
+ *              + hiệu ứng chữ ký riêng: game chớp neon · dreamy bloom tím
+ *              · studio khung chọn 4 góc
+ *  · thả     → cú nảy DỌC từ meta.motion.pop (scale/y, KHÔNG rotate, KHÔNG lắc)
  */
 export default function JuicyButton({
   children,
@@ -35,7 +35,6 @@ export default function JuicyButton({
 }) {
   const { theme, meta } = useTheme();
   const flash = useAnimationControls();
-  const sweep = useAnimationControls();
   const body = useAnimationControls();
   const [fxKey, setFxKey] = useState(0);
 
@@ -43,53 +42,27 @@ export default function JuicyButton({
     if (disabled) return;
     if (sound) playTap();
     hTap();
+    setFxKey((k) => k + 1); // remount hl-sweep + bloom/bracket
     if (theme === "game") {
-      flash.set({ opacity: 0.85 });
-      flash.start({ opacity: 0, transition: { duration: 0.34, ease: "easeOut" } });
-      sweep.set({ x: "-140%", opacity: 1 });
-      sweep.start({ x: "210%", opacity: 0, transition: { duration: 0.42, ease: "easeOut" } });
+      flash.set({ opacity: 0.7 });
+      flash.start({ opacity: 0, transition: { duration: 0.32, ease: "easeOut" } });
     } else if (theme === "apple") {
-      sweep.set({ x: "-130%", opacity: 0.8 });
-      sweep.start({ x: "200%", opacity: 0, transition: { duration: 0.6, ease: [0.3, 0.7, 0.3, 1] } });
-      flash.set({ opacity: 0.22 });
-      flash.start({ opacity: 0, transition: { duration: 0.45 } });
-    } else if (theme === "studio" || theme === "dreamy") {
-      setFxKey((k) => k + 1); // bracket flash / bloom
-      if (theme === "dreamy") {
-        sweep.set({ x: "-130%", opacity: 0.5 });
-        sweep.start({ x: "200%", opacity: 0, transition: { duration: 0.8, ease: "easeOut" } });
-      }
+      flash.set({ opacity: 0.2 });
+      flash.start({ opacity: 0, transition: { duration: 0.4 } });
     }
   }
 
   function fireRelease() {
     if (disabled) return;
-    if (theme === "cozy") {
-      // đất sét: nảy bật lên MỘT nhịp gọn + squash — đã tay nhưng không loạn
-      body.start({
-        y: [0, -8, 0, -2, 0],
-        scale: [0.86, 1.06, 0.98, 1.01, 1],
-        scaleY: [0.84, 1.09, 0.96, 1.01, 1],
-        transition: { duration: 0.5, ease: "easeOut" },
-      });
-    } else if (theme === "game") {
-      body.start({ scale: [0.94, 1.03, 1], transition: { duration: 0.28, ease: "easeOut" } });
-    } else if (theme === "studio") {
-      body.start({ scale: [0.96, 1.015, 1], transition: { duration: 0.2, ease: "easeOut" } });
-    } else if (theme === "apple") {
-      body.start({ scale: [0.97, 1.02, 1], transition: { duration: 0.4, type: "spring", stiffness: 300, damping: 16 } });
-    } else {
-      body.start({ rotate: [0, -0.8, 0.6, 0], transition: { duration: 0.6, ease: "easeOut" } });
-    }
+    const pop = meta.motion.pop;
+    body.start({ ...pop.keyframes, transition: pop.transition });
   }
 
   const press = disabled
     ? undefined
     : theme === "cozy"
-      ? { scale: 0.86, scaleY: 0.84 }
-      : theme === "dreamy"
-        ? { scale: meta.motion.tap, rotate: -1.2 }
-        : { scale: meta.motion.tap };
+      ? { scale: meta.motion.tap, scaleY: meta.motion.tap - 0.02 }
+      : { scale: meta.motion.tap };
 
   return (
     <motion.button
@@ -112,22 +85,15 @@ export default function JuicyButton({
         initial={{ opacity: 0 }}
         animate={flash}
         className={`pointer-events-none absolute inset-0 z-0 ${
-          theme === "game" ? "bg-gold-400 mix-blend-plus-lighter" : "bg-white"
+          theme === "game" ? "bg-gold-300 mix-blend-plus-lighter" : "bg-white"
         }`}
         style={{ borderRadius: "inherit" }}
       />
-      {/* vệt sáng quét chéo */}
-      <motion.span
-        aria-hidden
-        initial={{ opacity: 0, x: "-140%" }}
-        animate={sweep}
-        className={`pointer-events-none absolute inset-y-0 left-0 z-0 w-1/3 -skew-x-12 ${
-          theme === "apple" ? "bg-white/80 blur-[7px]" : theme === "dreamy" ? "bg-white/60 blur-[8px]" : "bg-white/55 blur-[2px]"
-        }`}
-      />
-      {/* bloom tím (dreamy) */}
+      {/* vệt sáng quét — CSS theo theme, remount mỗi lần bấm */}
+      {fxKey > 0 && theme !== "studio" && <span key={`sw${fxKey}`} aria-hidden className="hl-sweep" />}
+      {/* bloom hồng-tím nở từ tâm (dreamy) */}
       {theme === "dreamy" && fxKey > 0 && <span key={`bl${fxKey}`} aria-hidden className="bloom" style={{ borderRadius: "inherit" }} />}
-      {/* khung chọn flash (studio) */}
+      {/* khung chọn flash 4 góc (studio) */}
       {theme === "studio" && fxKey > 0 && (
         <span key={`br${fxKey}`} aria-hidden className="pointer-events-none absolute inset-0 z-[5]">
           <span className="brk brk-tl" style={{ "--ox": "-6px", "--oy": "-6px" } as React.CSSProperties} />

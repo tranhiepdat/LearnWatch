@@ -133,7 +133,8 @@ export default function QuizRunner({
       playWrong();
       hError();
       setDangerKey((k) => k + 1);
-      shake.start({ x: [0, -10, 10, -7, 7, 0], transition: { duration: 0.42 } });
+      // cú "hụt" DỌC: lún nhẹ rồi hồi — cảm nhận sai rõ mà không lắc ngang
+      shake.start({ scale: [1, 0.982, 1.004, 1], y: [0, 3, 0, 0], transition: { duration: 0.32, ease: "easeOut" } });
       if (q.watchId && mode !== "mistakes") recordMistake(q.watchId);
       if (isBlitz) window.setTimeout(nextBlitz, 900);
     }
@@ -291,8 +292,8 @@ export default function QuizRunner({
             >
               <div className="absolute inset-0 bg-ink/85 backdrop-blur-sm" />
               <motion.div
-                initial={theme === "cozy" ? { scale: 0, rotate: -10 } : { scale: 0.6, opacity: 0 }}
-                animate={theme === "cozy" ? { scale: 1, rotate: 0 } : { scale: 1, opacity: 1 }}
+                initial={theme === "cozy" ? { scale: 0.5, y: 30, opacity: 0 } : { scale: 0.6, opacity: 0 }}
+                animate={{ scale: 1, y: 0, opacity: 1 }}
                 transition={meta.motion.bouncy}
                 className="card-lux relative z-10 mx-6 max-w-xs overflow-hidden p-8 text-center"
               >
@@ -356,8 +357,8 @@ export default function QuizRunner({
           {combo >= 2 && (
             <motion.span
               key={combo}
-              initial={{ scale: 0.4, rotate: theme === "cozy" ? -14 : 0, opacity: 0 }}
-              animate={{ scale: combo >= 5 ? 1.15 : 1, rotate: 0, opacity: 1 }}
+              initial={{ scale: 0.4, y: 6, opacity: 0 }}
+              animate={{ scale: combo >= 5 ? 1.15 : 1, y: 0, opacity: 1 }}
               exit={{ scale: 0.4, opacity: 0 }}
               transition={meta.motion.bouncy}
               className={`flex items-center gap-1 rounded-[var(--r-full)] px-2.5 py-1 text-xs font-extrabold ${
@@ -384,10 +385,10 @@ export default function QuizRunner({
         <AnimatePresence mode="wait">
           <motion.div
             key={index}
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -40 }}
-            transition={{ duration: 0.25 }}
+            initial={meta.motion.card.initial}
+            animate={meta.motion.card.animate}
+            exit={{ ...meta.motion.card.exit, transition: { duration: 0.14 } }}
+            transition={meta.motion.card.transition}
           >
             <motion.div animate={shake} className="card-lux relative overflow-hidden p-6">
               {burstKey > 0 && answered && selected === q.correctIndex && <GoldBurst key={burstKey} />}
@@ -416,7 +417,7 @@ export default function QuizRunner({
                   let cls = "border-hairline text-ivory";
                   if (answered) {
                     if (isCorrect) cls = "border-gold-400 bg-gold-500/12 text-champagne neon-correct";
-                    else if (isSelected) cls = "border-bordeaux bg-bordeaux/10 text-ivory";
+                    else if (isSelected) cls = "border-bordeaux bg-bordeaux/10 text-ivory wrong-pick";
                     else cls = "border-hairline text-taupe opacity-55";
                   }
                   return (
