@@ -116,18 +116,18 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
       spring: { type: "spring", stiffness: 650, damping: 34 },
       bouncy: { type: "spring", stiffness: 700, damping: 22 },
       pop: { keyframes: { scale: [0.96, 1.015, 1] }, transition: { duration: 0.18, ease: "easeOut" } },
+      // reveal do CSS .glitch-cut / .glitch-in lo (cắt lát + RGB split) —
+      // framer chỉ giữ opacity để không tranh transform/clip với glitch
       page: {
-        initial: { opacity: 0 },
+        initial: { opacity: 1 },
         animate: { opacity: 1 },
-        transition: { duration: 0.16, ease: "linear" },
+        transition: { duration: 0.01 },
       },
-      // WIPE REVEAL: nội dung đứng yên, chỉ "mở màn" từ trái sang — đúng chất
-      // motion graphic và tuyệt đối không gây tiền đình (zero translation)
       card: {
-        initial: { opacity: 1, clipPath: "inset(0 100% 0 0)" },
-        animate: { opacity: 1, clipPath: "inset(0 0% 0 0)" },
+        initial: { opacity: 1 },
+        animate: { opacity: 1 },
         exit: { opacity: 0 },
-        transition: { duration: 0.3, ease: [0.65, 0, 0.35, 1] },
+        transition: { duration: 0.01 },
       },
     },
   },

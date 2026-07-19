@@ -459,6 +459,70 @@ body::after {
   100% { opacity: 0; transform: translate(0, 0); }
 }
 
+/* ============================================================
+   GLITCH — motion chữ ký của theme DIGITAL (chỉ [data-theme="game"])
+   Cắt lát clip-path + dịch ngang + RGB split, HARD-CUT (steps) = data-corrupt
+   ============================================================ */
+@keyframes glClip {
+  0%   { clip-path: inset(0 0 100% 0); }
+  12%  { clip-path: inset(0 0 38% 0); }
+  22%  { clip-path: inset(46% 0 40% 0); }
+  32%  { clip-path: inset(12% 0 68% 0); }
+  44%  { clip-path: inset(58% 0 12% 0); }
+  56%  { clip-path: inset(4% 0 30% 0); }
+  68%, 100% { clip-path: inset(0 0 0 0); }
+}
+@keyframes glShift {
+  0%, 68%, 100% { transform: translate3d(0, 0, 0); }
+  12% { transform: translate3d(-7px, 0, 0); }
+  22% { transform: translate3d(6px, 0, 0); }
+  32% { transform: translate3d(-4px, 0, 0); }
+  44% { transform: translate3d(5px, 0, 0); }
+  56% { transform: translate3d(-2px, 0, 0); }
+}
+@keyframes glChroma {
+  0%, 68%, 100% { filter: none; }
+  12% { filter: drop-shadow(3px 0 rgba(255, 40, 110, 0.9)) drop-shadow(-3px 0 rgba(53, 224, 255, 0.9)); }
+  32% { filter: drop-shadow(-4px 0 rgba(255, 40, 110, 0.85)) drop-shadow(4px 0 rgba(53, 224, 255, 0.85)); }
+  56% { filter: drop-shadow(2px 0 rgba(255, 40, 110, 0.8)) drop-shadow(-2px 0 rgba(53, 224, 255, 0.8)); }
+}
+[data-theme="game"] .glitch-in {
+  animation: glClip 0.52s steps(1, end) both, glShift 0.52s steps(1, end) both, glChroma 0.52s steps(1, end) both;
+  will-change: clip-path, transform, filter;
+}
+/* thanh nhiễu quét ngang 1 lần khi glitch — scanline data-corrupt */
+[data-theme="game"] .glitch-in::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 14%;
+  z-index: 8;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 0%, rgba(53, 224, 255, 0.5) 48%, rgba(255, 40, 110, 0.4) 52%, transparent 100%);
+  animation: glScan 0.5s steps(1, end) 1;
+  opacity: 0;
+}
+@keyframes glScan {
+  0%   { transform: translateY(-120%); opacity: 0.9; }
+  20%  { transform: translateY(120%); }
+  22%  { transform: translateY(360%); opacity: 0.9; }
+  40%  { transform: translateY(620%); }
+  42%, 100% { opacity: 0; }
+}
+/* page-in gọn hơn cho chuyển trang (không chroma nặng) */
+@keyframes glCut {
+  0%   { clip-path: inset(0 0 100% 0); opacity: 0.5; }
+  20%  { clip-path: inset(0 0 30% 0); opacity: 1; }
+  32%  { clip-path: inset(42% 0 30% 0); }
+  46%  { clip-path: inset(8% 0 55% 0); }
+  60%, 100% { clip-path: inset(0 0 0 0); }
+}
+[data-theme="game"] .glitch-cut {
+  animation: glCut 0.4s steps(1, end) both;
+}
+
 /* ===== XP bay lên khi trả lời đúng ===== */
 @keyframes xpfloat {
   0%   { transform: translateY(6px) scale(0.85); opacity: 0; }

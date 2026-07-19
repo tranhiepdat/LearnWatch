@@ -205,7 +205,9 @@ export default function SwipeDeck({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.94 }}
               transition={{ duration: 0.3, ease: [0.2, 0.8, 0.2, 1] }}
-              className="card-lux absolute inset-0 flex flex-col items-center justify-between overflow-hidden p-6"
+              className={`card-lux absolute inset-0 flex flex-col items-center justify-between overflow-hidden p-6 ${
+                theme === "game" ? "glitch-in" : ""
+              }`}
             >
               {current.warning && (
                 <div className="absolute left-3 top-3 z-10 rounded-[var(--r-xs)] bg-bordeaux px-2 py-1 text-[10px] font-extrabold uppercase tracking-luxe text-ivory shadow-glow">
@@ -257,7 +259,9 @@ export default function SwipeDeck({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.94 }}
               transition={{ duration: 0.3, ease: [0.2, 0.8, 0.2, 1] }}
-              className="card-lux absolute inset-0 flex touch-pan-y flex-col overflow-y-auto overscroll-contain p-6"
+              className={`card-lux absolute inset-0 flex touch-pan-y flex-col overflow-y-auto overscroll-contain p-6 ${
+                theme === "game" ? "glitch-in" : ""
+              }`}
             >
               <div className="mb-1 flex items-center justify-between">
                 <BrandTag brand={current.brand} />

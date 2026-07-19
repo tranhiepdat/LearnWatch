@@ -45,6 +45,10 @@ export default function JuicyButton({
     // solid highlight SOLID 100% màu theme chớp lên khi bấm rồi tắt — mọi theme
     flash.set({ opacity: 1 });
     flash.start({ opacity: 0, transition: { duration: theme === "cozy" ? 0.32 : 0.24, ease: "easeOut" } });
+    // Digital: giật glitch ngang hard-cut khi bấm
+    if (theme === "game") {
+      body.start({ x: [0, -4, 4, -2, 3, 0], transition: { duration: 0.16, times: [0, 0.15, 0.35, 0.55, 0.78, 1] } });
+    }
   }
 
   function fireRelease() {

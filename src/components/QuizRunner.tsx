@@ -389,6 +389,7 @@ export default function QuizRunner({
             animate={meta.motion.card.animate}
             exit={{ ...meta.motion.card.exit, transition: { duration: 0.14 } }}
             transition={meta.motion.card.transition}
+            className={theme === "game" ? "glitch-in relative" : undefined}
           >
             <motion.div animate={shake} className="card-lux relative overflow-hidden p-6">
               {burstKey > 0 && answered && selected === q.correctIndex && <GoldBurst key={burstKey} />}
