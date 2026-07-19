@@ -212,12 +212,6 @@ function tone(freq: number, t: number, dur: number, o: ToneOpts = {}) {
   osc.stop(t + (o.release ?? dur) + 0.08);
 }
 
-/** 2 osc detune ± cents — thân nốt dày */
-function duo(freq: number, t: number, dur: number, o: ToneOpts = {}, spread = 8) {
-  tone(freq, t, dur, { ...o, detune: spread, peak: (o.peak ?? 0.12) * 0.62 });
-  tone(freq, t, dur, { ...o, detune: -spread, peak: (o.peak ?? 0.12) * 0.62 });
-}
-
 function noiseHit(
   t: number,
   dur: number,
@@ -260,7 +254,7 @@ const comboSemi = (combo: number) => PENTA[Math.min(Math.max(combo - 1, 0), PENT
 let tapStep = 0;
 
 // note thường dùng
-const G3 = 196, A3 = 220, C4 = 261.63, E4 = 329.63, G4 = 392, A4 = 440, B4 = 493.88,
+const A3 = 220, C4 = 261.63, E4 = 329.63, G4 = 392, A4 = 440,
   C5 = 523.25, D5 = 587.33, E5 = 659.25, G5 = 783.99, A5 = 880, B5 = 987.77, C6 = 1046.5,
   E6 = 1318.51;
 
@@ -342,73 +336,100 @@ const cozy = {
 };
 
 // ============================================================
-// VOICE 2 — GAME (digital: blip chính xác, khô, dứt khoát)
+// VOICE 2 — GAME (CYBERPUNK: supersaw gằn, sub neon, laser zap, glitch)
 // ============================================================
-/** Blip thiết bị: square ngắn qua lowpass + click định vị nhẹ (đã hạ độ chói) */
-function blip(freq: number, t: number, dur = 0.05, peak = 0.08, send = 0.08) {
-  tone(freq, t, dur, { type: "square", peak, attack: 0.001, filterStart: freq * 3, filterEnd: freq * 1.6, q: 1.2, send });
-  noiseHit(t, 0.007, peak * 0.22, 3200, 2000, 2);
+/** Supersaw stab — 3 saw lệch điệu qua lowpass cộng hưởng: synth chất Blade Runner */
+function sawStab(freq: number, t: number, dur: number, peak = 0.08, fEnd = 1500, q = 8, send = 0.1) {
+  [-16, 0, 16].forEach((d, i) =>
+    tone(freq, t, dur, {
+      type: "sawtooth",
+      peak: peak * (i === 1 ? 0.72 : 0.5),
+      detune: d,
+      attack: 0.002,
+      filterStart: 5600,
+      filterEnd: fEnd,
+      q,
+      send,
+      pan: (i - 1) * 0.28,
+    }),
+  );
+}
+/** Sub bass gằn — square + sine trầm cho sức nặng "neon night" */
+function gritSub(freq: number, t: number, dur = 0.16, peak = 0.14) {
+  tone(freq, t, dur, { type: "square", peak, attack: 0.002, glide: freq * 0.72, filterStart: 640, filterEnd: 150, q: 4 });
+  tone(freq, t, dur * 0.9, { type: "sine", peak: peak * 0.85, attack: 0.002 });
+}
+/** Laser zap — saw glide xuống nhanh qua bandpass Q cao */
+function zap(t: number, from: number, to: number, peak = 0.08) {
+  tone(from, t, 0.15, { type: "sawtooth", peak, glide: to, filterStart: from * 1.4, filterEnd: Math.max(to, 200), q: 10, send: 0.12 });
+}
+/** Glitch — vài hạt noise cực ngắn stutter, chất data-corrupt */
+function glitch(t: number, n = 3, peak = 0.03) {
+  for (let i = 0; i < n; i++) noiseHit(t + i * 0.028, 0.013, peak, 1600 + i * 800, 700, 2.4, "bandpass");
 }
 const game = {
   tap(t: number) {
-    // hạ xuống ~1 quãng tám: gọn, chắc, không chói tai
-    const roots = [494, 554, 622];
-    blip(hz(roots[tapStep++ % roots.length]), t, 0.045, 0.08);
-    tone(hz(150), t, 0.032, { type: "sine", peak: 0.07, attack: 0.001 });
+    const roots = [330, 370, 415]; // mid gằn, không chói
+    sawStab(hz(roots[tapStep++ % roots.length]), t, 0.07, 0.075, 2400, 6);
+    gritSub(72, t, 0.06, 0.07);
+    noiseHit(t, 0.006, 0.028, 2800, 1700, 2.2);
   },
   pop(t: number) {
-    blip(hz(440), t, 0.04, 0.06);
+    sawStab(hz(392), t, 0.055, 0.06, 2200, 5);
   },
   flip(t: number) {
-    blip(hz(392), t, 0.05, 0.075);
-    blip(hz(587), t + 0.06, 0.05, 0.07);
+    zap(t, 820, 300, 0.055);
+    sawStab(hz(330), t + 0.03, 0.09, 0.055, 1900, 6);
   },
   swipe(t: number) {
-    noiseHit(t, 0.08, 0.04, 3200, 1000, 1.2, "bandpass", 0.06);
-    blip(hz(392), t + 0.07, 0.04, 0.06);
+    zap(t, 1500, 240, 0.06);
+    noiseHit(t, 0.1, 0.028, 3000, 700, 1.2, "bandpass", 0.06);
   },
   correct(t: number, combo: number) {
     const up = comboSemi(combo);
-    tone(hz(130), t, 0.09, { type: "sine", peak: 0.14, glide: 55, attack: 0.001 });
-    blip(semi(hz(E4), up), t + 0.015, 0.07, 0.11, 0.1);
-    blip(semi(hz(B4), up), t + 0.08, 0.08, 0.11, 0.12);
-    tone(semi(hz(E5), up), t + 0.14, 0.14, { type: "sine", peak: 0.055, send: 0.2 });
-    if (combo >= 5) {
-      [0, 4, 7, 12].forEach((s, i) => blip(semi(hz(E5), up + s), t + 0.18 + i * 0.04, 0.045, 0.05, 0.15));
-    }
+    gritSub(semi(62, up % 12), t, 0.2, 0.15); // neon kick
+    noiseHit(t, 0.006, 0.035, 3200, 1900, 2.2);
+    sawStab(semi(hz(A3), up), t + 0.01, 0.17, 0.085, 2800, 8); // stab root
+    sawStab(semi(hz(E4), up), t + 0.01, 0.17, 0.06, 2800, 8); // + quãng 5 (power chord)
+    tone(semi(hz(E5), up), t + 0.12, 0.14, { type: "sawtooth", peak: 0.05, detune: 12, filterStart: 4200, filterEnd: 2200, q: 4, send: 0.2 });
+    if (combo >= 5) [0, 7, 12].forEach((s, i) => sawStab(semi(hz(A4), up + s), t + 0.2 + i * 0.055, 0.1, 0.04, 3400, 5)); // arp
   },
   wrong(t: number) {
-    // "denied" — 2 blip trầm cụt, lowpass cho đỡ gắt
-    tone(hz(220), t, 0.08, { type: "square", peak: 0.09, filterStart: 800, filterEnd: 360, q: 2 });
-    tone(hz(174), t + 0.1, 0.12, { type: "square", peak: 0.09, filterStart: 640, filterEnd: 280, q: 2 });
-    tone(hz(98), t, 0.1, { type: "sine", peak: 0.08 });
+    // system error: saw gằn tụt xuống + glitch stutter
+    tone(hz(200), t, 0.2, { type: "sawtooth", peak: 0.11, glide: 84, filterStart: 1500, filterEnd: 260, q: 9 });
+    tone(hz(100), t, 0.22, { type: "square", peak: 0.09, detune: 22 });
+    glitch(t + 0.02, 3, 0.035);
   },
   complete(t: number) {
-    tone(hz(120), t, 0.1, { type: "sine", peak: 0.13, glide: 56 });
-    [G3, C4, E4, G4, C5].forEach((f, i) => blip(hz(f), t + 0.04 + i * 0.07, 0.07, 0.09, 0.12));
-    tone(hz(C6), t + 0.42, 0.22, { type: "sine", peak: 0.05, send: 0.25 });
-    noiseHit(t + 0.4, 0.13, 0.02, 3600, 6200, 1, "highpass", 0.2);
+    gritSub(55, t, 0.34, 0.14);
+    [220, 262, 330, 392].forEach((f, i) => sawStab(hz(f), t + 0.05 + i * 0.09, 0.24, 0.075, 2400 + i * 500, 7));
+    zap(t + 0.5, 1800, 700, 0.05);
+    noiseHit(t + 0.46, 0.14, 0.02, 3400, 6400, 1, "highpass", 0.2);
   },
   levelup(t: number) {
-    // data riser: chuỗi blip leo nhanh + fanfare (âm khu vừa, không chói)
-    [0, 2, 4, 5, 7, 9, 11, 12].forEach((s, i) => blip(semi(hz(A3), s), t + i * 0.045, 0.04, 0.06, 0.08));
-    tone(hz(120), t + 0.4, 0.1, { type: "sine", peak: 0.13, glide: 56 });
-    [C4, E4, G4, C5].forEach((f, i) => duo(hz(f), t + 0.42 + i * 0.075, 0.22, { type: "square", peak: 0.08, filterStart: 2200, filterEnd: 3800, q: 1.3, send: 0.12 }, 6));
+    // riser sweep dài + supersaw fanfare
+    tone(hz(180), t, 0.5, { type: "sawtooth", peak: 0.09, glide: 1400, filterStart: 300, filterEnd: 4200, q: 10, send: 0.12 });
+    glitch(t + 0.2, 4, 0.025);
+    gritSub(58, t + 0.5, 0.3, 0.14);
+    [262, 330, 392, 523].forEach((f, i) => sawStab(hz(f), t + 0.52 + i * 0.08, 0.26, 0.08, 3000, 6));
+    zap(t + 0.9, 2200, 900, 0.045);
   },
   goal(t: number) {
-    [E4, A4, C5].forEach((f, i) => blip(hz(f), t + i * 0.06, 0.055, 0.085, 0.1));
+    gritSub(72, t, 0.14, 0.11);
+    [330, 415, 523].forEach((f, i) => sawStab(hz(f), t + i * 0.07, 0.18, 0.07, 2600, 6));
   },
   tick(t: number) {
-    noiseHit(t, 0.01, 0.045, 2400, 1500, 2.4);
+    noiseHit(t, 0.009, 0.045, 2600, 1600, 2.6);
   },
   timeup(t: number) {
-    tone(hz(294), t, 0.22, { type: "square", peak: 0.09, glide: 210, filterStart: 1200, filterEnd: 440, q: 2 });
-    tone(hz(147), t + 0.16, 0.24, { type: "square", peak: 0.08, glide: 104, filterStart: 720, filterEnd: 260, q: 2 });
+    zap(t, 700, 150, 0.09);
+    gritSub(60, t + 0.12, 0.26, 0.12);
   },
   switch_(t: number) {
-    // data burst: 3 blip nhanh + noise mảnh
-    [494, 660, 880].forEach((f, i) => blip(hz(f), t + i * 0.05, 0.04, 0.07, 0.1));
-    noiseHit(t + 0.16, 0.09, 0.025, 2800, 5200, 1, "highpass", 0.15);
+    // data burst: zap + glitch + stab
+    zap(t, 1400, 360, 0.06);
+    glitch(t + 0.04, 3, 0.03);
+    sawStab(hz(330), t + 0.14, 0.16, 0.07, 2600, 6);
   },
 };
 

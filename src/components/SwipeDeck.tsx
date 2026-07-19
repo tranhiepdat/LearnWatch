@@ -171,7 +171,9 @@ export default function SwipeDeck({
         {/* the tren cung - vuot duoc */}
         <motion.div
           key={current.id}
-          drag="x"
+          // Khi ĐÃ LẬT (mặt sau) → tắt kéo ngang để CUỘN DỌC native mượt, hết
+          // xung đột swipe/scroll. Mặt trước mới kéo vuốt được.
+          drag={flipped ? false : "x"}
           dragMomentum={false}
           style={{ x, rotate }}
           onDragEnd={onDragEnd}
@@ -189,7 +191,9 @@ export default function SwipeDeck({
           initial={theme === "cozy" ? { scaleX: 0.97, scaleY: 0.92, opacity: 0, y: 10 } : { scale: 0.96, opacity: 0, y: 12 }}
           animate={{ scale: 1, scaleX: 1, scaleY: 1, opacity: 1, y: 0 }}
           transition={theme === "cozy" ? { type: "spring", stiffness: 380, damping: 24 } : { type: "spring", stiffness: 320, damping: 30 }}
-          className="absolute inset-0 cursor-grab touch-none select-none active:cursor-grabbing"
+          className={`absolute inset-0 select-none ${
+            flipped ? "cursor-default touch-pan-y" : "cursor-grab touch-none active:cursor-grabbing"
+          }`}
         >
           <div className="relative h-full w-full">
             <AnimatePresence initial={false}>
@@ -253,7 +257,7 @@ export default function SwipeDeck({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.94 }}
               transition={{ duration: 0.3, ease: [0.2, 0.8, 0.2, 1] }}
-              className="card-lux absolute inset-0 flex flex-col overflow-y-auto p-6"
+              className="card-lux absolute inset-0 flex touch-pan-y flex-col overflow-y-auto overscroll-contain p-6"
             >
               <div className="mb-1 flex items-center justify-between">
                 <BrandTag brand={current.brand} />

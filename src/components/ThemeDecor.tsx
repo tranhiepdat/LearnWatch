@@ -33,17 +33,30 @@ export default function ThemeDecor() {
 
       {theme === "cozy" && (
         <>
-          {/* nắng caramel + hơi ấm — góc quán quen buổi chiều */}
+          {/* nắng caramel ấm — bình minh trên đảo */}
           <div
-            className="absolute -right-16 -top-10 h-56 w-56 rounded-full opacity-[0.22]"
-            style={{ background: "radial-gradient(circle, #ffc06a 0%, rgba(255,192,106,0) 70%)" }}
+            className="absolute -right-16 -top-12 h-56 w-56 rounded-full opacity-[0.24]"
+            style={{ background: "radial-gradient(circle, #ffc873 0%, rgba(255,200,115,0) 70%)" }}
           />
-          <div className="absolute -right-6 top-[8%] h-20 w-20 rounded-full opacity-[0.2]" style={{ background: "#ffb84d" }} />
+          {/* lá Nook (Animal Crossing) lớn nép góc trên */}
+          <svg className="absolute -right-4 top-[6%] opacity-[0.16]" width="94" height="94" viewBox="0 0 100 100">
+            <path d="M50 6 C22 24 22 66 50 94 C78 66 78 24 50 6 Z" fill="#6fae7f" />
+            <path d="M50 14 L50 88" stroke="#4d8a5f" strokeWidth="2.5" fill="none" />
+            <path d="M50 40 L34 30 M50 54 L66 44 M50 68 L36 60" stroke="#4d8a5f" strokeWidth="2" fill="none" />
+          </svg>
+          {/* lá nhỏ trôi mép trái */}
+          <svg className="absolute -left-3 top-[42%] opacity-[0.14]" width="52" height="52" viewBox="0 0 100 100" style={{ transform: "rotate(-24deg)" }}>
+            <path d="M50 8 C26 24 26 62 50 92 C74 62 74 24 50 8 Z" fill="#8fb59b" />
+            <path d="M50 16 L50 86" stroke="#5f9270" strokeWidth="2.5" fill="none" />
+          </svg>
+          {/* trái cây bé (chấm) rải rác */}
+          <div className="absolute left-[16%] top-[14%] h-3 w-3 rounded-full opacity-[0.3]" style={{ background: "#d95d55" }} />
+          <div className="absolute right-[24%] bottom-[24%] h-2.5 w-2.5 rounded-full opacity-[0.28]" style={{ background: "#ef9b3f" }} />
+          {/* "đảo nhỏ" — gò cỏ tròn mềm nép đáy màn */}
           <div
-            className="absolute -left-10 bottom-[15%] h-24 w-24 rounded-full opacity-[0.14]"
-            style={{ border: "14px solid #6fae7f" }}
+            className="absolute -bottom-24 left-1/2 h-44 w-[150%] -translate-x-1/2 rounded-[50%] opacity-[0.14]"
+            style={{ background: "radial-gradient(circle at 50% 0%, #8fbf93 0%, rgba(143,191,147,0) 68%)" }}
           />
-          <div className="absolute left-[12%] bottom-[9%] h-3.5 w-3.5 rounded-full opacity-[0.25]" style={{ background: "#d95d55" }} />
         </>
       )}
 

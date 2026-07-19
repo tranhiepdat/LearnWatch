@@ -64,8 +64,8 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
   cozy: {
     id: "cozy",
     name: "Ấm áp",
-    tagline: "Kem bơ & caramel · phím creamy · pop tinh tế",
-    emoji: "☕",
+    tagline: "Đảo nhỏ ấm cúng · phím creamy · pop tròn dễ thương",
+    emoji: "🍃",
     preview: {
       bg: "#f8eedd",
       card: "#fffdf8",
@@ -75,25 +75,26 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
     },
     bar: "#f8eedd",
     motion: {
-      tap: 0.95,
-      spring: { type: "spring", stiffness: 400, damping: 26 },
-      bouncy: { type: "spring", stiffness: 440, damping: 20 },
+      // Animal Crossing: pop tròn trịa, dễ thương — boing MỀM biên độ nhỏ
+      tap: 0.94,
+      spring: { type: "spring", stiffness: 420, damping: 24 },
+      bouncy: { type: "spring", stiffness: 480, damping: 16 },
       pop: {
-        // squash & stretch TINH TẾ, biên độ nhỏ — dynamic gentle, không nhức đầu
-        keyframes: { scaleX: [0.975, 1.018, 0.996, 1], scaleY: [0.945, 1.03, 0.992, 1] },
-        transition: { duration: 0.4, ease: [0.3, 0.9, 0.4, 1] },
+        // squish AC: nén dẹt rồi bung tròn — cute mà không nhức đầu
+        keyframes: { scaleX: [0.97, 1.03, 0.99, 1], scaleY: [0.9, 1.05, 0.985, 1] },
+        transition: { duration: 0.42, ease: [0.34, 1.3, 0.5, 1] },
       },
       page: {
         initial: { opacity: 0, y: 10, scale: 0.99 },
         animate: { opacity: 1, y: 0, scale: 1 },
-        transition: { type: "spring", stiffness: 400, damping: 24 },
+        transition: { type: "spring", stiffness: 420, damping: 24 },
       },
-      // vào màn: squash nhẹ (scaleY thấp) rồi giãn mềm về — biên độ THẤP, êm
+      // vào màn: nén nhẹ rồi "bung" tròn kiểu hộp thoại AC — overshoot NHỎ
       card: {
-        initial: { opacity: 0, y: 8, scaleX: 0.99, scaleY: 0.93 },
+        initial: { opacity: 0, y: 6, scaleX: 0.97, scaleY: 0.9 },
         animate: { opacity: 1, y: 0, scaleX: 1, scaleY: 1 },
-        exit: { opacity: 0, scaleY: 0.97 },
-        transition: { type: "spring", stiffness: 380, damping: 26 },
+        exit: { opacity: 0, scaleY: 0.96 },
+        transition: { type: "spring", stiffness: 440, damping: 20 },
       },
     },
   },

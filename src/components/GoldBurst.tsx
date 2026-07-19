@@ -13,13 +13,14 @@ import { useTheme } from "@/lib/theme";
  * `small` = bản nhẹ (lật thẻ / vuốt trái).
  */
 
+// Animal Crossing: lá, cỏ 4 lá, hoa, trái cây, sao lấp lánh
 const COZY_GLYPHS = [
-  { ch: "✦", c: "#ffb84d" },
-  { ch: "★", c: "#ef9b3f" },
+  { ch: "☘", c: "#6fae7f" },
+  { ch: "✿", c: "#ef9b3f" },
+  { ch: "❀", c: "#d97fa0" },
+  { ch: "★", c: "#e8b04b" },
   { ch: "♥", c: "#d95d55" },
-  { ch: "●", c: "#6fae7f" },
-  { ch: "✿", c: "#e8b04b" },
-  { ch: "▲", c: "#c47118" },
+  { ch: "●", c: "#8fb59b" },
 ];
 
 const rr = (a: number, b: number) => a + Math.random() * (b - a);

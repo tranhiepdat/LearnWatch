@@ -42,9 +42,9 @@ export default function JuicyButton({
     if (sound) playTap();
     hTap();
     setFxKey((k) => k + 1); // remount hl-sweep + brackets
-    // solid highlight màu theme chớp lên khi bấm — mọi theme
-    flash.set({ opacity: theme === "lux" ? 0.4 : 0.52 });
-    flash.start({ opacity: 0, transition: { duration: theme === "cozy" ? 0.34 : 0.26, ease: "easeOut" } });
+    // solid highlight SOLID 100% màu theme chớp lên khi bấm rồi tắt — mọi theme
+    flash.set({ opacity: 1 });
+    flash.start({ opacity: 0, transition: { duration: theme === "cozy" ? 0.32 : 0.24, ease: "easeOut" } });
   }
 
   function fireRelease() {
