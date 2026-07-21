@@ -22,16 +22,18 @@ export default function RippleProvider() {
       const rect = el.getBoundingClientRect();
       if (rect.width === 0) return;
 
-      // 1) đĩa highlight màu đặc lan ra
-      const d = Math.max(rect.width, rect.height) * 2.2;
-      const span = document.createElement("span");
-      span.className = "ripple";
-      span.style.width = `${d}px`;
-      span.style.height = `${d}px`;
-      span.style.left = `${e.clientX - rect.left}px`;
-      span.style.top = `${e.clientY - rect.top}px`;
-      el.appendChild(span);
-      window.setTimeout(() => span.remove(), 550);
+      // 1) đĩa highlight màu đặc lan ra (nút tự lo highlight riêng thì gắn data-no-ripple)
+      if (!el.hasAttribute("data-no-ripple")) {
+        const d = Math.max(rect.width, rect.height) * 2.2;
+        const span = document.createElement("span");
+        span.className = "ripple";
+        span.style.width = `${d}px`;
+        span.style.height = `${d}px`;
+        span.style.left = `${e.clientX - rect.left}px`;
+        span.style.top = `${e.clientY - rect.top}px`;
+        el.appendChild(span);
+        window.setTimeout(() => span.remove(), 550);
+      }
 
       // 2) squash & stretch pop khi THẢ (bỏ qua nút framer / khối lớn)
       if (el.hasAttribute("data-no-pop") || el.style.transform || rect.height > 220) return;

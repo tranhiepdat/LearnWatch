@@ -37,22 +37,43 @@ function Tab({
 }) {
   const { theme, meta } = useTheme();
   const bounce = useAnimationControls();
+  const press = useAnimationControls();
   const cozyActive = theme === "cozy" && active;
 
   function onTap() {
     playTap();
     hTap();
-    bounce.start({ scale: [1, 0.85, 1.08, 1], transition: { duration: 0.3, ease: "easeOut" } });
+    // NẢY cả nút (icon + label) — squash & stretch theo theme
+    bounce.start(
+      theme === "cozy"
+        ? { scaleX: [1, 1.18, 0.9, 1.03, 1], scaleY: [1, 0.82, 1.12, 0.97, 1], transition: { duration: 0.42, ease: "easeOut" } }
+        : theme === "game"
+          ? { scale: [1, 0.88, 1.06, 1], transition: { duration: 0.2, ease: "easeOut" } }
+          : { scale: [1, 0.95, 1.02, 1], transition: { duration: 0.34, ease: "easeOut" } },
+    );
+    // highlight bao CẢ icon + text, bo góc theo theme (cozy tròn, digital vuông)
+    press.set({ opacity: theme === "game" ? 0.85 : 0.92, scale: 0.86 });
+    press.start({ opacity: 0, scale: 1, transition: { duration: 0.42, ease: "easeOut" } });
   }
 
   return (
     <Link
       href={href}
       onClick={onTap}
-      className={`cyber relative flex flex-1 flex-col items-center gap-1 py-2.5 transition active:scale-95 ${
+      data-no-pop
+      data-no-ripple
+      className={`cyber relative flex flex-1 flex-col items-center gap-1 py-2.5 ${
         active ? "text-gold-300" : "text-taupe"
       }`}
     >
+      {/* PRESS HIGHLIGHT — phủ cả icon + label, shape theo theme */}
+      <motion.span
+        aria-hidden
+        initial={{ opacity: 0 }}
+        animate={press}
+        className="pointer-events-none absolute inset-x-1 inset-y-0.5 z-0 rounded-[var(--r-md)]"
+        style={{ background: "rgb(var(--c-accent))", mixBlendMode: theme === "game" ? "screen" : "normal" }}
+      />
       <AnimatePresence>
         {cozyActive && (
           <motion.span
