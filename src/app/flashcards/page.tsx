@@ -151,7 +151,7 @@ export default function FlashcardsPage() {
               setMode(m);
               playTap();
             }}
-            className={`cyber chip ${mode === m ? "bg-gold-400/15 text-gold-300" : ""}`}
+            className={`cyber chip ${mode === m ? "chip-on" : ""}`}
           >
             {m}
             {m === "Đã thuộc" ? ` (${learnedCount})` : ""}

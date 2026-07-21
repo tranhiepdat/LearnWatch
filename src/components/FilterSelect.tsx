@@ -60,7 +60,7 @@ export default function FilterSelect({
                 playTap();
               }}
               className={`flex w-full items-center justify-between rounded-[var(--r-xs)] px-3 py-2 text-left text-sm transition active:scale-[0.98] ${
-                o === value ? "bg-gold-500/15 font-semibold text-gold-300" : "text-ivory hover:bg-surface-2"
+                o === value ? "bg-gold-400 font-semibold text-onaccent" : "text-ivory hover:bg-surface-2"
               }`}
             >
               <span>{o}</span>

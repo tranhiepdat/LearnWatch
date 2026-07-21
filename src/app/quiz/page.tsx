@@ -126,21 +126,25 @@ function QuizSetup() {
             }}
             className={`cyber flex items-center gap-3 rounded-[var(--r-md)] border p-3.5 text-left transition active:scale-[0.98] ${
               mode === m.id
-                ? "border-gold-400 bg-gold-400/10"
+                ? "border-gold-400 bg-gold-400"
                 : m.disabled
                   ? "border-hairline opacity-45"
                   : "border-hairline bg-surface"
             }`}
           >
-            <span className={`tile h-10 w-10 ${mode === m.id ? "" : "bg-surface-2 text-taupe"}`}>
+            <span
+              className={`grid h-10 w-10 shrink-0 place-items-center rounded-[var(--r-sm)] ${
+                mode === m.id ? "bg-white/25 text-onaccent" : "bg-surface-2 text-taupe"
+              }`}
+            >
               <m.Icon className="h-5 w-5" />
             </span>
             <span className="min-w-0 flex-1">
-              <span className={`block text-sm font-bold ${mode === m.id ? "text-gold-300" : "text-ivory"}`}>{m.title}</span>
-              <span className="block text-[11px] text-taupe">{m.desc}</span>
+              <span className={`block text-sm font-bold ${mode === m.id ? "text-onaccent" : "text-ivory"}`}>{m.title}</span>
+              <span className={`block text-[11px] ${mode === m.id ? "text-onaccent/75" : "text-taupe"}`}>{m.desc}</span>
             </span>
             {mode === m.id && (
-              <motion.span layoutId="mode-dot" className="h-2.5 w-2.5 shrink-0 rounded-[var(--r-full)] bg-gold-foil" />
+              <motion.span layoutId="mode-dot" className="h-2.5 w-2.5 shrink-0 rounded-[var(--r-full)] bg-onaccent" />
             )}
           </motion.button>
         ))}

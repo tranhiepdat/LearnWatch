@@ -80,9 +80,10 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
       spring: { type: "spring", stiffness: 420, damping: 24 },
       bouncy: { type: "spring", stiffness: 480, damping: 16 },
       pop: {
-        // squish AC: nén dẹt rồi bung tròn — cute mà không nhức đầu
-        keyframes: { scaleX: [0.97, 1.03, 0.99, 1], scaleY: [0.9, 1.05, 0.985, 1] },
-        transition: { duration: 0.42, ease: [0.34, 1.3, 0.5, 1] },
+        // squash & stretch RÕ RỆT: nén bẹt → kéo cao gầy → lắng (chỉ scale,
+        // in-place nên không tiền đình). Biên độ ±14% cho "đã tay" kiểu AC.
+        keyframes: { scaleX: [1.14, 0.9, 1.05, 0.98, 1], scaleY: [0.86, 1.14, 0.96, 1.01, 1] },
+        transition: { duration: 0.46, ease: [0.3, 0.9, 0.4, 1] },
       },
       page: {
         initial: { opacity: 0, y: 10, scale: 0.99 },

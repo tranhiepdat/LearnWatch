@@ -362,7 +362,7 @@ export default function QuizRunner({
               exit={{ scale: 0.4, opacity: 0 }}
               transition={meta.motion.bouncy}
               className={`flex items-center gap-1 rounded-[var(--r-full)] px-2.5 py-1 text-xs font-extrabold ${
-                combo >= 5 ? "bg-gold-foil text-onaccent" : "bg-gold-400/12 text-gold-300"
+                combo >= 5 ? "bg-gold-foil text-onaccent shadow-glow" : "bg-gold-400 text-onaccent"
               }`}
             >
               <IconFlame className="h-3.5 w-3.5" />

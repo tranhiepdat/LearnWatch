@@ -74,25 +74,25 @@ export default function Home() {
         <Link
           href="/quiz?mode=mistakes"
           onClick={() => playTap()}
-          className="cyber flex items-center gap-3 rounded-[var(--r-md)] bg-bordeaux/12 px-4 py-3 active:scale-[0.99]"
+          className="cyber flex items-center gap-3 rounded-[var(--r-md)] bg-bordeaux px-4 py-3 active:scale-[0.99]"
         >
-          <IconRedo className="h-5 w-5 shrink-0 text-bordeaux" />
-          <span className="min-w-0 flex-1 truncate text-[13px] font-semibold text-ivory">
+          <IconRedo className="h-5 w-5 shrink-0 text-white" />
+          <span className="min-w-0 flex-1 truncate text-[13px] font-semibold text-white">
             Ôn {mistakes} câu từng sai — xoá nợ cho nhớ lâu
           </span>
-          <IconChevron className="h-4 w-4 shrink-0 text-bordeaux" />
+          <IconChevron className="h-4 w-4 shrink-0 text-white" />
         </Link>
       ) : (
         <Link
           href="/quiz?mode=blitz"
           onClick={() => playTap()}
-          className="cyber flex items-center gap-3 rounded-[var(--r-md)] bg-gold-500/12 px-4 py-3 active:scale-[0.99]"
+          className="cyber flex items-center gap-3 rounded-[var(--r-md)] bg-gold-500 px-4 py-3 active:scale-[0.99]"
         >
-          <IconBolt className="h-5 w-5 shrink-0 text-gold-300" />
-          <span className="min-w-0 flex-1 truncate text-[13px] font-semibold text-ivory">
+          <IconBolt className="h-5 w-5 shrink-0 text-onaccent" />
+          <span className="min-w-0 flex-1 truncate text-[13px] font-semibold text-onaccent">
             Blitz 60 giây — phá kỷ lục của chính bạn
           </span>
-          <IconChevron className="h-4 w-4 shrink-0 text-gold-300" />
+          <IconChevron className="h-4 w-4 shrink-0 text-onaccent" />
         </Link>
       )}
 

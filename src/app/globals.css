@@ -37,7 +37,7 @@
   --c-hairline: rgba(238, 241, 255, 0.14);
 
   --bg-wash: radial-gradient(120% 80% at 50% -10%, #10131f 0%, #090a12 52%, #07080f 100%);
-  --grad-primary: linear-gradient(135deg, #62e9ff 0%, #35e0ff 55%, #12b7e8 100%);
+  --grad-primary: linear-gradient(#35e0ff, #35e0ff); /* SOLID cyan (accent) */
   --grad-line: linear-gradient(90deg, transparent, rgba(53, 224, 255, 0.6), transparent);
   --sh-glow: 0 0 18px -6px rgba(53, 224, 255, 0.45);
   --sh-ring: 0 0 0 1px rgba(53, 224, 255, 0.25), 0 10px 30px -14px rgba(0, 0, 0, 0.7);
@@ -79,8 +79,8 @@
   --c-on-accent: 61 36 14;
   --c-hairline: rgba(120, 80, 44, 0.14);
 
-  --bg-wash: linear-gradient(180deg, #faf2e4 0%, #f8eedd 55%, #f2e2c8 100%);
-  --grad-primary: linear-gradient(135deg, #ffc06a 0%, #ef9b3f 55%, #e0862a 100%);
+  --bg-wash: linear-gradient(#f8eedd, #f8eedd); /* SOLID kem */
+  --grad-primary: linear-gradient(#ef9b3f, #ef9b3f); /* SOLID cam (accent) */
   --grad-line: linear-gradient(90deg, transparent, rgba(224, 134, 42, 0.5), transparent);
   --sh-glow: 0 10px 22px -8px rgba(224, 134, 42, 0.45);
   --sh-ring: 0 10px 24px -12px rgba(150, 100, 50, 0.28);
@@ -123,7 +123,7 @@
   --c-hairline: rgba(217, 185, 120, 0.22);
 
   --bg-wash: radial-gradient(130% 90% at 50% -15%, #143126 0%, #0c1d16 52%, #0a1712 100%);
-  --grad-primary: linear-gradient(135deg, #ecd9a8 0%, #d9b978 48%, #b08d4a 100%);
+  --grad-primary: linear-gradient(#d9b978, #d9b978); /* SOLID champagne (accent) */
   --grad-line: linear-gradient(90deg, transparent, rgba(217, 185, 120, 0.55), transparent);
   --sh-glow: 0 10px 26px -10px rgba(217, 185, 120, 0.35);
   --sh-ring: 0 0 0 1px rgba(217, 185, 120, 0.28), 0 14px 34px -16px rgba(0, 0, 0, 0.6);
@@ -229,8 +229,8 @@ body::after {
     @apply bg-gold-400 text-onaccent shadow-glow;
   }
   .tile {
-    @apply grid shrink-0 place-items-center rounded-[var(--r-sm)] text-gold-300;
-    background: rgb(var(--c-accent) / 0.12);
+    @apply grid shrink-0 place-items-center rounded-[var(--r-sm)] text-onaccent;
+    background: rgb(var(--c-accent));
   }
   .stat {
     @apply flex items-center gap-1 whitespace-nowrap text-[11px] font-semibold text-taupe;
@@ -396,23 +396,23 @@ body::after {
   animation: solidflash 0.45s ease-out 1;
 }
 
-/* ===== Ripple từ điểm chạm ===== */
+/* ===== TAP FX toàn cục cho .cyber (do RippleProvider gắn) ===== */
 .cyber {
   position: relative;
   overflow: hidden;
 }
+/* Highlight khi chạm: đĩa màu ĐẶC lan ra (không còn translucent/mờ) */
 .ripple {
   position: absolute;
   z-index: 6;
   border-radius: 9999px;
-  background: var(--fx-ripple);
-  mix-blend-mode: var(--fx-ripple-blend);
+  background: rgb(var(--c-accent));
   pointer-events: none;
   transform: translate(-50%, -50%) scale(0);
-  opacity: 1;
-  animation: ripple 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  opacity: 0.85;
+  animation: ripple 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
 }
-/* Digital: ripple là Ô VUÔNG mở ra — đồng bộ ngôn ngữ hình khối */
+/* Digital: đĩa vuông (đồng bộ ngôn ngữ hình khối) */
 [data-theme="game"] .ripple {
   border-radius: 0;
 }
@@ -421,6 +421,29 @@ body::after {
     transform: translate(-50%, -50%) scale(1);
     opacity: 0;
   }
+}
+
+/* Squash & stretch khi THẢ nút — keyframe chạy TRỌN VẸN bất kể tap nhanh/chậm.
+   RippleProvider thêm .tap-pop lúc pointerup rồi gỡ khi animationend. */
+[data-theme="cozy"] .tap-pop { animation: popCozy 0.42s cubic-bezier(0.3, 0.9, 0.4, 1); transform-origin: center bottom; }
+[data-theme="game"] .tap-pop { animation: popGame 0.2s steps(3, end); }
+[data-theme="lux"]  .tap-pop { animation: popLux 0.34s cubic-bezier(0.3, 0.85, 0.4, 1); }
+@keyframes popCozy {
+  0%   { transform: scale(1.12, 0.88); }  /* nén bẹt (vừa thả từ trạng thái bấm) */
+  35%  { transform: scale(0.9, 1.12); }   /* kéo cao gầy */
+  60%  { transform: scale(1.05, 0.97); }
+  80%  { transform: scale(0.98, 1.01); }
+  100% { transform: scale(1, 1); }
+}
+@keyframes popGame {
+  0%   { transform: scale(0.9); }
+  50%  { transform: scale(1.07); }
+  100% { transform: scale(1); }
+}
+@keyframes popLux {
+  0%   { transform: scale(0.95); }
+  45%  { transform: scale(1.035); }
+  100% { transform: scale(1); }
 }
 
 /* ===== Nút 3D lún — CHỈ cozy (keycap); digital phẳng, boutique glow ===== */
