@@ -63,7 +63,7 @@ function Tab({
       data-no-pop
       data-no-ripple
       className={`cyber relative flex flex-1 flex-col items-center gap-1 py-2.5 ${
-        active ? "text-gold-300" : "text-taupe"
+        cozyActive ? "text-onaccent" : active ? "text-gold-300" : "text-taupe"
       }`}
     >
       {/* PRESS HIGHLIGHT — phủ cả icon + label, shape theo theme */}
@@ -75,44 +75,43 @@ function Tab({
         style={{ background: "rgb(var(--c-accent))", mixBlendMode: theme === "game" ? "screen" : "normal" }}
       />
       <AnimatePresence>
+        {/* CHỈ BÁO ACTIVE (static) — bao TRỌN cả icon + label + ô, shape theo theme */}
         {cozyActive && (
           <motion.span
             key="cozy-ind"
-            initial={{ scale: 0.3, opacity: 0 }}
+            initial={{ scale: 0.7, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.5, opacity: 0, transition: { duration: 0.12 } }}
+            exit={{ scale: 0.8, opacity: 0, transition: { duration: 0.12 } }}
             transition={meta.motion.bouncy}
-            className="absolute top-0.5 h-[34px] w-[46px] rounded-[var(--r-full)]"
+            className="absolute inset-x-1 inset-y-1 rounded-[var(--r-md)]"
             style={{ background: "var(--grad-primary)", boxShadow: "inset 0 2px 0 rgba(255,255,255,0.45), var(--sh-glow)" }}
           />
         )}
         {active && theme === "game" && (
           <motion.span
             key="game-ind"
-            initial={{ opacity: 0, scale: 0.6, borderRadius: 12 }}
-            animate={{ opacity: 1, scale: 1, borderRadius: 2 }}
+            initial={{ opacity: 0, scale: 0.75 }}
+            animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.1 } }}
             transition={{ duration: 0.22, ease: [0.65, 0, 0.35, 1] }}
-            className="absolute top-0.5 h-[34px] w-[38px] border border-gold-400/80"
+            className="absolute inset-x-1 inset-y-1 border border-gold-400/80 bg-gold-400/10"
           >
-            <span className="absolute -left-px -top-px h-[5px] w-[5px] border-l border-t border-gold-300" />
-            <span className="absolute -right-px -top-px h-[5px] w-[5px] border-r border-t border-gold-300" />
-            <span className="absolute -bottom-px -left-px h-[5px] w-[5px] border-b border-l border-gold-300" />
-            <span className="absolute -bottom-px -right-px h-[5px] w-[5px] border-b border-r border-gold-300" />
+            <span className="absolute -left-px -top-px h-[6px] w-[6px] border-l border-t border-gold-300" />
+            <span className="absolute -right-px -top-px h-[6px] w-[6px] border-r border-t border-gold-300" />
+            <span className="absolute -bottom-px -left-px h-[6px] w-[6px] border-b border-l border-gold-300" />
+            <span className="absolute -bottom-px -right-px h-[6px] w-[6px] border-b border-r border-gold-300" />
           </motion.span>
         )}
         {active && theme === "lux" && (
-          <motion.span key="lux-ind" className="absolute inset-x-3 top-0" initial="off" animate="on" exit="off">
-            <motion.span
-              variants={{ off: { scaleX: 0, opacity: 0 }, on: { scaleX: 1, opacity: 1 } }}
-              transition={{ duration: 0.3, ease: [0.25, 0.8, 0.25, 1] }}
-              className="block h-px bg-gold-foil"
-            />
-            <motion.span
-              variants={{ off: { scale: 0, opacity: 0 }, on: { scale: 1, opacity: 1 } }}
-              transition={{ duration: 0.3, delay: 0.08 }}
-              className="absolute left-1/2 top-[-2.5px] h-[6px] w-[6px] -translate-x-1/2 rotate-45 bg-gold-400"
-            />
+          <motion.span
+            key="lux-ind"
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.12 } }}
+            transition={{ duration: 0.3, ease: [0.25, 0.8, 0.25, 1] }}
+            className="absolute inset-x-1 inset-y-1 rounded-[var(--r-md)] border border-gold-400/70 bg-gold-400/10"
+          >
+            <span className="absolute left-1/2 top-[-3px] h-[6px] w-[6px] -translate-x-1/2 rotate-45 bg-gold-400" />
           </motion.span>
         )}
       </AnimatePresence>
@@ -121,11 +120,9 @@ function Tab({
         <Icon
           className="h-[22px] w-[22px]"
           style={
-            cozyActive
-              ? { color: "rgb(var(--c-on-accent))" }
-              : active && theme === "game"
-                ? { filter: "drop-shadow(0 0 5px rgb(var(--c-accent) / 0.7))" }
-                : undefined
+            active && theme === "game"
+              ? { filter: "drop-shadow(0 0 5px rgb(var(--c-accent) / 0.7))" }
+              : undefined
           }
         />
         <span className={`text-[10px] tracking-wide ${active ? "font-bold" : "font-medium"}`}>{label}</span>
