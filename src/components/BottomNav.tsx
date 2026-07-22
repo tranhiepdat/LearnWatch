@@ -117,7 +117,7 @@ function Tab({
         )}
       </AnimatePresence>
 
-      <motion.span animate={bounce} className="relative z-10">
+      <motion.span animate={bounce} className="relative z-10 flex flex-col items-center gap-1">
         <Icon
           className="h-[22px] w-[22px]"
           style={
@@ -128,8 +128,8 @@ function Tab({
                 : undefined
           }
         />
+        <span className={`text-[10px] tracking-wide ${active ? "font-bold" : "font-medium"}`}>{label}</span>
       </motion.span>
-      <span className={`relative z-10 text-[10px] tracking-wide ${active ? "font-bold" : "font-medium"}`}>{label}</span>
     </Link>
   );
 }

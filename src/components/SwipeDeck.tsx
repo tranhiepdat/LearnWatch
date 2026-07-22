@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence, useMotionValue, useTransform, animate, type PanInfo } from "framer-motion";
+import { motion, AnimatePresence, useAnimationControls, useMotionValue, useTransform, animate, type PanInfo } from "framer-motion";
 import type { Watch } from "@/data/types";
 import { hasPhoto } from "@/data/photos";
 import WatchVisual from "./WatchVisual";
@@ -56,6 +56,7 @@ export default function SwipeDeck({
 }) {
   const { theme } = useTheme();
   const feel = DRAG_FEEL[theme];
+  const cardFx = useAnimationControls();
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [flipBurst, setFlipBurst] = useState(0);
@@ -184,6 +185,14 @@ export default function SwipeDeck({
             if (Math.abs(x.get()) < 8) {
               setFlipped((f) => !f);
               setFlipBurst((k) => k + 1);
+              // cozy: cả thẻ NẢY squash-stretch đặc trưng khi lật
+              if (theme === "cozy") {
+                cardFx.start({
+                  scaleX: [1, 1.05, 0.97, 1.01, 1],
+                  scaleY: [1, 0.95, 1.04, 0.99, 1],
+                  transition: { duration: 0.5, ease: "easeOut" },
+                });
+              }
               playFlip();
               hFlip();
             }
@@ -195,7 +204,7 @@ export default function SwipeDeck({
             flipped ? "cursor-default touch-pan-y" : "cursor-grab touch-none active:cursor-grabbing"
           }`}
         >
-          <div className="relative h-full w-full">
+          <motion.div animate={cardFx} className="relative h-full w-full">
             <AnimatePresence initial={false}>
             {!flipped ? (
             /* MAT TRUOC — scale-highlight vào (không lật 3D, không lắc) */
@@ -357,7 +366,7 @@ export default function SwipeDeck({
             </motion.div>
             )}
             </AnimatePresence>
-          </div>
+          </motion.div>
 
           {/* digital: khung chọn outline hiện dần khi kéo thẻ */}
           {theme === "game" && (

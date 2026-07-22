@@ -369,13 +369,18 @@ function glitch(t: number, n = 3, peak = 0.03) {
 }
 const game = {
   tap(t: number) {
-    const roots = [330, 370, 415]; // mid gằn, không chói
-    sawStab(hz(roots[tapStep++ % roots.length]), t, 0.07, 0.075, 2400, 6);
-    gritSub(72, t, 0.06, 0.07);
-    noiseHit(t, 0.006, 0.028, 2800, 1700, 2.2);
+    // 8 nốt + đổi timbre/brightness/sub theo bước → mỗi lần bấm mỗi khác, hết lặp
+    const notes = [330, 392, 440, 294, 349, 466, 392, 262];
+    const s = tapStep++;
+    const f = notes[s % notes.length];
+    sawStab(hz(f), t, 0.07, 0.07, 1900 + (s % 4) * 650, 5 + (s % 3));
+    gritSub(60 + (s % 3) * 8, t, 0.055, 0.06);
+    noiseHit(t, 0.006, 0.026, 2500 + (s % 3) * 600, 1700, 2.2);
+    if (s % 4 === 2) tone(hz(f * 3), t + 0.02, 0.05, { type: "sine", peak: 0.028, send: 0.18 }); // chirp accent thi thoảng
   },
   pop(t: number) {
-    sawStab(hz(392), t, 0.055, 0.06, 2200, 5);
+    const notes = [392, 466, 349, 440];
+    sawStab(hz(notes[tapStep % notes.length]), t, 0.055, 0.06, 2200, 5);
   },
   flip(t: number) {
     zap(t, 820, 300, 0.055);
@@ -387,12 +392,31 @@ const game = {
   },
   correct(t: number, combo: number) {
     const up = comboSemi(combo);
-    gritSub(semi(62, up % 12), t, 0.2, 0.15); // neon kick
-    noiseHit(t, 0.006, 0.035, 3200, 1900, 2.2);
-    sawStab(semi(hz(A3), up), t + 0.01, 0.17, 0.085, 2800, 8); // stab root
-    sawStab(semi(hz(E4), up), t + 0.01, 0.17, 0.06, 2800, 8); // + quãng 5 (power chord)
-    tone(semi(hz(E5), up), t + 0.12, 0.14, { type: "sawtooth", peak: 0.05, detune: 12, filterStart: 4200, filterEnd: 2200, q: 4, send: 0.2 });
-    if (combo >= 5) [0, 7, 12].forEach((s, i) => sawStab(semi(hz(A4), up + s), t + 0.2 + i * 0.055, 0.1, 0.04, 3400, 5)); // arp
+    gritSub(semi(62, up % 12), t, 0.22, 0.16); // neon kick trầm
+    noiseHit(t, 0.006, 0.04, 3400, 1900, 2.2);
+    // power chord DÀY: root + quãng 5 + quãng 8
+    sawStab(semi(hz(A3), up), t + 0.01, 0.18, 0.09, 3000, 8);
+    sawStab(semi(hz(E4), up), t + 0.01, 0.18, 0.06, 3000, 8);
+    sawStab(semi(hz(A4), up), t + 0.02, 0.16, 0.045, 3400, 6);
+    // arp leo GIẢI QUYẾT (resolve) — cảm giác "thắng"
+    [0, 7, 12].forEach((s, i) =>
+      tone(semi(hz(E5), up + s), t + 0.13 + i * 0.05, 0.14, {
+        type: "sawtooth",
+        peak: 0.05,
+        detune: 10,
+        filterStart: 4200,
+        filterEnd: 2400,
+        q: 4,
+        send: 0.22,
+      }),
+    );
+    // đuôi sparkle sáng bay lên
+    tone(semi(hz(A5), up), t + 0.3, 0.2, { type: "sine", peak: 0.045, send: 0.3, pan: -0.15 });
+    if (combo >= 3) tone(semi(hz(1318.51), up), t + 0.34, 0.16, { type: "sine", peak: 0.035, send: 0.34, pan: 0.2 });
+    if (combo >= 5)
+      [0, 4, 7, 12].forEach((s, i) =>
+        tone(semi(hz(A5), up + s), t + 0.38 + i * 0.045, 0.12, { type: "sine", peak: 0.03, send: 0.32, pan: (i - 1.5) * 0.25 }),
+      );
   },
   wrong(t: number) {
     // system error: saw gằn tụt xuống + glitch stutter
