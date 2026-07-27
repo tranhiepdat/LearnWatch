@@ -1,181 +1,151 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { jpSteps, jpPhrases, phrasesOfStep, type JpPhrase } from "@/data/nihongo";
+import LearnDeck from "@/components/LearnDeck";
+import { jpSteps, jpPhrases, type JpPhrase } from "@/data/nihongo";
 import { getProgress, toggleLearned } from "@/lib/progress";
-import { playTap, playPop, playCorrect } from "@/lib/sound";
-import { hTap, hSuccess } from "@/lib/haptics";
-import { useTheme } from "@/lib/theme";
-import { IconCheck, IconChevron, IconLang } from "@/components/icons";
+import { playTap } from "@/lib/sound";
+import { hTap } from "@/lib/haptics";
+import { shuffle } from "@/lib/quiz";
+import { IconCheck } from "@/components/icons";
 
 const jpKey = (id: string) => `jp:${id}`;
 
 export default function NihongoPage() {
-  const { meta } = useTheme();
   const [learned, setLearned] = useState<string[]>([]);
-  const [open, setOpen] = useState<number | null>(null);
-  /** false = chỉ hiện câu LÕI (ngắn) — mặc định, học ngắn trước cho dễ nhớ */
-  const [showLong, setShowLong] = useState(false);
+  /** 0 = tất cả các chặng */
+  const [step, setStep] = useState(1);
+  /** false = chỉ câu LÕI (ngắn) — học ngắn trước cho dễ nhớ */
+  const [withLong, setWithLong] = useState(false);
+  const [order, setOrder] = useState(0);
+  const [showList, setShowList] = useState(false);
 
   useEffect(() => setLearned(getProgress().learned), []);
 
-  const done = (id: string) => learned.includes(jpKey(id));
+  const isKnown = (p: JpPhrase) => learned.includes(jpKey(p.id));
 
-  function mark(p: JpPhrase) {
-    if (done(p.id)) return;
-    setLearned(toggleLearned(jpKey(p.id)).learned);
-    playCorrect(1);
-    hSuccess();
-  }
+  const items = useMemo(() => {
+    let base = step === 0 ? jpPhrases : jpPhrases.filter((p) => p.step === step);
+    if (!withLong) base = base.filter((p) => p.len === "short");
+    return order === 0 ? base : shuffle(base);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step, withLong, order]);
 
-  const total = jpPhrases.length;
-  const doneCount = useMemo(() => jpPhrases.filter((p) => done(p.id)).length, [learned]); // eslint-disable-line react-hooks/exhaustive-deps
+  const cur = jpSteps.find((s) => s.id === step);
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
-      <div>
-        <p className="label-luxe">Tiếng Nhật bán hàng</p>
-        <h1 className="font-display text-3xl font-semibold text-ivory">接客日本語</h1>
-        <p className="mt-1 text-sm text-taupe">
-          Lộ trình 6 chặng theo đúng thứ tự tiếp khách · câu <span className="font-semibold text-gold-300">ngắn trước, dài sau</span>
-        </p>
-      </div>
-
-      {/* tiến độ tổng */}
-      <div className="card-lux p-4">
-        <div className="flex items-center justify-between">
-          <span className="stat text-ivory">
-            <IconLang className="h-4 w-4 text-gold-300" /> Đã thuộc
-          </span>
-          <span className="font-tech text-sm font-bold text-gold-300">
-            {doneCount}/{total}
-          </span>
+    <div className="mx-auto flex h-full max-w-xl flex-col">
+      <div className="shrink-0">
+        <div className="flex items-end justify-between">
+          <div className="min-w-0">
+            <p className="label-luxe">Tiếng Nhật bán hàng</p>
+            <h1 className="font-display text-2xl font-semibold text-ivory">接客日本語</h1>
+          </div>
+          <button
+            onClick={() => {
+              setShowList((v) => !v);
+              playTap();
+              hTap();
+            }}
+            className="cyber chip shrink-0"
+          >
+            {showList ? "Học thẻ" : "Xem tất cả"}
+          </button>
         </div>
-        <div className="mt-2 h-2 overflow-hidden rounded-[var(--r-full)] bg-surface-3">
-          <motion.div
-            className="h-full rounded-[var(--r-full)] bg-gold-foil"
-            initial={{ width: 0 }}
-            animate={{ width: `${(doneCount / total) * 100}%` }}
-            transition={{ type: "spring", stiffness: 70, damping: 20 }}
-          />
-        </div>
-      </div>
 
-      {/* công tắc ngắn/dài */}
-      <div className="flex items-center gap-2">
-        <button
-          onClick={() => {
-            setShowLong(false);
-            playTap();
-            hTap();
-          }}
-          className={`cyber chip ${!showLong ? "chip-on" : ""}`}
-        >
-          Câu lõi (ngắn)
-        </button>
-        <button
-          onClick={() => {
-            setShowLong(true);
-            playTap();
-            hTap();
-          }}
-          className={`cyber chip ${showLong ? "chip-on" : ""}`}
-        >
-          Tất cả (có câu dài)
-        </button>
-      </div>
-
-      {/* 6 chặng */}
-      <div className="space-y-2.5">
-        {jpSteps.map((s, i) => {
-          const all = phrasesOfStep(s.id);
-          const list = showLong ? all : all.filter((p) => p.len === "short");
-          const nDone = all.filter((p) => done(p.id)).length;
-          const pct = Math.round((nDone / all.length) * 100);
-          const isOpen = open === s.id;
-
-          return (
-            <motion.div
-              key={s.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ ...meta.motion.spring, delay: i * 0.04 }}
-              className="card-lux overflow-hidden"
-            >
+        {/* chọn CHẶNG — lộ trình đúng thứ tự tiếp khách */}
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {jpSteps.map((s) => {
+            const all = jpPhrases.filter((p) => p.step === s.id);
+            const n = all.filter((p) => isKnown(p)).length;
+            return (
               <button
+                key={s.id}
                 onClick={() => {
-                  setOpen(isOpen ? null : s.id);
-                  playPop();
+                  setStep(s.id);
+                  playTap();
                   hTap();
                 }}
-                className="cyber flex w-full items-center gap-3 p-4 text-left"
+                className={`cyber chip text-[11px] ${step === s.id ? "chip-on" : ""}`}
+                title={s.goal}
               >
-                <span className="tile h-10 w-10 text-base">{s.emoji}</span>
-                <span className="min-w-0 flex-1">
-                  <span className="label-luxe block text-[9px]">Chặng {s.id}</span>
-                  <span className="block text-[15px] font-bold leading-tight text-ivory">{s.title}</span>
-                  <span className="mt-0.5 block text-[11px] text-taupe">{s.goal}</span>
-                  <span className="mt-1.5 flex items-center gap-2">
-                    <span className="h-1.5 w-20 overflow-hidden rounded-[var(--r-full)] bg-surface-3">
-                      <span className="block h-full rounded-[var(--r-full)] bg-gold-foil" style={{ width: `${pct}%` }} />
-                    </span>
-                    <span className="font-tech text-[10px] text-taupe">
-                      {nDone}/{all.length}
-                    </span>
-                  </span>
+                {s.emoji} {s.id}. {s.title}
+                <span className="ml-1 opacity-70">
+                  {n}/{all.length}
                 </span>
-                <IconChevron
-                  className={`h-4 w-4 shrink-0 text-taupe transition-transform ${isOpen ? "-rotate-90" : "rotate-90"}`}
-                />
               </button>
+            );
+          })}
+        </div>
 
-              <AnimatePresence initial={false}>
-                {isOpen && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.22, ease: [0.25, 0.8, 0.25, 1] }}
-                    className="overflow-hidden"
-                  >
-                    <div className="space-y-2 px-4 pb-4">
-                      {list.map((p) => (
-                        <div key={p.id} className="rounded-[var(--r-md)] bg-surface-2 p-3">
-                          <div className="flex items-start justify-between gap-2">
-                            <p className="font-display text-lg font-semibold leading-snug text-ivory">{p.jp}</p>
-                            {p.len === "long" && (
-                              <span className="label-luxe shrink-0 text-[9px] text-taupe">dài</span>
-                            )}
-                          </div>
-                          <p className="mt-0.5 text-[12px] italic text-gold-300">{p.romaji}</p>
-                          <p className="mt-1 text-[13px] text-ivory/85">{p.vi}</p>
-                          {p.note && <p className="mt-1.5 text-[11px] leading-snug text-taupe">💡 {p.note}</p>}
-                          <button
-                            onClick={() => mark(p)}
-                            disabled={done(p.id)}
-                            className={`cyber mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-[var(--r-md)] py-2 text-xs font-bold ${
-                              done(p.id) ? "bg-surface-3 text-taupe" : "bg-gold-400 text-onaccent"
-                            }`}
-                          >
-                            <IconCheck className="h-4 w-4" />
-                            {done(p.id) ? "Đã thuộc" : "Đánh dấu thuộc"}
-                          </button>
-                        </div>
-                      ))}
-                      {!showLong && all.some((p) => p.len === "long") && (
-                        <p className="pt-1 text-center text-[11px] text-taupe">
-                          Còn {all.filter((p) => p.len === "long").length} câu dài — bật &quot;Tất cả&quot; khi đã thuộc câu lõi
-                        </p>
-                      )}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          );
-        })}
+        <div className="mt-2 flex items-center gap-2">
+          <button
+            onClick={() => {
+              setWithLong((v) => !v);
+              playTap();
+              hTap();
+            }}
+            className={`cyber chip text-[11px] ${withLong ? "chip-on" : ""}`}
+          >
+            {withLong ? "Đang học cả câu dài" : "Chỉ câu lõi (ngắn)"}
+          </button>
+          {cur && <span className="min-w-0 flex-1 truncate text-[11px] text-taupe">{cur.goal}</span>}
+        </div>
       </div>
+
+      {showList ? (
+        <div className="mt-3 min-h-0 flex-1 space-y-2 overflow-y-auto">
+          {jpPhrases.map((p) => (
+            <div key={p.id} className="card-lux p-3">
+              <div className="flex items-start justify-between gap-2">
+                <p className="font-display text-base font-semibold leading-snug text-ivory">{p.jp}</p>
+                <span className={`mt-1 h-2 w-2 shrink-0 rounded-[var(--r-full)] ${isKnown(p) ? "bg-gold-400" : "bg-surface-3"}`} />
+              </div>
+              <p className="text-[11.5px] italic text-gold-300">{p.romaji}</p>
+              <p className="text-[12.5px] text-ivory/85">{p.vi}</p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="mt-3 min-h-0 flex-1">
+          <LearnDeck
+            items={items}
+            isKnown={isKnown}
+            onKnow={(p) => setLearned(toggleLearned(jpKey(p.id)).learned)}
+            onReshuffle={() => setOrder((o) => o + 1)}
+            knowLabel="Đã thuộc"
+            skipLabel="Ôn lại"
+            emptyText="Chặng này chưa có câu"
+            hint="Chạm để xem nghĩa · Vuốt phải nếu đã thuộc"
+            /* MẶT TRƯỚC: chỉ tiếng Nhật — tự nhớ nghĩa trước khi lật */
+            renderFront={(p) => (
+              <div className="flex flex-1 flex-col items-center justify-center text-center">
+                <p className="label-luxe">
+                  Chặng {p.step} · {p.len === "short" ? "câu lõi" : "câu dài"}
+                </p>
+                <p className="mt-3 font-display text-3xl font-bold leading-snug text-ivory">{p.jp}</p>
+                {isKnown(p) && (
+                  <span className="stat mt-4 text-gold-300">
+                    <IconCheck className="h-3.5 w-3.5" /> đã thuộc
+                  </span>
+                )}
+              </div>
+            )}
+            renderBack={(p) => (
+              <div className="flex flex-1 flex-col justify-center">
+                <p className="font-display text-2xl font-bold leading-snug text-ivory">{p.jp}</p>
+                <p className="mt-1.5 text-base italic text-gold-300">{p.romaji}</p>
+                <div className="mt-3 rounded-[var(--r-md)] bg-surface-2 p-3">
+                  <p className="label-luxe text-[9px]">Nghĩa</p>
+                  <p className="mt-1 text-[15px] font-semibold leading-snug text-ivory">{p.vi}</p>
+                </div>
+                {p.note && <p className="mt-2.5 text-[12px] leading-relaxed text-taupe">💡 {p.note}</p>}
+              </div>
+            )}
+          />
+        </div>
+      )}
+
     </div>
   );
 }

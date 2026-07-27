@@ -1,169 +1,132 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import LearnDeck from "@/components/LearnDeck";
 import { tips, tipsOfDay, TIP_CATS, type SaleTip, type TipCat } from "@/data/tips";
 import { getProgress, toggleLearned } from "@/lib/progress";
-import { playTap, playPop, playCorrect } from "@/lib/sound";
-import { hTap, hSuccess } from "@/lib/haptics";
-import { useTheme } from "@/lib/theme";
-import { IconBulb, IconCheck, IconChevron } from "@/components/icons";
+import { playTap } from "@/lib/sound";
+import { hTap } from "@/lib/haptics";
+import { shuffle } from "@/lib/quiz";
+import { IconBulb, IconCheck } from "@/components/icons";
 
-type Filter = "Tất cả" | TipCat;
-const FILTERS: Filter[] = ["Tất cả", ...TIP_CATS];
+type Deck = "today" | "all" | TipCat;
 const tipKey = (id: string) => `tip:${id}`;
 
 export default function TipsPage() {
-  const { meta } = useTheme();
-  const [today, setToday] = useState<SaleTip[]>([]);
   const [learned, setLearned] = useState<string[]>([]);
-  const [filter, setFilter] = useState<Filter>("Tất cả");
+  const [deck, setDeck] = useState<Deck>("today");
+  const [today, setToday] = useState<SaleTip[]>([]);
+  const [order, setOrder] = useState(0); // đổi để xáo lại
+  const [showList, setShowList] = useState(false);
 
-  // Mọi thứ phụ thuộc NGÀY phải chạy sau mount → tránh hydration mismatch
   useEffect(() => {
-    const dayKey = new Date().toISOString().slice(0, 10);
-    setToday(tipsOfDay(dayKey, 3));
+    setToday(tipsOfDay(new Date().toISOString().slice(0, 10), 3));
     setLearned(getProgress().learned);
   }, []);
 
-  const done = (id: string) => learned.includes(tipKey(id));
+  const isKnown = (t: SaleTip) => learned.includes(tipKey(t.id));
 
-  function markDone(t: SaleTip) {
-    if (done(t.id)) return;
-    setLearned(toggleLearned(tipKey(t.id)).learned);
-    playCorrect(1);
-    hSuccess();
-  }
-
-  const list = useMemo(
-    () => (filter === "Tất cả" ? tips : tips.filter((t) => t.cat === filter)),
-    [filter],
-  );
-  const doneToday = today.length > 0 && today.every((t) => done(t.id));
+  const items = useMemo(() => {
+    const base = deck === "today" ? today : deck === "all" ? tips : tips.filter((t) => t.cat === deck);
+    return order === 0 ? base : shuffle(base);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deck, today, order]);
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
-      <div>
-        <p className="label-luxe">Tips &amp; Tricks</p>
-        <h1 className="font-display text-3xl font-semibold text-ivory">Mẹo bán đồng hồ</h1>
-        <p className="mt-1 text-sm text-taupe">
-          Mỗi ngày 3 mẹo mới để ôn · đánh dấu đã ôn được <span className="font-semibold text-gold-300">+5 XP</span>
-        </p>
-      </div>
-
-      {/* ————— TIP HÔM NAY ————— */}
-      <section className="space-y-3">
+    <div className="mx-auto flex h-full max-w-xl flex-col">
+      <div className="shrink-0">
         <div className="flex items-end justify-between">
           <div>
-            <p className="label-luxe">Hôm nay</p>
-            <h2 className="font-display text-lg font-bold text-ivory">3 mẹo cần nhớ</h2>
+            <p className="label-luxe">Tips &amp; Tricks</p>
+            <h1 className="font-display text-2xl font-semibold text-ivory">Mẹo bán đồng hồ</h1>
           </div>
-          {doneToday && (
-            <span className="stat text-gold-300">
-              <IconCheck className="h-4 w-4" /> Xong hôm nay
-            </span>
-          )}
-        </div>
-
-        {today.map((t, i) => (
-          <motion.div
-            key={t.id}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ ...meta.motion.spring, delay: i * 0.06 }}
-            className="card-lux p-4"
+          <button
+            onClick={() => {
+              setShowList((v) => !v);
+              playTap();
+              hTap();
+            }}
+            className="cyber chip shrink-0"
           >
-            <div className="flex items-start gap-3">
-              <span className="tile h-9 w-9">
-                <IconBulb className="h-5 w-5" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="label-luxe">{t.cat}</p>
-                <p className="mt-0.5 text-[15px] font-bold leading-snug text-ivory">{t.short}</p>
-                <p className="mt-1.5 text-[13px] leading-relaxed text-ivory/85">{t.detail}</p>
-                {t.say && (
-                  <p className="mt-2 rounded-[var(--r-md)] bg-surface-2 p-2.5 text-[13px] italic leading-snug text-champagne">
-                    💬 “{t.say}”
-                  </p>
-                )}
-              </div>
-            </div>
-            <button
-              onClick={() => markDone(t)}
-              disabled={done(t.id)}
-              className={`cyber mt-3 flex w-full items-center justify-center gap-1.5 rounded-[var(--r-md)] py-2.5 text-xs font-bold transition ${
-                done(t.id) ? "bg-surface-2 text-taupe" : "bg-gold-400 text-onaccent"
-              }`}
-            >
-              <IconCheck className="h-4 w-4" />
-              {done(t.id) ? "Đã ôn" : "Đánh dấu đã ôn"}
-            </button>
-          </motion.div>
-        ))}
-      </section>
-
-      {/* ————— KHO TIP ————— */}
-      <section className="space-y-3">
-        <div>
-          <p className="label-luxe">Kho mẹo</p>
-          <h2 className="font-display text-lg font-bold text-ivory">Tất cả {tips.length} mẹo</h2>
+            {showList ? "Học thẻ" : "Xem tất cả"}
+          </button>
         </div>
 
-        <div className="flex flex-wrap gap-2">
-          {FILTERS.map((f) => (
+        {/* chọn bộ thẻ */}
+        <div className="mt-3 flex flex-wrap gap-2">
+          {(["today", "all", ...TIP_CATS] as Deck[]).map((d) => (
             <button
-              key={f}
+              key={d}
               onClick={() => {
-                setFilter(f);
+                setDeck(d);
                 playTap();
                 hTap();
               }}
-              className={`cyber chip ${filter === f ? "chip-on" : ""}`}
+              className={`cyber chip ${deck === d ? "chip-on" : ""}`}
             >
-              {f}
+              {d === "today" ? `Hôm nay (${today.length})` : d === "all" ? `Tất cả (${tips.length})` : d}
             </button>
           ))}
         </div>
+      </div>
 
-        <div className="space-y-2">
-          {list.map((t) => (
-            <details key={t.id} className="card-lux group overflow-hidden">
-              <summary
-                onClick={() => {
-                  playPop();
-                  hTap();
-                }}
-                className="cyber flex cursor-pointer list-none items-center gap-2.5 p-3.5 [&::-webkit-details-marker]:hidden"
-              >
-                <span className={`h-2 w-2 shrink-0 rounded-[var(--r-full)] ${done(t.id) ? "bg-gold-400" : "bg-surface-3"}`} />
-                <span className="min-w-0 flex-1">
-                  <span className="label-luxe block text-[9px]">{t.cat}</span>
-                  <span className="block text-[13px] font-semibold leading-snug text-ivory">{t.short}</span>
-                </span>
-                <IconChevron className="h-4 w-4 shrink-0 rotate-90 text-taupe transition-transform group-open:-rotate-90" />
-              </summary>
-              <div className="px-3.5 pb-3.5">
-                <p className="text-[13px] leading-relaxed text-ivory/85">{t.detail}</p>
-                {t.say && (
-                  <p className="mt-2 rounded-[var(--r-md)] bg-surface-2 p-2.5 text-[13px] italic leading-snug text-champagne">
-                    💬 “{t.say}”
-                  </p>
-                )}
-                <button
-                  onClick={() => markDone(t)}
-                  disabled={done(t.id)}
-                  className={`cyber mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-[var(--r-md)] py-2 text-xs font-bold ${
-                    done(t.id) ? "bg-surface-2 text-taupe" : "bg-gold-400 text-onaccent"
-                  }`}
-                >
-                  <IconCheck className="h-4 w-4" />
-                  {done(t.id) ? "Đã ôn" : "Đánh dấu đã ôn"}
-                </button>
+      {showList ? (
+        // danh sách tra cứu nhanh (phụ) — mặc định vẫn là học thẻ
+        <div className="mt-3 min-h-0 flex-1 space-y-2 overflow-y-auto">
+          {tips.map((t) => (
+            <div key={t.id} className="card-lux p-3.5">
+              <div className="flex items-center gap-2">
+                <span className={`h-2 w-2 shrink-0 rounded-[var(--r-full)] ${isKnown(t) ? "bg-gold-400" : "bg-surface-3"}`} />
+                <span className="label-luxe text-[9px]">{t.cat}</span>
               </div>
-            </details>
+              <p className="mt-1 text-[13px] font-semibold leading-snug text-ivory">{t.short}</p>
+              <p className="mt-1 text-[12px] leading-relaxed text-ivory/80">{t.detail}</p>
+              {t.say && <p className="mt-1.5 text-[12px] italic text-champagne">💬 “{t.say}”</p>}
+            </div>
           ))}
         </div>
-      </section>
+      ) : (
+        <div className="mt-3 min-h-0 flex-1">
+          <LearnDeck
+            items={items}
+            isKnown={isKnown}
+            onKnow={(t) => setLearned(toggleLearned(tipKey(t.id)).learned)}
+            onReshuffle={() => setOrder((o) => o + 1)}
+            knowLabel="Đã ôn"
+            skipLabel="Ôn lại"
+            emptyText="Chưa có mẹo trong nhóm này"
+            hint="Chạm để xem chi tiết · Vuốt phải nếu đã thuộc"
+            renderFront={(t) => (
+              <div className="flex flex-1 flex-col items-center justify-center text-center">
+                <span className="tile h-12 w-12">
+                  <IconBulb className="h-6 w-6" />
+                </span>
+                <p className="label-luxe mt-3">{t.cat}</p>
+                <p className="mt-2 font-display text-xl font-bold leading-snug text-ivory">{t.short}</p>
+                {isKnown(t) && (
+                  <span className="stat mt-3 text-gold-300">
+                    <IconCheck className="h-3.5 w-3.5" /> đã ôn
+                  </span>
+                )}
+              </div>
+            )}
+            renderBack={(t) => (
+              <div className="flex flex-1 flex-col">
+                <p className="label-luxe">{t.cat} · vì sao</p>
+                <p className="mt-2 text-[15px] font-bold leading-snug text-ivory">{t.short}</p>
+                <p className="mt-2.5 text-[13.5px] leading-relaxed text-ivory/85">{t.detail}</p>
+                {t.say && (
+                  <div className="mt-3 rounded-[var(--r-md)] bg-surface-2 p-3">
+                    <p className="label-luxe text-[9px]">Nói với khách</p>
+                    <p className="mt-1 text-[13.5px] italic leading-snug text-champagne">“{t.say}”</p>
+                  </div>
+                )}
+              </div>
+            )}
+          />
+        </div>
+      )}
+
     </div>
   );
 }
