@@ -223,7 +223,8 @@ export default function SwipeDeck({
                   ⚠ Custom / Rep
                 </div>
               )}
-              <div className="h-px w-full bg-gold-line" />
+              {/* .rule-line: gạch mảnh ở game/lux — HÀNG CHẤM BI ở cozy */}
+              <div className="rule-line" />
               <div className="flex w-full items-center justify-between">
                 <BrandTag brand={current.brand} />
                 <span className="label-luxe">{current.collection}</span>

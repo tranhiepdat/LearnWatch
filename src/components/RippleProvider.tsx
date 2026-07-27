@@ -17,7 +17,7 @@ export default function RippleProvider() {
   useEffect(() => {
     function onDown(e: PointerEvent) {
       const target = e.target as HTMLElement | null;
-      const el = target?.closest?.(".cyber") as HTMLElement | null;
+      const el = target?.closest?.(".cyber, [data-fx]") as HTMLElement | null;
       if (!el) return;
       const rect = el.getBoundingClientRect();
       if (rect.width === 0) return;
@@ -35,17 +35,20 @@ export default function RippleProvider() {
         window.setTimeout(() => span.remove(), 550);
       }
 
-      // 2) squash & stretch pop khi THẢ (bỏ qua nút framer / khối lớn)
-      if (el.hasAttribute("data-no-pop") || el.style.transform || rect.height > 220) return;
+      // 2) pop khi THẢ. Bỏ qua nút framer (nó tự lo transform).
+      if (el.hasAttribute("data-no-pop") || el.style.transform) return;
+      // Khối LỚN (card) không squash được — scale 2% trên 340px = 7px, chóng mặt.
+      // Cho nó lớp riêng chỉ đánh ánh sáng, không transform → vẫn có phản hồi.
+      const cls = rect.height > 220 ? "tap-pop-lg" : "tap-pop";
       const release = () => {
         window.removeEventListener("pointerup", release);
         window.removeEventListener("pointercancel", release);
-        el.classList.remove("tap-pop");
+        el.classList.remove(cls);
         void el.offsetWidth; // ép reflow để re-trigger animation mỗi lần thả
-        el.classList.add("tap-pop");
+        el.classList.add(cls);
         const done = (ev: AnimationEvent) => {
           if (ev.target !== el) return; // bỏ qua animationend nổi bọt từ .ripple con
-          el.classList.remove("tap-pop");
+          el.classList.remove(cls);
           el.removeEventListener("animationend", done);
         };
         el.addEventListener("animationend", done);

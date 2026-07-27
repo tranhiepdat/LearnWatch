@@ -137,7 +137,7 @@ export default function GoldBurst({ small = false }: { small?: boolean }) {
     d: 0.45 + Math.random() * 0.3,
     delay: Math.random() * 0.08,
     size: small ? 6 + Math.random() * 5 : 8 + Math.random() * 8,
-    c: i % 3 === 0 ? "#ffffff" : "#35e0ff",
+    c: i % 3 === 0 ? "#E4FFEC" : "#39FF6A",
   }));
 
   return (
@@ -149,10 +149,10 @@ export default function GoldBurst({ small = false }: { small?: boolean }) {
         transition={{ duration: 0.45, ease: [0.65, 0, 0.35, 1] }}
         className={`absolute border border-gold-400 ${small ? "h-14 w-14" : "h-24 w-24"}`}
       >
-        <span className="absolute -left-px -top-px h-[6px] w-[6px] border-l border-t border-white" />
-        <span className="absolute -right-px -top-px h-[6px] w-[6px] border-r border-t border-white" />
-        <span className="absolute -bottom-px -left-px h-[6px] w-[6px] border-b border-l border-white" />
-        <span className="absolute -bottom-px -right-px h-[6px] w-[6px] border-b border-r border-white" />
+        <span className="absolute -left-px -top-px h-[6px] w-[6px] border-l border-t border-gold-50" />
+        <span className="absolute -right-px -top-px h-[6px] w-[6px] border-r border-t border-gold-50" />
+        <span className="absolute -bottom-px -left-px h-[6px] w-[6px] border-b border-l border-gold-50" />
+        <span className="absolute -bottom-px -right-px h-[6px] w-[6px] border-b border-r border-gold-50" />
       </motion.div>
       {/* flash lõi nhỏ, sắc */}
       <motion.div

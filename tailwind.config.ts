@@ -51,18 +51,11 @@ const config: Config = {
         "gold-line": "var(--grad-line)",
         "ink-radial": "var(--bg-wash)",
       },
-      keyframes: {
-        shimmer: { "0%": { backgroundPosition: "0% 50%" }, "100%": { backgroundPosition: "200% 50%" } },
-        floaty: { "0%,100%": { transform: "translateY(0)" }, "50%": { transform: "translateY(-6px)" } },
-        pop: { "0%": { transform: "scale(0.6)", opacity: "0" }, "100%": { transform: "scale(1)", opacity: "1" } },
-      },
-      animation: {
-        shimmer: "shimmer 6s linear infinite",
-        floaty: "floaty 5s ease-in-out infinite",
-        pop: "pop 0.35s cubic-bezier(0.2,0.9,0.3,1.4)",
-      },
     },
   },
+  // hover: chỉ áp trên thiết bị có chuột thật → điện thoại không bị "sticky
+  // hover" dính lại sau khi chạm
+  future: { hoverOnlyWhenSupported: true },
   plugins: [],
 };
 

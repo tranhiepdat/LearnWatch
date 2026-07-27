@@ -92,7 +92,9 @@ export default function ThemeSwitcher() {
                       transition={{ delay: 0.05 + i * 0.06, type: "spring", stiffness: 400, damping: 26 }}
                       whileTap={{ scale: 0.97 }}
                       onPointerUp={(e) => pick(id, e)}
-                      className="relative flex w-full items-center gap-3.5 overflow-hidden border p-3.5 text-left"
+                      data-fx="preview"
+                      data-no-pop
+                      className="cyber relative flex w-full items-center gap-3.5 overflow-hidden border p-3.5 text-left"
                       style={{
                         background: m.preview.bg,
                         borderColor: active ? m.preview.accent : "rgba(128,128,128,0.25)",

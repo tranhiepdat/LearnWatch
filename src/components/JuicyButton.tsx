@@ -73,7 +73,15 @@ export default function JuicyButton({
       onPointerUp={fireRelease}
       onPointerLeave={fireRelease}
       whileTap={press}
+      whileHover={disabled ? undefined : { scale: meta.motion.hover.scale, transition: meta.motion.hover.transition }}
       animate={body}
+      /* KHÔNG dùng .cyber ở đây: .cyber ép overflow:hidden sẽ cắt mất khung 4
+         góc (.brk) của theme digital, và ripple sẽ tranh chấp với flash sẵn có.
+         data-fx="hero" nhận tầng hover CSS (filter/outline/glow) — còn transform
+         do framer sở hữu qua whileHover/whileTap. */
+      data-fx="hero"
+      data-no-pop
+      data-no-ripple
       className={`relative isolate ${theme === "game" ? "" : "overflow-hidden"} ${
         variant === "primary" && theme === "cozy" ? "btn3d" : ""
       } ${className}`}

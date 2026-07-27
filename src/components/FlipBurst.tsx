@@ -30,8 +30,8 @@ export default function FlipBurst() {
         {/* viền offset chromatic tự vẽ quanh ô (cyan + magenta lệch nhau) */}
         {(
           [
-            ["#35e0ff", "translate(0px,0px)", 0],
-            ["#ff3df0", "translate(3px,-2px)", 0.05],
+            ["#E4FFEC", "translate(0px,0px)", 0],
+            ["#39FF6A", "translate(2px,-1px)", 0.06],
           ] as const
         ).map(([c, tf, delay], i) => (
           <svg

@@ -35,6 +35,9 @@ export interface ThemeMotion {
   bouncy: Transition;
   /** cú nảy khi THẢ nút chính — keyframes scale/y (không rotate, không x) */
   pop: { keyframes: Record<string, number[]>; transition: Transition };
+  /** hover nút chính — framer SỞ HỮU transform (inline style thắng CSS class),
+   *  nên scale khi rê chuột phải khai ở đây; CSS chỉ lo filter/outline/glow */
+  hover: { scale: number; transition: Transition };
   /** hiệu ứng vào trang */
   page: {
     initial: Record<string, number | string>;
@@ -85,6 +88,8 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
         keyframes: { scaleX: [1.14, 0.9, 1.05, 0.98, 1], scaleY: [0.86, 1.14, 0.96, 1.01, 1] },
         transition: { duration: 0.46, ease: [0.3, 0.9, 0.4, 1] },
       },
+      // bật lên như keycap kem
+      hover: { scale: 1.03, transition: { type: "spring", stiffness: 380, damping: 18 } },
       page: {
         initial: { opacity: 0, y: 10, scale: 0.99 },
         animate: { opacity: 1, y: 0, scale: 1 },
@@ -102,21 +107,23 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
   game: {
     id: "game",
     name: "Digital",
-    tagline: "Outline mảnh · line reveal · shape morph",
+    tagline: "Phosphor CRT · lân quang xanh lá · hard-cut",
     emoji: "▞",
     preview: {
-      bg: "#07080f",
-      card: "#0d0f1a",
-      text: "#eef1ff",
-      accent: "#35e0ff",
-      extra: ["#ffffff", "#5b6cff", "#ffe14d"],
+      bg: "#040A07",
+      card: "#09160F",
+      text: "#E4FFEC",
+      accent: "#39FF6A",
+      extra: ["#E4FFEC", "#7DF5C8", "#FFB000"],
     },
-    bar: "#07080f",
+    bar: "#040A07",
     motion: {
       tap: 0.96,
       spring: { type: "spring", stiffness: 650, damping: 34 },
       bouncy: { type: "spring", stiffness: 700, damping: 22 },
       pop: { keyframes: { scale: [0.96, 1.015, 1] }, transition: { duration: 0.18, ease: "easeOut" } },
+      // CRT: gần như tức thì, chất "chọn ô" của terminal
+      hover: { scale: 1.012, transition: { duration: 0.09, ease: [0.9, 0, 0.1, 1] } },
       // reveal do CSS .glitch-cut / .glitch-in lo (cắt lát + RGB split) —
       // framer chỉ giữ opacity để không tranh transform/clip với glitch
       page: {
@@ -150,6 +157,8 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
       spring: { type: "spring", stiffness: 300, damping: 30 },
       bouncy: { type: "spring", stiffness: 340, damping: 22 },
       pop: { keyframes: { scale: [0.97, 1.012, 1] }, transition: { duration: 0.42, ease: [0.25, 0.8, 0.25, 1] } },
+      // mở khay nhung — chậm, sang
+      hover: { scale: 1.018, transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] } },
       page: {
         initial: { opacity: 0, y: 10 },
         animate: { opacity: 1, y: 0 },

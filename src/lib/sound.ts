@@ -383,8 +383,23 @@ const game = {
     sawStab(hz(notes[tapStep % notes.length]), t, 0.055, 0.06, 2200, 5);
   },
   flip(t: number) {
-    zap(t, 820, 300, 0.055);
-    sawStab(hz(330), t + 0.03, 0.09, 0.055, 1900, 6);
+    // Trước đây chỉ 2 lớp mỏng (peak .055). Nay đủ 3 tầng như tiếng "đúng":
+    // transient chạm + nền trầm có sức nặng + đuôi ngân — nhưng NGẮN hơn
+    // correct để không lấn át khoảnh khắc trả lời đúng.
+    noiseHit(t, 0.006, 0.035, 3200, 1900, 2.2); // cú chạm
+    gritSub(66, t, 0.14, 0.13); // neon sub — sức nặng
+    zap(t, 820, 300, 0.07);
+    sawStab(hz(330), t + 0.02, 0.12, 0.085, 2400, 7); // stab dày hơn
+    sawStab(hz(494), t + 0.02, 0.12, 0.05, 2600, 7); // + quãng 5
+    tone(hz(659.25), t + 0.11, 0.16, {
+      type: "sawtooth",
+      peak: 0.05,
+      detune: 10,
+      filterStart: 4000,
+      filterEnd: 2200,
+      q: 4,
+      send: 0.26, // đuôi ngân — thứ làm tiếng "đã"
+    });
   },
   swipe(t: number) {
     zap(t, 1500, 240, 0.06);

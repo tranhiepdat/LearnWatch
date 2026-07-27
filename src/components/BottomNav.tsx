@@ -3,18 +3,20 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, useAnimationControls } from "framer-motion";
-import { IconHome, IconCards, IconQuiz, IconBook, IconChat, IconBox } from "./icons";
+import { IconHome, IconCards, IconQuiz, IconBook, IconBulb, IconLang } from "./icons";
 import { playTap } from "@/lib/sound";
 import { hTap } from "@/lib/haptics";
 import { useTheme } from "@/lib/theme";
 
+/** 6 tab. Kho & Trợ lý dời vào Trang chủ (đã có sẵn lối vào ở đó) để nhường
+ *  chỗ cho 2 mục dùng hằng ngày: Tips bán hàng & Học tiếng. */
 const tabs = [
   { href: "/", label: "Trang chủ", Icon: IconHome },
   { href: "/flashcards", label: "Học", Icon: IconCards },
   { href: "/quiz", label: "Đố", Icon: IconQuiz },
   { href: "/browse", label: "Tra cứu", Icon: IconBook },
-  { href: "/inventory", label: "Kho", Icon: IconBox },
-  { href: "/assistant", label: "Trợ lý", Icon: IconChat },
+  { href: "/tips", label: "Tips", Icon: IconBulb },
+  { href: "/nihongo", label: "Tiếng Nhật", Icon: IconLang },
 ];
 
 /**

@@ -159,7 +159,10 @@ export default function BrowsePage() {
         <div className="grid gap-2.5 sm:grid-cols-2">
           {fTerms.map((t) => (
             <details key={t.id} className="card-lux p-4">
-              <summary className="flex cursor-pointer items-center justify-between gap-2">
+              <summary
+                onClick={() => playTap()}
+                className="cyber flex cursor-pointer list-none items-center justify-between gap-2 [&::-webkit-details-marker]:hidden"
+              >
                 <span className="font-display text-base font-semibold text-ivory">{t.term}</span>
                 <span className="rounded-[var(--r-sm)] border border-hairline px-2 py-0.5 text-[10px] text-taupe">
                   {t.brand} · {t.category}

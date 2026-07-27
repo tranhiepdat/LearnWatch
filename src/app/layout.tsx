@@ -45,7 +45,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#07080f",
+  themeColor: "#040A07",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -56,7 +56,7 @@ export const viewport: Viewport = {
 
 // Đặt data-theme TRƯỚC khi React chạy → không chớp màu khi mở app.
 // Kèm migrate id theme cũ (5 theme → 3): apple→lux, dreamy→cozy, studio→game.
-const themeInit = `(function(){try{var mg={apple:"lux",dreamy:"cozy",studio:"game"};var ok=["cozy","game","lux"];var t=localStorage.getItem("lw_theme");t=mg[t]||t;if(ok.indexOf(t)<0)t="game";document.documentElement.setAttribute("data-theme",t);var m={game:"#07080f",cozy:"#f8eedd",lux:"#0a1712"};var el=document.querySelector('meta[name="theme-color"]');if(el)el.setAttribute("content",m[t]);}catch(e){document.documentElement.setAttribute("data-theme","game")}})()`;
+const themeInit = `(function(){try{var mg={apple:"lux",dreamy:"cozy",studio:"game"};var ok=["cozy","game","lux"];var t=localStorage.getItem("lw_theme");t=mg[t]||t;if(ok.indexOf(t)<0)t="game";document.documentElement.setAttribute("data-theme",t);var m={game:"#040A07",cozy:"#f8eedd",lux:"#0a1712"};var el=document.querySelector('meta[name="theme-color"]');if(el)el.setAttribute("content",m[t]);}catch(e){document.documentElement.setAttribute("data-theme","game")}})()`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

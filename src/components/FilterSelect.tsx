@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { IconChevron } from "./icons";
 import { playTap } from "@/lib/sound";
 
@@ -49,8 +50,16 @@ export default function FilterSelect({
         <IconChevron className={`h-3.5 w-3.5 transition-transform ${open ? "-rotate-90" : "rotate-90"}`} />
       </button>
 
-      {open && (
-        <div className="absolute left-0 top-full z-40 mt-1.5 max-h-[55vh] w-52 overflow-y-auto rounded-[var(--r-md)] border border-hairline bg-surface p-1 shadow-2xl">
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -6, scaleY: 0.94 }}
+            animate={{ opacity: 1, y: 0, scaleY: 1 }}
+            exit={{ opacity: 0, y: -4, scaleY: 0.96, transition: { duration: 0.12 } }}
+            transition={{ duration: 0.18, ease: [0.25, 0.8, 0.25, 1] }}
+            style={{ transformOrigin: "top" }}
+            className="absolute left-0 top-full z-40 mt-1.5 max-h-[55vh] w-52 overflow-y-auto rounded-[var(--r-md)] border border-hairline bg-surface p-1 shadow-2xl"
+          >
           {options.map((o) => (
             <button
               key={o}
@@ -59,16 +68,17 @@ export default function FilterSelect({
                 setOpen(false);
                 playTap();
               }}
-              className={`flex w-full items-center justify-between rounded-[var(--r-xs)] px-3 py-2 text-left text-sm transition active:scale-[0.98] ${
-                o === value ? "bg-gold-400 font-semibold text-onaccent" : "text-ivory hover:bg-surface-2"
+              className={`cyber flex w-full items-center justify-between rounded-[var(--r-xs)] px-3 py-2 text-left text-sm transition active:scale-[0.98] ${
+                o === value ? "bg-gold-400 font-semibold text-onaccent" : "text-ivory"
               }`}
             >
               <span>{o}</span>
               {counts && counts[o] != null && <span className="font-tech text-[11px] text-taupe">{counts[o]}</span>}
             </button>
-          ))}
-        </div>
-      )}
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
