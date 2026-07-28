@@ -97,15 +97,8 @@ export default function JuicyButton({
       />
       {/* scanline sắc quét — CHỈ digital (cyberpunk), các theme khác không dùng vệt gradient */}
       {theme === "game" && fxKey > 0 && <span key={`sw${fxKey}`} aria-hidden className="hl-sweep" />}
-      {/* khung chọn 4 góc (digital) */}
-      {theme === "game" && fxKey > 0 && (
-        <span key={`br${fxKey}`} aria-hidden className="pointer-events-none absolute inset-0 z-[5]">
-          <span className="brk brk-tl" style={{ "--ox": "-6px", "--oy": "-6px" } as React.CSSProperties} />
-          <span className="brk brk-tr" style={{ "--ox": "6px", "--oy": "-6px" } as React.CSSProperties} />
-          <span className="brk brk-bl" style={{ "--ox": "-6px", "--oy": "6px" } as React.CSSProperties} />
-          <span className="brk brk-br" style={{ "--ox": "6px", "--oy": "6px" } as React.CSSProperties} />
-        </span>
-      )}
+      {/* digital: MỘT đường viền quét quanh nút (trước dùng 4 khung góc → rối) */}
+      {theme === "game" && fxKey > 0 && <span key={`br${fxKey}`} aria-hidden className="brk-line" />}
       <span className="relative z-10 flex items-center justify-center gap-2">{children}</span>
     </motion.button>
   );

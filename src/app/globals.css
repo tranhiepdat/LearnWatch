@@ -60,46 +60,46 @@
   --hl-dur: 0.3s;
 }
 
-/* ===== ẤM ÁP (cozy) — creamy keyboard: kem bơ, caramel, mềm tay ===== */
+/* ===== ẤM ÁP (cozy) — MẬT ONG & NẮNG: vàng ấm chủ đạo, nhiều màu vui ===== */
 :root[data-theme="cozy"] {
   color-scheme: light;
-  --c-bg: 250 240 223;
-  --c-bg2: 243 228 202;
-  --c-surface: 255 252 244;
-  --c-surface2: 248 237 219;
-  --c-surface3: 240 223 196;
-  --c-fg: 66 47 33;
-  --c-muted: 143 116 92;
-  --c-soft: 181 105 26;
-  --c-accent-50: 255 244 229;
-  --c-accent-100: 255 228 194;
-  --c-accent-hi: 181 105 26;
-  --c-accent: 239 155 63;
-  --c-accent-lo: 224 134 42;
-  --c-accent-600: 196 113 24;
-  --c-accent-700: 156 89 16;
-  --c-second: 111 174 127;
-  --c-danger: 217 93 85;
-  --c-on-accent: 61 36 14;
-  /* COZY KHÔNG DÙNG LINE MỎNG: hairline = trong suốt, mọi ranh giới thể hiện
-     bằng KHỐI ĐẶC + bóng dày + chấm bi (xem block [data-theme="cozy"] bên dưới) */
+  --c-bg: 253 244 226;
+  --c-bg2: 249 234 205;
+  --c-surface: 255 253 246;
+  --c-surface2: 251 241 222;
+  --c-surface3: 245 228 197;
+  --c-fg: 68 48 30;
+  --c-muted: 146 118 88;
+  --c-soft: 214 122 58; /* cam đất — dùng cho chữ nhấn ấm */
+  /* accent = VÀNG MẬT ONG (không còn cam) */
+  --c-accent-50: 255 249 230;
+  --c-accent-100: 255 238 189;
+  --c-accent-hi: 176 118 20;
+  --c-accent: 247 187 47;
+  --c-accent-lo: 233 167 26;
+  --c-accent-600: 201 139 16;
+  --c-accent-700: 158 106 10;
+  --c-second: 106 175 130; /* xanh lá cỏ — màu phụ vui mắt */
+  --c-danger: 224 106 96;
+  --c-on-accent: 61 40 8;
+  /* COZY KHÔNG DÙNG LINE MỎNG: hairline trong suốt, ranh giới bằng KHỐI + bóng */
   --c-hairline: rgba(120, 80, 44, 0);
 
-  --bg-wash: linear-gradient(#f8eedd, #f8eedd); /* SOLID kem */
-  --grad-primary: linear-gradient(#ef9b3f, #ef9b3f); /* SOLID cam (accent) */
-  --grad-line: linear-gradient(90deg, transparent, rgba(224, 134, 42, 0.5), transparent);
-  --sh-glow: 0 8px 16px -6px rgba(224, 134, 42, 0.42), 0 16px 34px -14px rgba(196, 113, 24, 0.3);
-  --sh-ring: 0 6px 14px -8px rgba(150, 100, 50, 0.26), 0 14px 30px -16px rgba(150, 100, 50, 0.22);
-  --sh-lux: 0 4px 10px -5px rgba(154, 105, 58, 0.2), 0 14px 28px -12px rgba(154, 105, 58, 0.22), 0 28px 56px -28px rgba(154, 105, 58, 0.28);
-  --btn-edge: rgba(173, 104, 22, 1);
+  --bg-wash: linear-gradient(#fdf4e2, #fdf4e2); /* SOLID kem vàng */
+  --grad-primary: linear-gradient(#f7bb2f, #f7bb2f); /* SOLID vàng mật ong */
+  --grad-line: linear-gradient(90deg, transparent, rgba(233, 167, 26, 0.5), transparent);
+  --sh-glow: 0 8px 16px -6px rgba(233, 167, 26, 0.45), 0 16px 34px -14px rgba(201, 139, 16, 0.3);
+  --sh-ring: 0 6px 14px -8px rgba(150, 105, 45, 0.26), 0 14px 30px -16px rgba(150, 105, 45, 0.22);
+  --sh-lux: 0 4px 10px -5px rgba(158, 112, 52, 0.2), 0 14px 28px -12px rgba(158, 112, 52, 0.22), 0 28px 56px -28px rgba(158, 112, 52, 0.28);
+  --btn-edge: rgba(186, 128, 14, 1);
 
   --r-xs: 16px; --r-sm: 20px; --r-md: 26px; --r-lg: 32px; --r-xl: 38px; --r-full: 9999px;
   --track-luxe: 0.06em;
   --font-display-active: var(--font-round);
   --font-tech-active: var(--font-round);
 
-  --sel-bg: rgba(239, 155, 63, 0.32);
-  --hl-sheen: rgba(255, 238, 205, 0.95);
+  --sel-bg: rgba(247, 187, 47, 0.34);
+  --hl-sheen: rgba(255, 244, 214, 0.95);
   --hl-dur: 0.5s;
 }
 
@@ -181,7 +181,7 @@ body::before {
 [data-theme="cozy"] body::before { opacity: 0.075; mix-blend-mode: multiply; }
 /* quầng nắng ấm TĨNH — cảm giác ánh chiều hắt vào phòng (không animate) */
 [data-theme="cozy"] body {
-  background-image: radial-gradient(120% 80% at 50% -10%, rgba(255, 214, 150, 0.5) 0%, rgba(255, 214, 150, 0) 55%), var(--bg-wash);
+  background-image: radial-gradient(120% 80% at 50% -10%, rgba(255, 226, 150, 0.55) 0%, rgba(255, 226, 150, 0) 55%), var(--bg-wash);
 }
 
 /* Digital: lưới điểm TĨNH mảnh — bàn vẽ kỹ thuật */
@@ -234,7 +234,10 @@ body::after {
   }
   /* CHIP — lựa chọn/badge */
   .chip {
-    @apply rounded-[var(--r-full)] bg-surface-2 px-3.5 py-1.5 text-xs font-semibold text-taupe transition active:scale-95;
+    @apply rounded-[var(--r-full)] bg-surface-2 px-3.5 py-1.5 text-xs font-semibold text-taupe;
+    /* KHÔNG đặt transition/active:scale ở đây: .tap-pop là chủ sở hữu transform
+       duy nhất, thêm lớp thứ hai sẽ tranh quyền và gây giật */
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
   }
   .chip-on {
     @apply bg-gold-400 text-onaccent shadow-glow;
@@ -333,12 +336,13 @@ body::after {
 [data-theme="game"] .chip {
   background: transparent;
   border: 1px solid var(--c-hairline);
-  transition: border-color 0.15s, background-color 0.15s, color 0.15s, border-radius 0.2s, transform 0.15s;
+  border-radius: 0; /* digital = VUÔNG tuyệt đối */
+  transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
 }
 [data-theme="game"] .chip-on {
   background: rgb(var(--c-accent));
   border-color: rgb(var(--c-accent));
-  border-radius: 7px; /* morph vuông → bo nhẹ khi được chọn */
+  border-radius: 0; /* KHÔNG bo góc — trước bo 7px là sai ngôn ngữ digital */
   box-shadow: none;
 }
 /* Cozy: chip như KEYCAP kem — mép dưới dày, bấm lún */
@@ -665,6 +669,223 @@ body::after {
   }
 }
 
+/* ---- KEYFRAMES HOVER: chỉ transform (GPU), biên độ RẤT nhỏ ----
+   Nguyên tắc mới: chuyển động đến từ ÁNH SÁNG (scanline/sheen/quầng) chứ KHÔNG
+   phải nút xê dịch → hết cảm giác "app bị lắc", mà vẫn dynamic và đúng chất. */
+@keyframes hvCozyIcon { 0%,100% { transform: scale(1.03); }        50% { transform: scale(1.055); } }
+@keyframes hvCozyChip { 0%,100% { transform: scale(1.03, 1.01); }  50% { transform: scale(1.055, 1.03); } }
+@keyframes hvCozyTab  { 0%,100% { transform: scale(1.02); }        50% { transform: scale(1.045); } }
+@keyframes hvCozyHero { 0%,100% { transform: scale(1.015); }       50% { transform: scale(1.03); } }
+@keyframes hvCozyCard { 0%,100% { transform: scale(1.006); }       50% { transform: scale(1.012); } }
+/* digital: nút ĐỨNG YÊN hoàn toàn — chất cyberpunk do scanline + nháy lân quang lo */
+@keyframes hvGameIcon { 0%,100% { transform: scale(1.03); } }
+@keyframes hvGameChip { 0%,100% { transform: scale(1.02); } }
+@keyframes hvGameTab  { 0%,100% { transform: scale(1.02); } }
+@keyframes hvGameHero { 0%,100% { transform: scale(1.015); } }
+@keyframes hvGameCard { 0%,100% { transform: scale(1.005); } }
+@keyframes hvLuxIcon  { 0%,100% { transform: scale(1.03); }        50% { transform: scale(1.045); } }
+@keyframes hvLuxChip  { 0%,100% { transform: scale(1.025); }       50% { transform: scale(1.038); } }
+@keyframes hvLuxTab   { 0%,100% { transform: scale(1.02); }        50% { transform: scale(1.032); } }
+@keyframes hvLuxHero  { 0%,100% { transform: scale(1.015); }       50% { transform: scale(1.026); } }
+@keyframes hvLuxCard  { 0%,100% { transform: scale(1.005); }       50% { transform: scale(1.01); } }
+
+/* ============================================================
+   HOVER — HIỆU ỨNG CHỮ KÝ TỪNG THEME (lớp ::after, chỉ animate transform)
+   · digital — SCANLINE quét dọc liên tục qua nút (chất CRT/cyberpunk)
+   · cozy    — quầng nắng ấm nở/thu như đang thở
+   · lux     — vệt lụa champagne trôi ngang chậm rãi
+   Tất cả dùng translate/scale trên pseudo → GPU, không repaint.
+   ============================================================ */
+@media (hover: hover) and (pointer: fine) {
+  :where([data-theme]) .cyber:where(:hover:not(:active):not(.tap-pop)):not(.card-lux)::after,
+  :where([data-theme]) [data-fx="hero"]:where(:hover:not(:active))::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    border-radius: inherit;
+    will-change: transform;
+  }
+  /* DIGITAL: tia quét chạy dọc — chữ ký cyberpunk */
+  :where([data-theme="game"]) .cyber:where(:hover:not(:active):not(.tap-pop)):not(.card-lux)::after,
+  :where([data-theme="game"]) [data-fx="hero"]:where(:hover:not(:active))::after {
+    background: linear-gradient(
+      180deg,
+      transparent 0%, transparent 40%,
+      rgb(var(--c-accent-hi) / 0.5) 48%,
+      rgb(var(--c-accent-50) / 0.85) 50%,
+      rgb(var(--c-accent-hi) / 0.5) 52%,
+      transparent 60%, transparent 100%
+    );
+    mix-blend-mode: screen;
+    animation: fxScan 1.15s linear infinite;
+  }
+  /* COZY: quầng nắng ấm thở */
+  :where([data-theme="cozy"]) .cyber:where(:hover:not(:active):not(.tap-pop)):not(.card-lux)::after,
+  :where([data-theme="cozy"]) [data-fx="hero"]:where(:hover:not(:active))::after {
+    background: radial-gradient(circle at 50% 120%, rgb(var(--c-accent) / 0.42) 0%, transparent 62%);
+    animation: fxGlowBreathe 2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+  /* LUX: vệt lụa champagne trôi ngang */
+  :where([data-theme="lux"]) .cyber:where(:hover:not(:active):not(.tap-pop)):not(.card-lux)::after,
+  :where([data-theme="lux"]) [data-fx="hero"]:where(:hover:not(:active))::after {
+    background: linear-gradient(100deg, transparent 30%, rgb(var(--c-accent-hi) / 0.45) 50%, transparent 70%);
+    animation: fxSheen 2.6s cubic-bezier(0.4, 0, 0.3, 1) infinite;
+  }
+}
+@keyframes fxScan { from { transform: translateY(-100%); } to { transform: translateY(100%); } }
+@keyframes fxGlowBreathe { 0%,100% { transform: scale(0.9); opacity: 0.55; } 50% { transform: scale(1.15); opacity: 1; } }
+@keyframes fxSheen { 0% { transform: translateX(-115%); } 55%,100% { transform: translateX(115%); } }
+
+/* Bất biến: trong lúc pop chạy, KHÔNG transition nào được sở hữu `transform`
+   → chỉ đúng MỘT nguồn ghi transform, hết tranh quyền gây snap/lắc. */
+.tap-pop,
+.tap-pop-lg {
+  transition-property: box-shadow, border-color, background-color, color, opacity !important;
+}
+
+/* ============================================================
+   HOVER — chỉ chạy trên thiết bị CÓ CHUỘT THẬT.
+   Bọc @media (hover: hover) and (pointer: fine) → điện thoại KHÔNG bị
+   "sticky hover" dính lại sau khi chạm.
+   Mỗi theme một tính cách: enter (1 nhịp) + loop NHẸ trong lúc rê chuột.
+   Loop chỉ sống khi đang hover → rời chuột là dừng, không phải nền chạy vô hạn.
+   ============================================================ */
+/* Bất biến: trong lúc pop chạy, KHÔNG transition nào được sở hữu `transform`
+   → chỉ đúng MỘT nguồn ghi transform, hết tranh quyền gây snap/lắc. */
+.tap-pop,
+.tap-pop-lg {
+  transition-property: box-shadow, border-color, background-color, color, opacity !important;
+}
+
+/* ============================================================
+   HOVER — chỉ chạy trên thiết bị CÓ CHUỘT THẬT.
+
+   LUẬT SỐNG CÒN CHO FPS (nguyên nhân "giựt giựt" trước đây):
+   · Animation LẶP chỉ được đụng `transform` (GPU compositing).
+   · Mọi thứ thuộc nhóm PAINT (box-shadow / outline / filter / màu) chỉ
+     được đặt MỘT LẦN qua `transition` lúc vào hover → repaint 1 lần,
+     không phải mỗi khung hình.
+   · BỎ HẲN steps() ở hover & press — đó chính là thứ đọc ra "giật".
+     Digital vẫn sắc bằng easing dốc, không bằng nhảy nấc.
+
+   Mỗi LOẠI NÚT × mỗi THEME có keyframe RIÊNG (không dùng chung).
+   ============================================================ */
+@media (hover: hover) and (pointer: fine) {
+  /* --- lớp CHẤT LIỆU: set 1 lần khi vào hover, KHÔNG animate --- */
+  :where([data-theme]) .cyber:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme]) [data-fx]:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)) {
+    will-change: transform;
+  }
+  /* Khi BẤM, hover-animation bị gỡ → nếu không có transition nền thì transform
+     nhảy phắt về 1 (đọc ra "lắc"). Transition này làm cú chuyển đó TRƯỢT mượt. */
+  :where([data-theme]) .cyber,
+  :where([data-theme]) [data-fx] {
+    transition: transform 150ms cubic-bezier(0.2, 0.8, 0.3, 1);
+  }
+  :where([data-theme="cozy"]) .cyber:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="cozy"]) [data-fx]:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)) {
+    box-shadow: 0 10px 20px -10px rgba(150, 100, 50, 0.55);
+    transition: box-shadow 220ms ease-out, transform 220ms cubic-bezier(0.34, 1.5, 0.64, 1);
+  }
+  :where([data-theme="game"]) .cyber:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="game"]) [data-fx]:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)) {
+    box-shadow: 0 0 0 1px rgb(var(--c-accent) / 0.85), 0 0 16px -4px rgb(var(--c-accent) / 0.6);
+    transition: box-shadow 110ms cubic-bezier(0.9, 0, 0.1, 1), transform 110ms cubic-bezier(0.9, 0, 0.1, 1);
+  }
+  :where([data-theme="lux"]) .cyber:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="lux"]) [data-fx]:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)) {
+    box-shadow: 0 0 22px -8px rgb(var(--c-accent) / 0.6);
+    transition: box-shadow 420ms ease, transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* ============ COZY — ấm, mềm, nảy đệm bông ============ */
+  /* nút icon: phồng tròn + nhún thở */
+  :where([data-theme="cozy"]) .cyber.h-8:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="cozy"]) .cyber.h-9:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="cozy"]) .cyber.h-11:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="cozy"]) .cyber.h-12:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="cozy"]) .cyber.h-14:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvCozyIcon 2.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+  /* chip: SQUASH NGANG (bè ra, kiểu kẹo dẻo) */
+  :where([data-theme="cozy"]) .cyber.chip:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvCozyChip 2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+  /* tab nav: chỉ NÂNG lên, không phình (tránh hàng tab gợn sóng) */
+  :where([data-theme="cozy"]) nav .cyber:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvCozyTab 2.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+  /* nút chính */
+  :where([data-theme="cozy"]) [data-fx="hero"]:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvCozyHero 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+  /* card lớn: gần như đứng yên */
+  :where([data-theme="cozy"]) .cyber.card-lux:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvCozyCard 3s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+
+  /* ============ DIGITAL — sắc, dứt khoát (easing dốc, KHÔNG steps) ============ */
+  :where([data-theme="game"]) .cyber.h-8:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="game"]) .cyber.h-9:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="game"]) .cyber.h-11:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="game"]) .cyber.h-12:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="game"]) .cyber.h-14:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvGameIcon 1.6s cubic-bezier(0.9, 0, 0.1, 1) infinite;
+  }
+  :where([data-theme="game"]) .cyber.chip:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvGameChip 1.6s cubic-bezier(0.9, 0, 0.1, 1) infinite;
+  }
+  :where([data-theme="game"]) nav .cyber:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvGameTab 1.5s cubic-bezier(0.9, 0, 0.1, 1) infinite;
+  }
+  :where([data-theme="game"]) [data-fx="hero"]:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvGameHero 1.8s cubic-bezier(0.9, 0, 0.1, 1) infinite;
+  }
+  :where([data-theme="game"]) .cyber.card-lux:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvGameCard 2s cubic-bezier(0.9, 0, 0.1, 1) infinite;
+  }
+
+  /* ============ LUX — chậm, sang, biên độ nhỏ ============ */
+  :where([data-theme="lux"]) .cyber.h-8:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="lux"]) .cyber.h-9:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="lux"]) .cyber.h-11:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="lux"]) .cyber.h-12:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="lux"]) .cyber.h-14:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvLuxIcon 3.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  :where([data-theme="lux"]) .cyber.chip:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvLuxChip 3.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  :where([data-theme="lux"]) nav .cyber:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvLuxTab 3.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  :where([data-theme="lux"]) [data-fx="hero"]:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvLuxHero 3.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  :where([data-theme="lux"]) .cyber.card-lux:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvLuxCard 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* mặc định (hàng/CTA mảnh) — nhẹ nhất, dùng chung 1 nhịp theo theme */
+  :where([data-theme="cozy"]) .cyber:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)):where(:not(.chip):not(.card-lux):not([class*="h-"])) {
+    animation: hvCozyHero 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+  :where([data-theme="game"]) .cyber:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)):where(:not(.chip):not(.card-lux):not([class*="h-"])) {
+    animation: hvGameHero 1.8s cubic-bezier(0.9, 0, 0.1, 1) infinite;
+  }
+  :where([data-theme="lux"]) .cyber:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)):where(:not(.chip):not(.card-lux):not([class*="h-"])) {
+    animation: hvLuxHero 3.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* Ô nhập: không scale (đang gõ mà nhấp nháy thì rối) — chỉ sáng viền 1 lần */
+  :where([data-theme]) input:where(:hover:not(:focus)) {
+    border-color: rgb(var(--c-accent) / 0.45);
+    transition: border-color 160ms ease;
+  }
+}
+
 /* ---- KEYFRAMES: CHỈ transform, tuyệt đối không paint property ---- */
 /* cozy — thở mềm, dài hơi */
 @keyframes hvCozyIcon { 0%,100% { transform: scale(1.035) translateY(-1px); } 50% { transform: scale(1.065) translateY(-2.5px); } }
@@ -708,25 +929,19 @@ body::after {
 }
 
 
-/* khung chọn flash 4 góc (digital) — chớp 1 lần khi bấm nút chính */
-.brk {
+/* digital: MỘT đường viền chạy quanh nút khi bấm (thay 4 khung góc cho đỡ rối) */
+.brk-line {
   position: absolute;
-  width: 11px;
-  height: 11px;
-  border: 1.5px solid rgba(255, 255, 255, 0.95);
-  pointer-events: none;
+  inset: -2px;
   z-index: 5;
-  opacity: 0;
-  animation: brkflash 0.4s ease-out forwards;
+  pointer-events: none;
+  border: 1.5px solid rgb(var(--c-accent-hi));
+  animation: brkline 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
-.brk-tl { top: -4px; left: -4px; border-right: 0; border-bottom: 0; }
-.brk-tr { top: -4px; right: -4px; border-left: 0; border-bottom: 0; }
-.brk-bl { bottom: -4px; left: -4px; border-right: 0; border-top: 0; }
-.brk-br { bottom: -4px; right: -4px; border-left: 0; border-top: 0; }
-@keyframes brkflash {
-  0%   { opacity: 0; transform: translate(var(--ox, 0), var(--oy, 0)); }
-  30%  { opacity: 1; }
-  100% { opacity: 0; transform: translate(0, 0); }
+@keyframes brkline {
+  0%   { opacity: 0; transform: scale(1.06); }
+  25%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(1); }
 }
 
 /* ============================================================

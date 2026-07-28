@@ -272,9 +272,10 @@ function creamThock(t: number, toneHz = 232, peak = 0.13) {
 /** Marimba/music-box ấm — sáng vừa đủ creamy, không chìm xuống bass */
 function warmNote(freq: number, t: number, peak = 0.13, dur = 0.4, send = 0.24) {
   const pan = rand(-0.15, 0.15);
-  tone(freq, t, dur, { type: "triangle", peak, attack: 0.002, filterStart: freq * 3.6, filterEnd: freq * 1.7, q: 1, send, pan });
-  tone(freq * 2, t, 0.06, { type: "sine", peak: peak * 0.14, attack: 0.001, pan });        // hoạ âm 2 → chất music-box
-  noiseHit(t, 0.011, peak * 0.16, 1300, 650, 1, "lowpass");
+  // sine dẫn (tròn nhất) + triangle mờ phía dưới → mượt, không có cạnh sắc
+  tone(freq, t, dur, { type: "sine", peak: peak * 1.1, attack: 0.008, filterStart: freq * 2.6, filterEnd: freq * 1.3, q: 0.6, send, pan });
+  tone(freq, t, dur * 0.7, { type: "triangle", peak: peak * 0.3, attack: 0.012, filterStart: freq * 2, filterEnd: freq, q: 0.5, pan });
+  tone(freq * 2, t, 0.07, { type: "sine", peak: peak * 0.1, attack: 0.006, pan }); // ánh music-box rất nhẹ
 }
 const cozy = {
   tap(t: number) {

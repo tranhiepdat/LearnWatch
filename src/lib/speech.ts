@@ -37,15 +37,25 @@ export function hasVoiceFor(lang: string): boolean {
 export function speak(text: string, lang = "ja-JP", rate = 0.9): void {
   if (!canSpeak()) return;
   try {
-    window.speechSynthesis.cancel(); // cắt câu đang đọc để không chồng tiếng
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = lang;
-    u.rate = rate;
-    u.pitch = 1;
-    const p = lang.slice(0, 2).toLowerCase();
-    const v = voices().find((x) => x.lang?.toLowerCase().startsWith(p));
-    if (v) u.voice = v;
-    window.speechSynthesis.speak(u);
+    const synth = window.speechSynthesis;
+    const fire = () => {
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = lang;
+      u.rate = rate;
+      u.pitch = 1;
+      const p = lang.slice(0, 2).toLowerCase();
+      const v = voices().find((x) => x.lang?.toLowerCase().startsWith(p));
+      if (v) u.voice = v;
+      synth.speak(u);
+    };
+    // Chrome: gọi cancel() rồi speak() ngay lập tức sẽ NUỐT LUÔN câu mới
+    // (cancel chạy bất đồng bộ). Chỉ huỷ khi thật sự đang nói, và hoãn 1 nhịp.
+    if (synth.speaking || synth.pending) {
+      synth.cancel();
+      window.setTimeout(fire, 120);
+    } else {
+      fire();
+    }
   } catch {
     /* máy không hỗ trợ — bỏ qua êm ái */
   }

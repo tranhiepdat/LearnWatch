@@ -36,7 +36,7 @@ export default function ThemeDecor() {
           {/* nắng caramel ấm — bình minh trên đảo */}
           <div
             className="absolute -right-16 -top-12 h-56 w-56 rounded-full opacity-[0.24]"
-            style={{ background: "radial-gradient(circle, #ffc873 0%, rgba(255,200,115,0) 70%)" }}
+            style={{ background: "radial-gradient(circle, #ffd45e 0%, rgba(255,212,94,0) 70%)" }}
           />
           {/* lá Nook (Animal Crossing) lớn nép góc trên */}
           <svg className="absolute -right-4 top-[6%] opacity-[0.16]" width="94" height="94" viewBox="0 0 100 100">
@@ -50,8 +50,11 @@ export default function ThemeDecor() {
             <path d="M50 16 L50 86" stroke="#5f9270" strokeWidth="2.5" fill="none" />
           </svg>
           {/* trái cây bé (chấm) rải rác */}
-          <div className="absolute left-[16%] top-[14%] h-3 w-3 rounded-full opacity-[0.3]" style={{ background: "#d95d55" }} />
-          <div className="absolute right-[24%] bottom-[24%] h-2.5 w-2.5 rounded-full opacity-[0.28]" style={{ background: "#ef9b3f" }} />
+          <div className="absolute left-[16%] top-[14%] h-3 w-3 rounded-full opacity-[0.32]" style={{ background: "#e06a60" }} />
+          <div className="absolute left-[30%] top-[9%] h-2.5 w-2.5 rounded-full opacity-[0.3]" style={{ background: "#6aaf82" }} />
+          <div className="absolute right-[12%] top-[34%] h-2.5 w-2.5 rounded-full opacity-[0.28]" style={{ background: "#7fb3d5" }} />
+          <div className="absolute right-[24%] bottom-[24%] h-2.5 w-2.5 rounded-full opacity-[0.3]" style={{ background: "#f7bb2f" }} />
+          <div className="absolute left-[8%] bottom-[32%] h-3 w-3 rounded-full opacity-[0.26]" style={{ background: "#c79ae0" }} />
           {/* "đảo nhỏ" — gò cỏ tròn mềm nép đáy màn */}
           <div
             className="absolute -bottom-24 left-1/2 h-44 w-[150%] -translate-x-1/2 rounded-[50%] opacity-[0.14]"

@@ -124,6 +124,9 @@ export default function TipsPage() {
                       <SpeakButton text={t.sayEn} lang="en-US" />
                     </div>
                     <p className="mt-1.5 text-[14px] font-medium leading-snug text-champagne">“{t.sayEn}”</p>
+                    {t.sayPhon && (
+                      <p className="mt-1 text-[12px] italic leading-snug text-gold-300">🔊 {t.sayPhon}</p>
+                    )}
                     {t.say && <p className="mt-1.5 text-[12px] leading-snug text-taupe">VN: {t.say}</p>}
                   </div>
                 )}

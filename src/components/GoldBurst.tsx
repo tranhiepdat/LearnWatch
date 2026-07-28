@@ -16,12 +16,13 @@ import { useTheme } from "@/lib/theme";
 
 // Animal Crossing: lá, cỏ 4 lá, hoa, trái cây, sao lấp lánh
 const COZY_GLYPHS = [
-  { ch: "☘", c: "#6fae7f" },
-  { ch: "✿", c: "#ef9b3f" },
-  { ch: "❀", c: "#d97fa0" },
-  { ch: "★", c: "#e8b04b" },
-  { ch: "♥", c: "#d95d55" },
-  { ch: "●", c: "#8fb59b" },
+  { ch: "★", c: "#f7bb2f" }, // vàng mật ong — màu chủ đạo
+  { ch: "☘", c: "#6aaf82" }, // xanh cỏ
+  { ch: "❀", c: "#e08bb4" }, // hồng đào
+  { ch: "◆", c: "#7fb3d5" }, // xanh trời
+  { ch: "♥", c: "#e06a60" }, // đỏ ấm
+  { ch: "✿", c: "#c79ae0" }, // tím oải hương
+  { ch: "●", c: "#ffd45e" }, // vàng nắng
 ];
 
 const rr = (a: number, b: number) => a + Math.random() * (b - a);
