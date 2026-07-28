@@ -46,12 +46,21 @@ export default function RippleProvider() {
         el.classList.remove(cls);
         void el.offsetWidth; // ép reflow để re-trigger animation mỗi lần thả
         el.classList.add(cls);
+        // animationend KHÔNG đảm bảo bắn (animation bị huỷ giữa chừng, đổi
+        // theme, re-render, reduced-motion…) → class kẹt lại và nút đứng ở
+        // scale sai vĩnh viễn. Hẹn giờ dọn là chốt chặn.
+        let timer = 0;
         const done = (ev: AnimationEvent) => {
           if (ev.target !== el) return; // bỏ qua animationend nổi bọt từ .ripple con
           el.classList.remove(cls);
           el.removeEventListener("animationend", done);
+          window.clearTimeout(timer);
         };
         el.addEventListener("animationend", done);
+        timer = window.setTimeout(() => {
+          el.classList.remove(cls);
+          el.removeEventListener("animationend", done);
+        }, 700);
       };
       window.addEventListener("pointerup", release);
       window.addEventListener("pointercancel", release);

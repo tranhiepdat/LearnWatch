@@ -15,12 +15,12 @@ export default function ThemeDecor() {
         <>
           {/* hình khối outline mảnh + dấu cộng đo đạc — ngôn ngữ bản vẽ kỹ thuật */}
           <svg className="absolute -right-5 top-[9%] opacity-[0.14]" width="84" height="84" viewBox="0 0 100 100">
-            <rect x="12" y="12" width="76" height="76" fill="none" stroke="#39FF6A" strokeWidth="1.5" />
-            <rect x="26" y="26" width="48" height="48" fill="none" stroke="#E4FFEC" strokeWidth="0.8" opacity="0.5" />
+            <rect x="12" y="12" width="76" height="76" fill="none" stroke="#38A0FF" strokeWidth="1.5" />
+            <rect x="26" y="26" width="48" height="48" fill="none" stroke="#E4EEFF" strokeWidth="0.8" opacity="0.5" />
           </svg>
           <svg className="absolute -left-5 bottom-[13%] opacity-[0.12]" width="76" height="76" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="40" fill="none" stroke="#7DF5C8" strokeWidth="1.5" strokeDasharray="10 8" />
-            <circle cx="50" cy="50" r="3" fill="#7DF5C8" />
+            <circle cx="50" cy="50" r="40" fill="none" stroke="#7DE0F5" strokeWidth="1.5" strokeDasharray="10 8" />
+            <circle cx="50" cy="50" r="3" fill="#7DE0F5" />
           </svg>
           {["top-[22%] left-[8%]", "top-[46%] right-[6%]", "bottom-[26%] left-[14%]"].map((pos) => (
             <span key={pos} className={`absolute ${pos} opacity-25`}>

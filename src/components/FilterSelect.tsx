@@ -43,7 +43,7 @@ export default function FilterSelect({
           setOpen((o) => !o);
           playTap();
         }}
-        className="cyber flex items-center gap-2 rounded-[var(--r-sm)] bg-gold-foil px-4 py-1.5 text-sm font-bold text-onaccent shadow-glow active:scale-95"
+        className="cyber flex items-center gap-2 rounded-[var(--r-sm)] bg-gold-foil px-4 py-1.5 text-sm font-bold text-onaccent shadow-glow"
       >
         {label && <span className="text-[10px] font-semibold uppercase tracking-luxe opacity-70">{label}</span>}
         <span>{value}</span>
@@ -68,7 +68,7 @@ export default function FilterSelect({
                 setOpen(false);
                 playTap();
               }}
-              className={`cyber flex w-full items-center justify-between rounded-[var(--r-xs)] px-3 py-2 text-left text-sm transition active:scale-[0.98] ${
+              className={`cyber flex w-full items-center justify-between rounded-[var(--r-xs)] px-3 py-2 text-left text-sm transition ${
                 o === value ? "bg-gold-400 font-semibold text-onaccent" : "text-ivory"
               }`}
             >

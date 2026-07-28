@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "@/lib/theme";
 
@@ -29,8 +30,11 @@ export default function GoldBurst({ small = false }: { small?: boolean }) {
   const { theme } = useTheme();
 
   if (theme === "cozy") {
-    const N = small ? 8 : 16;
-    const bits = Array.from({ length: N }).map((_, i) => ({
+    const N = small ? 8 : 12;
+    // useMemo: nếu tính lại mỗi render, framer coi là target MỚI và khởi động
+    // lại toàn bộ hạt giữa chừng → giật rõ mắt
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const bits = useMemo(() => Array.from({ length: N }).map((_, i) => ({
       g: COZY_GLYPHS[i % COZY_GLYPHS.length],
       x: rr(-1, 1) * (small ? 84 : 150),
       y: -(30 + Math.random() * (small ? 84 : 140)),
@@ -39,14 +43,15 @@ export default function GoldBurst({ small = false }: { small?: boolean }) {
       d: 0.7 + Math.random() * 0.4,
       delay: Math.random() * 0.1,
       size: small ? 12 + Math.random() * 6 : 14 + Math.random() * 10,
-    }));
+    })), [N]);
     return (
       <div className="pointer-events-none absolute inset-0 z-30 grid place-items-center overflow-hidden">
         <motion.div
           initial={{ scale: 0, opacity: 0.5 }}
           animate={{ scale: small ? 1.5 : 2.2, opacity: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className={`absolute rounded-[45%_55%_60%_40%/55%_45%_55%_45%] bg-gold-foil blur-xl ${small ? "h-20 w-20" : "h-32 w-32"}`}
+          className={`absolute rounded-[45%_55%_60%_40%/55%_45%_55%_45%] ${small ? "h-20 w-20" : "h-32 w-32"}`}
+          style={{ background: "radial-gradient(circle, rgb(var(--c-accent) / 0.6) 0%, rgb(var(--c-accent) / 0.18) 45%, transparent 72%)" }}
         />
         {bits.map((b, i) => (
           <motion.span
@@ -71,14 +76,15 @@ export default function GoldBurst({ small = false }: { small?: boolean }) {
   }
 
   if (theme === "lux") {
-    const N = small ? 8 : 14;
-    const dust = Array.from({ length: N }).map(() => ({
+    const N = small ? 6 : 10;
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const dust = useMemo(() => Array.from({ length: N }).map(() => ({
       x: rr(-1, 1) * (small ? 70 : 130),
       y: -(16 + Math.random() * (small ? 70 : 120)),
       d: 0.8 + Math.random() * 0.5,
       delay: Math.random() * 0.15,
       size: 2.5 + Math.random() * 3.5,
-    }));
+    })), [N]);
     const RAYS = small ? 6 : 10;
     return (
       <div className="pointer-events-none absolute inset-0 z-30 grid place-items-center overflow-hidden">
@@ -87,7 +93,8 @@ export default function GoldBurst({ small = false }: { small?: boolean }) {
           initial={{ opacity: 0.4, scale: 0.25 }}
           animate={{ opacity: 0, scale: small ? 1.5 : 2.1 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
-          className={`absolute rounded-full bg-gold-400/60 blur-2xl ${small ? "h-16 w-16" : "h-28 w-28"}`}
+          className={`absolute rounded-full ${small ? "h-16 w-16" : "h-28 w-28"}`}
+          style={{ background: "radial-gradient(circle, rgb(var(--c-accent) / 0.55) 0%, transparent 70%)" }}
         />
         {/* vòng hairline vàng nở ra */}
         <motion.div
@@ -127,9 +134,10 @@ export default function GoldBurst({ small = false }: { small?: boolean }) {
   }
 
   // ===== GAME (digital: shape highlight — outline mảnh nở từ tâm) =====
-  const N = small ? 7 : 12;
+  const N = small ? 6 : 9;
   const KINDS = ["square", "circle", "plus", "dot"] as const;
-  const shapes = Array.from({ length: N }).map((_, i) => ({
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const shapes = useMemo(() => Array.from({ length: N }).map((_, i) => ({
     kind: KINDS[i % KINDS.length],
     x: rr(-1, 1) * (small ? 80 : 145),
     y: rr(-1, 1) * (small ? 62 : 110),
@@ -137,8 +145,8 @@ export default function GoldBurst({ small = false }: { small?: boolean }) {
     d: 0.45 + Math.random() * 0.3,
     delay: Math.random() * 0.08,
     size: small ? 6 + Math.random() * 5 : 8 + Math.random() * 8,
-    c: i % 3 === 0 ? "#E4FFEC" : "#39FF6A",
-  }));
+    c: i % 3 === 0 ? "#E4EEFF" : "#38A0FF",
+  })), [N]);
 
   return (
     <div className="pointer-events-none absolute inset-0 z-30 grid place-items-center overflow-hidden">
@@ -159,7 +167,8 @@ export default function GoldBurst({ small = false }: { small?: boolean }) {
         initial={{ opacity: 0.5, scale: 0.2 }}
         animate={{ opacity: 0, scale: small ? 1.2 : 1.7 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
-        className={`absolute bg-gold-300 blur-xl ${small ? "h-14 w-14" : "h-24 w-24"}`}
+        className={`absolute ${small ? "h-14 w-14" : "h-24 w-24"}`}
+        style={{ background: "radial-gradient(circle, rgb(var(--c-accent-hi) / 0.7) 0%, transparent 70%)" }}
       />
       {/* hình khối outline văng ra */}
       {shapes.map((s, i) => (

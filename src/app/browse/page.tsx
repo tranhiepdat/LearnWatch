@@ -97,7 +97,7 @@ export default function BrowsePage() {
               setTab(t);
               playTap();
             }}
-            className={`cyber rounded-[var(--r-sm)] px-4 py-1.5 text-sm font-semibold transition active:scale-95 ${
+            className={`cyber rounded-[var(--r-sm)] px-4 py-1.5 text-sm font-semibold transition ${
               tab === t ? "bg-gold-foil text-onaccent shadow-glow" : "border border-hairline text-taupe"
             }`}
           >
@@ -143,7 +143,7 @@ export default function BrowsePage() {
                 </span>
                 <button
                   onClick={() => { setBrand(c.brand); setTab("Đồng hồ"); setQ(c.collection); playTap(); }}
-                  className="cyber rounded-[var(--r-xs)] border border-hairline px-2 py-0.5 text-[11px] text-gold-300 active:scale-95"
+                  className="cyber rounded-[var(--r-xs)] border border-hairline px-2 py-0.5 text-[11px] text-gold-300"
                 >
                   Xem {COUNTS.get(c.collection)} mẫu →
                 </button>
@@ -179,7 +179,7 @@ export default function BrowsePage() {
       {/* ====== MODAL CHI TIET ====== */}
       {selected && (
         <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center" onClick={() => setSelected(null)}>
-          <div className="absolute inset-0 bg-ink/85 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-ink/92" />
           <div
             className="relative z-10 max-h-[88vh] w-full max-w-lg overflow-y-auto rounded-t-[var(--r-xl)] border border-hairline bg-surface p-5 pb-8 shadow-2xl sm:rounded-[var(--r-xl)]"
             onClick={(e) => e.stopPropagation()}
@@ -187,7 +187,7 @@ export default function BrowsePage() {
             <button
               onClick={() => { setSelected(null); playTap(); }}
               aria-label="Đóng"
-              className="cyber sticky top-0 z-20 ml-auto grid h-9 w-9 place-items-center rounded-[var(--r-full)] border border-hairline bg-surface text-taupe active:scale-90"
+              className="cyber sticky top-0 z-20 ml-auto grid h-9 w-9 place-items-center rounded-[var(--r-full)] border border-hairline bg-surface text-taupe"
             >
               <IconClose className="h-5 w-5" />
             </button>
@@ -203,7 +203,7 @@ export default function BrowsePage() {
 
 function WatchCard({ w, onClick }: { w: Watch; onClick: () => void }) {
   return (
-    <button onClick={onClick} className="cyber card-lux group p-4 text-left transition active:scale-[0.98]">
+    <button onClick={onClick} className="cyber card-lux group p-4 text-left transition">
       <div className="flex gap-3">
         <div className="h-16 w-16 shrink-0 overflow-hidden rounded-[var(--r-lg)] ring-1 ring-hairline">
           <WatchVisual watch={w} size={64} className="h-16 w-16" />

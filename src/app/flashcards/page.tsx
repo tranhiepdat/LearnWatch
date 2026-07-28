@@ -23,7 +23,7 @@ function CoachOverlay({ onDone }: { onDone: () => void }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="absolute inset-0 z-40 grid place-items-center rounded-[var(--r-lg)] bg-ink/85 p-6 backdrop-blur-sm"
+      className="absolute inset-0 z-40 grid place-items-center rounded-[var(--r-lg)] bg-ink/92 p-6"
     >
       <div className="w-full max-w-xs text-center">
         <p className="font-display text-xl font-bold text-ivory">Cách học thẻ</p>
@@ -44,7 +44,7 @@ function CoachOverlay({ onDone }: { onDone: () => void }) {
                     ? { x: [0, r.dir * 0.55, r.dir], opacity: [1, 1, 0] }
                     : { y: [0, -6, 0], opacity: [1, 1, 1] }
                 }
-                transition={{ duration: 1.3, repeat: Infinity, repeatDelay: 0.45, ease: "easeOut", delay: i * 0.2 }}
+                transition={{ duration: 1.3, repeat: 4, repeatDelay: 0.45, ease: "easeOut", delay: i * 0.2 }}
                 className="text-2xl"
               >
                 {r.icon}

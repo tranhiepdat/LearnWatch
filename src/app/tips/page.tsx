@@ -8,6 +8,7 @@ import { playTap } from "@/lib/sound";
 import { hTap } from "@/lib/haptics";
 import { shuffle } from "@/lib/quiz";
 import { IconBulb, IconCheck } from "@/components/icons";
+import SpeakButton from "@/components/SpeakButton";
 
 type Deck = "today" | "all" | TipCat;
 const tipKey = (id: string) => `tip:${id}`;
@@ -81,7 +82,8 @@ export default function TipsPage() {
               </div>
               <p className="mt-1 text-[13px] font-semibold leading-snug text-ivory">{t.short}</p>
               <p className="mt-1 text-[12px] leading-relaxed text-ivory/80">{t.detail}</p>
-              {t.say && <p className="mt-1.5 text-[12px] italic text-champagne">💬 “{t.say}”</p>}
+              {t.sayEn && <p className="mt-1.5 text-[12px] text-champagne">💬 “{t.sayEn}”</p>}
+              {t.say && <p className="mt-0.5 text-[11px] text-taupe">VN: {t.say}</p>}
             </div>
           ))}
         </div>
@@ -115,7 +117,17 @@ export default function TipsPage() {
                 <p className="label-luxe">{t.cat} · vì sao</p>
                 <p className="mt-2 text-[15px] font-bold leading-snug text-ivory">{t.short}</p>
                 <p className="mt-2.5 text-[13.5px] leading-relaxed text-ivory/85">{t.detail}</p>
-                {t.say && (
+                {t.sayEn && (
+                  <div className="mt-3 rounded-[var(--r-md)] bg-surface-2 p-3">
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="label-luxe text-[9px]">Nói với khách (EN)</p>
+                      <SpeakButton text={t.sayEn} lang="en-US" />
+                    </div>
+                    <p className="mt-1.5 text-[14px] font-medium leading-snug text-champagne">“{t.sayEn}”</p>
+                    {t.say && <p className="mt-1.5 text-[12px] leading-snug text-taupe">VN: {t.say}</p>}
+                  </div>
+                )}
+                {!t.sayEn && t.say && (
                   <div className="mt-3 rounded-[var(--r-md)] bg-surface-2 p-3">
                     <p className="label-luxe text-[9px]">Nói với khách</p>
                     <p className="mt-1 text-[13.5px] italic leading-snug text-champagne">“{t.say}”</p>

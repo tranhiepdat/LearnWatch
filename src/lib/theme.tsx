@@ -107,16 +107,16 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
   game: {
     id: "game",
     name: "Digital",
-    tagline: "Phosphor CRT · lân quang xanh lá · hard-cut",
+    tagline: "Phosphor CRT · lân quang xanh dương · sắc gọn",
     emoji: "▞",
     preview: {
-      bg: "#040A07",
-      card: "#09160F",
-      text: "#E4FFEC",
-      accent: "#39FF6A",
-      extra: ["#E4FFEC", "#7DF5C8", "#FFB000"],
+      bg: "#040710",
+      card: "#081020",
+      text: "#E4EEFF",
+      accent: "#38A0FF",
+      extra: ["#E4EEFF", "#7DE0F5", "#FFB000"],
     },
-    bar: "#040A07",
+    bar: "#040710",
     motion: {
       tap: 0.96,
       spring: { type: "spring", stiffness: 650, damping: 34 },
@@ -153,10 +153,14 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
     },
     bar: "#0a1712",
     motion: {
-      tap: 0.97,
+      tap: 0.955,
       spring: { type: "spring", stiffness: 300, damping: 30 },
       bouncy: { type: "spring", stiffness: 340, damping: 22 },
-      pop: { keyframes: { scale: [0.97, 1.012, 1] }, transition: { duration: 0.42, ease: [0.25, 0.8, 0.25, 1] } },
+      pop: {
+        // y tính bằng px TUYỆT ĐỐI nên không teo theo kích thước nút → thấy rõ
+        keyframes: { scale: [0.955, 1.028, 0.996, 1], y: [3, -2.5, 0.5, 0] },
+        transition: { duration: 0.44, ease: [0.2, 0.9, 0.25, 1] },
+      },
       // mở khay nhung — chậm, sang
       hover: { scale: 1.018, transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] } },
       page: {

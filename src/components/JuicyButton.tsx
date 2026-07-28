@@ -45,9 +45,10 @@ export default function JuicyButton({
     // solid highlight SOLID 100% màu theme chớp lên khi bấm rồi tắt — mọi theme
     flash.set({ opacity: 1 });
     flash.start({ opacity: 0, transition: { duration: theme === "cozy" ? 0.32 : 0.24, ease: "easeOut" } });
-    // Digital: giật glitch ngang hard-cut khi bấm
+    // Digital: TRƯỚC ĐÂY lắc ngang x:[0,-4,4,-2,3,0] — đó chính là cảm giác
+    // "lắc lắc" user chê. Thay bằng cú NÉN sắc 1 nhịp: vẫn dứt khoát, không lắc.
     if (theme === "game") {
-      body.start({ x: [0, -4, 4, -2, 3, 0], transition: { duration: 0.16, times: [0, 0.15, 0.35, 0.55, 0.78, 1] } });
+      body.start({ scale: [1, 0.94, 1], transition: { duration: 0.13, ease: [0.22, 1, 0.36, 1] } });
     }
   }
 
@@ -83,7 +84,7 @@ export default function JuicyButton({
       data-no-pop
       data-no-ripple
       className={`relative isolate ${theme === "game" ? "" : "overflow-hidden"} ${
-        variant === "primary" && theme === "cozy" ? "btn3d" : ""
+        variant === "primary" ? (theme === "cozy" ? "btn3d" : theme === "lux" ? "btn-lux" : "") : ""
       } ${className}`}
     >
       {/* SOLID highlight — phủ kín màu đặc rồi tắt (không gradient, không mờ) */}

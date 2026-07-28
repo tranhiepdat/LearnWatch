@@ -130,7 +130,7 @@ export default function WatchDetail({ watch: w }: { watch: Watch }) {
       <Link
         href={`/assistant?id=${w.id}`}
         onClick={() => playTap()}
-        className="cyber flex items-center justify-center gap-1.5 rounded-[var(--r-md)] border border-gold-700/50 bg-gold-500/10 py-2.5 text-xs font-semibold text-gold-300 active:scale-95"
+        className="cyber flex items-center justify-center gap-1.5 rounded-[var(--r-md)] border border-gold-700/50 bg-gold-500/10 py-2.5 text-xs font-semibold text-gold-300"
       >
         <IconChat className="h-4 w-4" /> Hỏi AI về mẫu này
       </Link>

@@ -231,7 +231,7 @@ export default function LearnDeck<T extends { id: string }>({
         <button
           onClick={() => fling(-1)}
           aria-label={skipLabel}
-          className="cyber grid h-14 w-14 place-items-center rounded-[var(--r-lg)] bg-surface-2 text-taupe transition active:scale-90"
+          className="cyber grid h-14 w-14 place-items-center rounded-[var(--r-lg)] bg-surface-2 text-taupe transition"
         >
           <IconClose className="h-6 w-6" />
         </button>
@@ -244,7 +244,7 @@ export default function LearnDeck<T extends { id: string }>({
               onReshuffle();
             }}
             aria-label="Xáo trộn"
-            className="cyber grid h-11 w-11 place-items-center rounded-[var(--r-lg)] bg-surface-2 text-gold-300 transition active:scale-90"
+            className="cyber grid h-11 w-11 place-items-center rounded-[var(--r-lg)] bg-surface-2 text-gold-300 transition"
           >
             <IconShuffle className="h-5 w-5" />
           </button>
@@ -252,7 +252,7 @@ export default function LearnDeck<T extends { id: string }>({
         <button
           onClick={() => fling(1)}
           aria-label={knowLabel}
-          className="cyber grid h-14 w-14 place-items-center rounded-[var(--r-lg)] bg-gold-400 text-onaccent shadow-glow transition active:scale-90"
+          className="cyber grid h-14 w-14 place-items-center rounded-[var(--r-lg)] bg-gold-400 text-onaccent shadow-glow transition"
         >
           <IconCheck className="h-6 w-6" />
         </button>

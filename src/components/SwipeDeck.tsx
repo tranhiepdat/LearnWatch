@@ -141,7 +141,7 @@ export default function SwipeDeck({
             x.set(0);
             onReshuffle();
           }}
-          className="cyber mt-2 rounded-[var(--r-md)] bg-gold-foil px-6 py-3 font-bold text-onaccent shadow-glow active:scale-95"
+          className="cyber mt-2 rounded-[var(--r-md)] bg-gold-foil px-6 py-3 font-bold text-onaccent shadow-glow"
         >
           Học lại (xáo trộn)
         </button>
@@ -403,7 +403,7 @@ export default function SwipeDeck({
       <Link
         href={`/assistant?id=${current.id}`}
         onClick={() => playTap()}
-        className="cyber mt-3 flex shrink-0 items-center justify-center gap-1.5 rounded-[var(--r-md)] bg-gold-400/10 py-2 text-xs font-semibold text-gold-300 active:scale-95"
+        className="cyber mt-3 flex shrink-0 items-center justify-center gap-1.5 rounded-[var(--r-md)] bg-gold-400/10 py-2 text-xs font-semibold text-gold-300"
       >
         <IconChat className="h-4 w-4" /> Hỏi AI về mẫu này
       </Link>
@@ -413,21 +413,21 @@ export default function SwipeDeck({
         <button
           onClick={() => fling(-1)}
           aria-label="Ôn lại"
-          className="grid h-14 w-14 cyber place-items-center rounded-[var(--r-lg)] bg-surface-2 text-taupe transition active:scale-90"
+          className="grid h-14 w-14 cyber place-items-center rounded-[var(--r-lg)] bg-surface-2 text-taupe transition"
         >
           <IconClose className="h-6 w-6" />
         </button>
         <button
           onClick={onReshuffle}
           aria-label="Xáo trộn"
-          className="grid h-11 w-11 cyber place-items-center rounded-[var(--r-lg)] bg-surface-2 text-gold-300 transition active:scale-90"
+          className="grid h-11 w-11 cyber place-items-center rounded-[var(--r-lg)] bg-surface-2 text-gold-300 transition"
         >
           <IconShuffle className="h-5 w-5" />
         </button>
         <button
           onClick={() => fling(1)}
           aria-label="Đã thuộc"
-          className="grid h-14 w-14 cyber place-items-center rounded-[var(--r-lg)] bg-gold-foil text-onaccent shadow-glow transition active:scale-90"
+          className="grid h-14 w-14 cyber place-items-center rounded-[var(--r-lg)] bg-gold-foil text-onaccent shadow-glow transition"
         >
           <IconCheck className="h-6 w-6" />
         </button>

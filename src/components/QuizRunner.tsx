@@ -215,7 +215,7 @@ export default function QuizRunner({
           transition={meta.motion.bouncy}
           className="card-lux relative overflow-hidden p-8 text-center"
         >
-          {passed && <GoldBurst />}
+          {passed && !levelUp && <GoldBurst />}
           <p className="label-luxe">
             {isBlitz ? "Blitz 60 giây" : mode === "mistakes" ? "Ôn lỗi sai" : passed ? "Xuất sắc" : "Tiếp tục cố gắng"}
           </p>
@@ -273,7 +273,7 @@ export default function QuizRunner({
             </JuicyButton>
             <Link
               href="/"
-              className="cyber flex-1 rounded-[var(--r-md)] border border-hairline py-3 text-center font-bold text-ivory active:scale-95"
+              className="cyber flex-1 rounded-[var(--r-md)] border border-hairline py-3 text-center font-bold text-ivory"
             >
               Về trang chủ
             </Link>
@@ -290,7 +290,7 @@ export default function QuizRunner({
               className="fixed inset-0 z-[60] grid place-items-center"
               onClick={() => setLevelUp(null)}
             >
-              <div className="absolute inset-0 bg-ink/85 backdrop-blur-sm" />
+              <div className="absolute inset-0 bg-ink/92" />
               <motion.div
                 initial={theme === "cozy" ? { scale: 0.5, y: 30, opacity: 0 } : { scale: 0.6, opacity: 0 }}
                 animate={{ scale: 1, y: 0, opacity: 1 }}
@@ -315,15 +315,16 @@ export default function QuizRunner({
   return (
     <div className="flex h-full flex-col">
       {/* viền đỏ nháy khi sai */}
-      {dangerKey > 0 && <div key={dangerKey} className="danger-edge" />}
+      {dangerKey > 0 && <div key={dangerKey} className="danger-edge" onAnimationEnd={() => setDangerKey(0)} />}
 
       <div className="mb-3 flex shrink-0 items-center gap-3">
         {isBlitz ? (
           <>
             <div className="h-2.5 flex-1 overflow-hidden rounded-[var(--r-full)] bg-surface-2">
               <motion.div
-                className={`h-full rounded-[var(--r-full)] ${blitzLeft <= 10 ? "bg-bordeaux" : "bg-gold-foil"}`}
-                animate={{ width: `${(blitzLeft / BLITZ_SECONDS) * 100}%` }}
+                /* scaleX thay width: transform thuần GPU, 0 reflow */
+                className={`h-full w-full origin-left rounded-[var(--r-full)] ${blitzLeft <= 10 ? "bg-bordeaux" : "bg-gold-foil"}`}
+                animate={{ scaleX: blitzLeft / BLITZ_SECONDS }}
                 transition={{ duration: 0.9, ease: "linear" }}
               />
             </div>
@@ -341,8 +342,8 @@ export default function QuizRunner({
           <>
             <div className="h-2 flex-1 overflow-hidden rounded-[var(--r-full)] bg-surface-2">
               <motion.div
-                className="h-full rounded-[var(--r-full)] bg-gold-foil"
-                animate={{ width: `${(index / total) * 100}%` }}
+                className="h-full w-full origin-left rounded-[var(--r-full)] bg-gold-foil"
+                animate={{ scaleX: index / total }}
                 transition={{ type: "spring", stiffness: 200, damping: 30 }}
               />
             </div>
@@ -376,7 +377,7 @@ export default function QuizRunner({
         {/* XP bay lên */}
         <div className="pointer-events-none absolute inset-x-0 top-10 z-40 flex justify-center">
           {floats.map((f) => (
-            <span key={f.id} className="xp-float absolute font-tech text-lg font-extrabold gold-text drop-shadow">
+            <span key={f.id} className="xp-float absolute font-tech text-lg font-extrabold text-gold-300">
               {f.text}
             </span>
           ))}
@@ -444,10 +445,16 @@ export default function QuizRunner({
               <AnimatePresence>
                 {answered && !isBlitz && (
                   <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    className="mt-4 overflow-hidden"
+                    /* KHÔNG animate height:auto (reflow mỗi khung hình → giật).
+                       grid-template-rows 0fr→1fr cho hiệu ứng "mở ra" tương tự
+                       mà trình duyệt xử lý rẻ hơn nhiều. */
+                    initial={{ opacity: 0, gridTemplateRows: "0fr" }}
+                    animate={{ opacity: 1, gridTemplateRows: "1fr" }}
+                    transition={{ duration: 0.26, ease: [0.25, 0.8, 0.25, 1] }}
+                    style={{ display: "grid" }}
+                    className="mt-4"
                   >
+                    <div className="min-h-0 overflow-hidden">
                     <div className="rounded-[var(--r-md)] border border-hairline bg-surface-2 p-4 text-sm">
                       <p className={`font-semibold ${selected === q.correctIndex ? "text-gold-300" : "text-bordeaux"}`}>
                         {selected === q.correctIndex ? "Chính xác" : "Chưa đúng"}
@@ -494,7 +501,7 @@ export default function QuizRunner({
                           <CollectionToggle collection={watch.collection} className="mt-3" />
                           <button
                             onClick={() => { setShowDetail(true); playTap(); }}
-                            className="cyber mt-2 flex w-full items-center justify-center gap-1.5 rounded-[var(--r-md)] bg-gold-400/10 py-2.5 text-xs font-bold text-gold-300 active:scale-[0.98]"
+                            className="cyber mt-2 flex w-full items-center justify-center gap-1.5 rounded-[var(--r-md)] bg-gold-400/10 py-2.5 text-xs font-bold text-gold-300"
                           >
                             <IconBook className="h-4 w-4" /> Xem đầy đủ thông tin mẫu này
                           </button>
@@ -502,6 +509,7 @@ export default function QuizRunner({
                       ) : (
                         <p className="mt-1 text-ivory/85">{q.explanation}</p>
                       )}
+                    </div>
                     </div>
                   </motion.div>
                 )}
@@ -526,7 +534,7 @@ export default function QuizRunner({
 
       {showDetail && watch && (
         <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center" onClick={() => setShowDetail(false)}>
-          <div className="absolute inset-0 bg-ink/85 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-ink/92" />
           <div
             className="relative z-10 max-h-[88vh] w-full max-w-lg overflow-y-auto rounded-t-[var(--r-xl)] border border-hairline bg-surface p-5 pb-8 shadow-2xl sm:rounded-[var(--r-xl)]"
             onClick={(e) => e.stopPropagation()}
@@ -534,7 +542,7 @@ export default function QuizRunner({
             <button
               onClick={() => { setShowDetail(false); playTap(); }}
               aria-label="Đóng"
-              className="cyber sticky top-0 z-20 ml-auto grid h-9 w-9 place-items-center rounded-[var(--r-full)] border border-hairline bg-surface text-taupe active:scale-90"
+              className="cyber sticky top-0 z-20 ml-auto grid h-9 w-9 place-items-center rounded-[var(--r-full)] border border-hairline bg-surface text-taupe"
             >
               <IconClose className="h-5 w-5" />
             </button>

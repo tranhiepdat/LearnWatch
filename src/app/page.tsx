@@ -74,7 +74,7 @@ export default function Home() {
         <Link
           href="/quiz?mode=mistakes"
           onClick={() => playTap()}
-          className="cyber flex items-center gap-3 rounded-[var(--r-md)] bg-bordeaux px-4 py-3 active:scale-[0.99]"
+          className="cyber flex items-center gap-3 rounded-[var(--r-md)] bg-bordeaux px-4 py-3"
         >
           <IconRedo className="h-5 w-5 shrink-0 text-white" />
           <span className="min-w-0 flex-1 truncate text-[13px] font-semibold text-white">
@@ -86,7 +86,7 @@ export default function Home() {
         <Link
           href="/quiz?mode=blitz"
           onClick={() => playTap()}
-          className="cyber flex items-center gap-3 rounded-[var(--r-md)] bg-gold-500 px-4 py-3 active:scale-[0.99]"
+          className="cyber flex items-center gap-3 rounded-[var(--r-md)] bg-gold-500 px-4 py-3"
         >
           <IconBolt className="h-5 w-5 shrink-0 text-onaccent" />
           <span className="min-w-0 flex-1 truncate text-[13px] font-semibold text-onaccent">
@@ -108,7 +108,7 @@ export default function Home() {
             <Link
               href={m.href}
               onClick={() => playTap()}
-              className="cyber flex flex-col items-start gap-3 rounded-[var(--r-lg)] border border-hairline bg-surface p-4 shadow-lux transition active:scale-[0.97]"
+              className="cyber flex flex-col items-start gap-3 rounded-[var(--r-lg)] border border-hairline bg-surface p-4 shadow-lux transition"
             >
               <span className="tile h-12 w-12">
                 <m.Icon className="h-6 w-6" />
@@ -123,7 +123,7 @@ export default function Home() {
       </section>
 
       {/* Kho — card số liệu phẳng */}
-      <Link href="/inventory" onClick={() => playTap()} className="cyber card-lux block p-4 active:scale-[0.99]">
+      <Link href="/inventory" onClick={() => playTap()} className="cyber card-lux block p-4">
         <div className="flex items-center justify-between">
           <p className="label-luxe">Kho hàng · Thư viện</p>
           <span className="text-xs font-semibold text-gold-300">Xem kho →</span>

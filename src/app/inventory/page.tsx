@@ -65,7 +65,7 @@ export default function InventoryPage() {
                 setAuth("Tất cả");
                 playTap();
               }}
-              className="cyber block w-full text-left active:scale-[0.99]"
+              className="cyber block w-full text-left"
             >
               <div className="flex items-center justify-between text-[12px]">
                 <span className={brand === b ? "font-semibold text-gold-300" : "text-ivory"}>{b}</span>
@@ -89,7 +89,7 @@ export default function InventoryPage() {
               setAuth(a);
               playTap();
             }}
-            className={`cyber rounded-[var(--r-sm)] px-3 py-1 text-xs font-semibold transition active:scale-95 ${
+            className={`cyber rounded-[var(--r-sm)] px-3 py-1 text-xs font-semibold transition ${
               auth === a
                 ? a === "Custom/Rep"
                   ? "border border-bordeaux bg-bordeaux/15 text-bordeaux"
@@ -115,7 +115,7 @@ export default function InventoryPage() {
               setSelected(w);
               playTap();
             }}
-            className="cyber card-lux group p-2.5 text-left transition active:scale-[0.98]"
+            className="cyber card-lux group p-2.5 text-left transition"
           >
             <div className="relative aspect-square w-full overflow-hidden rounded-[var(--r-md)] ring-1 ring-hairline">
               <WatchVisual watch={w} size={150} className="h-full w-full" />
@@ -135,7 +135,7 @@ export default function InventoryPage() {
       {/* Modal chi tiết */}
       {selected && (
         <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center" onClick={() => setSelected(null)}>
-          <div className="absolute inset-0 bg-ink/85 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-ink/92" />
           <div
             className="relative z-10 max-h-[88vh] w-full max-w-lg overflow-y-auto rounded-t-[var(--r-xl)] border border-hairline bg-surface p-5 pb-8 shadow-2xl sm:rounded-[var(--r-xl)]"
             onClick={(e) => e.stopPropagation()}
@@ -146,7 +146,7 @@ export default function InventoryPage() {
                 playTap();
               }}
               aria-label="Đóng"
-              className="cyber sticky top-0 z-20 ml-auto grid h-9 w-9 place-items-center rounded-[var(--r-full)] border border-hairline bg-surface text-taupe active:scale-90"
+              className="cyber sticky top-0 z-20 ml-auto grid h-9 w-9 place-items-center rounded-[var(--r-full)] border border-hairline bg-surface text-taupe"
             >
               <IconClose className="h-5 w-5" />
             </button>

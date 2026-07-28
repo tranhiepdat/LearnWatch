@@ -8,6 +8,7 @@ import { playTap } from "@/lib/sound";
 import { hTap } from "@/lib/haptics";
 import { shuffle } from "@/lib/quiz";
 import { IconCheck } from "@/components/icons";
+import SpeakButton from "@/components/SpeakButton";
 
 const jpKey = (id: string) => `jp:${id}`;
 
@@ -124,6 +125,7 @@ export default function NihongoPage() {
                   Chặng {p.step} · {p.len === "short" ? "câu lõi" : "câu dài"}
                 </p>
                 <p className="mt-3 font-display text-3xl font-bold leading-snug text-ivory">{p.jp}</p>
+                <SpeakButton text={p.jp} lang="ja-JP" className="mt-4" />
                 {isKnown(p) && (
                   <span className="stat mt-4 text-gold-300">
                     <IconCheck className="h-3.5 w-3.5" /> đã thuộc
@@ -133,7 +135,10 @@ export default function NihongoPage() {
             )}
             renderBack={(p) => (
               <div className="flex flex-1 flex-col justify-center">
-                <p className="font-display text-2xl font-bold leading-snug text-ivory">{p.jp}</p>
+                <div className="flex items-start justify-between gap-2">
+                  <p className="font-display text-2xl font-bold leading-snug text-ivory">{p.jp}</p>
+                  <SpeakButton text={p.jp} lang="ja-JP" />
+                </div>
                 <p className="mt-1.5 text-base italic text-gold-300">{p.romaji}</p>
                 <div className="mt-3 rounded-[var(--r-md)] bg-surface-2 p-3">
                   <p className="label-luxe text-[9px]">Nghĩa</p>

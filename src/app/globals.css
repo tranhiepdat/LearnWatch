@@ -13,51 +13,50 @@
    ============================================================ */
 
 /* ===== DIGITAL (id "game") — motion-graphic: đen, mảnh, chính xác ===== */
-/* ===== DIGITAL (game) — PHOSPHOR CRT: màn lân quang xanh lá, mono-hue ===== */
+/* ===== DIGITAL (game) — PHOSPHOR CRT XANH DƯƠNG: màn lân quang lam ===== */
 :root,
 :root[data-theme="game"] {
   color-scheme: dark;
-  /* nền đen ÁM XANH LÁ (không đen tuyệt đối — vỏ phosphor còn dư sáng) */
-  --c-bg: 4 10 6;
-  --c-bg2: 6 14 9;
-  --c-surface: 8 18 11;
-  --c-surface2: 12 28 17;
-  --c-surface3: 18 42 26;
-  /* chữ = trắng nóng ám xanh (hot white) */
-  --c-fg: 214 255 226;
-  --c-muted: 118 170 134;
-  --c-soft: 255 176 0; /* amber CRT (P3) — phosphor thế hệ khác, dùng ít diện tích */
-  /* accent = phosphor green */
-  --c-accent-50: 230 255 238;
-  --c-accent-100: 190 255 210;
-  --c-accent-hi: 138 255 168;
-  --c-accent: 57 255 106;
-  --c-accent-lo: 26 224 82;
-  --c-accent-600: 16 176 62;
-  --c-accent-700: 10 128 44;
-  --c-second: 125 245 200; /* rìa tia lệch lạnh (aqua) — vẫn gần mono-hue */
-  /* ĐỎ chứ không amber: cảnh báo "hàng giả" không được nhập nhằng với xanh lá
-     ở người mù màu deuteranopia (xanh↔amber là đúng cặp dễ lẫn) */
+  /* nền đen ÁM LAM (không đen tuyệt đối — vỏ phosphor còn dư sáng) */
+  --c-bg: 4 7 16;
+  --c-bg2: 6 11 23;
+  --c-surface: 8 16 32;
+  --c-surface2: 13 25 50;
+  --c-surface3: 20 38 73;
+  /* chữ = trắng nóng ám lam (hot white) */
+  --c-fg: 228 238 255;
+  --c-muted: 124 143 180;
+  --c-soft: 255 176 0; /* amber CRT — nhấn ấm, dùng ít diện tích */
+  /* accent = phosphor blue (LAM thật, không phải cyan) */
+  --c-accent-50: 230 243 255;
+  --c-accent-100: 191 224 255;
+  --c-accent-hi: 140 200 255;
+  --c-accent: 56 160 255;
+  --c-accent-lo: 27 130 232;
+  --c-accent-600: 18 102 196;
+  --c-accent-700: 11 75 148;
+  --c-second: 125 224 245; /* rìa tia lệch lạnh (cyan nhạt) — giữ gần mono-hue */
+  /* ĐỎ chứ không amber: cảnh báo "hàng giả" phải phân biệt được với accent */
   --c-danger: 255 68 56;
-  --c-on-accent: 2 20 9;
-  --c-hairline: rgba(126, 255, 170, 0.16);
+  --c-on-accent: 3 14 30;
+  --c-hairline: rgba(140, 200, 255, 0.16);
 
-  --bg-wash: radial-gradient(120% 80% at 50% -10%, #0a1c11 0%, #06120a 52%, #040a06 100%);
-  --grad-primary: linear-gradient(#39ff6a, #39ff6a); /* SOLID phosphor green */
-  --grad-line: linear-gradient(90deg, transparent, rgba(57, 255, 106, 0.6), transparent);
+  --bg-wash: radial-gradient(120% 80% at 50% -10%, #0a1730 0%, #060d1c 52%, #040710 100%);
+  --grad-primary: linear-gradient(#38a0ff, #38a0ff); /* SOLID phosphor blue */
+  --grad-line: linear-gradient(90deg, transparent, rgba(56, 160, 255, 0.6), transparent);
   /* bloom lân quang 2 lớp: lõi sắc + quầng rộng mờ */
-  --sh-glow: 0 0 14px -4px rgba(57, 255, 106, 0.55), 0 0 40px -16px rgba(57, 255, 106, 0.35);
-  --sh-ring: 0 0 0 1px rgba(57, 255, 106, 0.3), 0 10px 30px -14px rgba(0, 0, 0, 0.8);
+  --sh-glow: 0 0 14px -4px rgba(56, 160, 255, 0.6), 0 0 40px -16px rgba(56, 160, 255, 0.38);
+  --sh-ring: 0 0 0 1px rgba(56, 160, 255, 0.3), 0 10px 30px -14px rgba(0, 0, 0, 0.8);
   --sh-lux: 0 18px 44px -22px rgba(0, 0, 0, 0.9);
-  --btn-edge: rgba(10, 128, 44, 0.95);
+  --btn-edge: rgba(11, 75, 148, 0.95);
 
   --r-xs: 0px; --r-sm: 0px; --r-md: 0px; --r-lg: 0px; --r-xl: 0px; --r-full: 0px;
   --track-luxe: 0.22em;
   --font-display-active: var(--font-sans);
   --font-tech-active: var(--font-mono2);
 
-  --sel-bg: rgba(57, 255, 106, 0.35);
-  --hl-sheen: rgba(214, 255, 226, 0.9);
+  --sel-bg: rgba(56, 160, 255, 0.35);
+  --hl-sheen: rgba(228, 238, 255, 0.9);
   --hl-dur: 0.3s;
 }
 
@@ -200,12 +199,12 @@ body::after {
   opacity: 1;
   background-image: repeating-linear-gradient(
       180deg,
-      rgba(57, 255, 106, 0.055) 0px,
-      rgba(57, 255, 106, 0.055) 1px,
+      rgba(56, 160, 255, 0.06) 0px,
+      rgba(56, 160, 255, 0.06) 1px,
       transparent 1px,
       transparent 4px
     ),
-    linear-gradient(90deg, rgba(57, 255, 106, 0.035) 1px, transparent 1px);
+    linear-gradient(90deg, rgba(56, 160, 255, 0.04) 1px, transparent 1px);
   background-size: 100% 4px, 44px 44px;
   -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 16%, #000 100%);
   mask-image: linear-gradient(180deg, transparent 0%, #000 16%, #000 100%);
@@ -296,7 +295,7 @@ body::after {
 /* Digital: outline mảnh làm chủ đạo + LINE REVEAL — kẻ sáng tự vẽ khi card
    xuất hiện (chạy 1 lần lúc mount, sau đó ĐỨNG YÊN) */
 [data-theme="game"] .card-lux {
-  border-color: rgba(57, 255, 106, 0.2);
+  border-color: rgba(56, 160, 255, 0.22);
   box-shadow: none;
 }
 [data-theme="game"] .card-lux::before,
@@ -305,7 +304,7 @@ body::after {
   position: absolute;
   height: 1px;
   width: 100%;
-  background: linear-gradient(90deg, rgb(var(--c-accent)), rgba(214, 255, 226, 0.5));
+  background: linear-gradient(90deg, rgb(var(--c-accent)), rgba(228, 238, 255, 0.55));
   animation: linereveal 0.55s cubic-bezier(0.65, 0, 0.35, 1) both;
   pointer-events: none;
 }
@@ -346,6 +345,12 @@ body::after {
 [data-theme="cozy"] .chip {
   box-shadow: 0 2px 0 0 rgba(150, 100, 50, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
+/* lux: phản hồi bấm phải tới trong ~90ms mới quy được về cú chạm */
+[data-theme="lux"] .cyber:active:not(:disabled),
+[data-theme="lux"] .chip:active {
+  box-shadow: inset 0 0 0 1px rgb(var(--c-accent) / 0.55), 0 0 18px -6px rgb(var(--c-accent) / 0.7);
+  transition: box-shadow 90ms ease-out;
+}
 [data-theme="cozy"] .chip:active {
   transform: translateY(1.5px) scale(0.97);
   box-shadow: 0 0.5px 0 0 rgba(150, 100, 50, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.8);
@@ -363,24 +368,23 @@ body::after {
   position: absolute;
   top: -30%;
   bottom: -30%;
-  left: -45%;
+  left: 0;
   width: 40%;
   z-index: 4;
   pointer-events: none;
-  transform: skewX(-16deg);
-  background: linear-gradient(90deg, transparent, var(--hl-sheen), transparent);
-  filter: blur(4px);
+  transform: translateX(-140%) skewX(-16deg);
+  will-change: transform;
+  background: linear-gradient(90deg, transparent 0%, var(--hl-sheen) 35%, var(--hl-sheen) 65%, transparent 100%);
   animation: hlsweep var(--hl-dur) ease-out forwards;
 }
 /* Digital: vệt quét là LÀN KẺ mảnh sắc, không blur */
 [data-theme="game"] .hl-sweep {
   width: 14%;
-  filter: none;
-  transform: skewX(-24deg);
+  transform: translateX(-140%) skewX(-24deg);
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
 }
 @keyframes hlsweep {
-  to { left: 110%; }
+  to { transform: translateX(320%) skewX(-16deg); }
 }
 
 /* ===== Đáp án ĐÚNG — vài nhịp rồi ĐỨNG YÊN ===== */
@@ -475,19 +479,19 @@ body::after {
 
 /* Squash & stretch khi THẢ nút — keyframe chạy TRỌN VẸN bất kể tap nhanh/chậm.
    RippleProvider thêm .tap-pop lúc pointerup rồi gỡ khi animationend. */
-[data-theme="cozy"] .tap-pop { animation: popCozy 0.42s cubic-bezier(0.3, 0.9, 0.4, 1); transform-origin: center bottom; }
+[data-theme="cozy"] .tap-pop.tap-pop { animation: popCozy 360ms cubic-bezier(0.25, 1.2, 0.4, 1); transform-origin: center bottom; }
 /* easing DỐC thay cho steps(): vẫn "sắc" mà không nhảy nấc gây cảm giác giật */
-[data-theme="game"] .tap-pop { animation: popGame 0.2s cubic-bezier(0.9, 0, 0.1, 1); }
-[data-theme="lux"]  .tap-pop { animation: popLux 0.34s cubic-bezier(0.3, 0.85, 0.4, 1); }
+[data-theme="game"] .tap-pop.tap-pop { animation: popGame 150ms cubic-bezier(0.22, 1, 0.36, 1); }
+[data-theme="lux"]  .tap-pop.tap-pop { animation: popLux 400ms cubic-bezier(0.22, 1, 0.36, 1); transform-origin: center bottom; }
 
 /* Khối LỚN (card bấm được): phản hồi bằng ÁNH SÁNG, không transform —
    scale trên khối 340px sẽ dịch mép 7px gây chóng mặt. */
-[data-theme="cozy"] .tap-pop-lg { animation: popLgCozy 0.36s ease-out; }
-[data-theme="game"] .tap-pop-lg { animation: popLgGame 0.22s cubic-bezier(0.9, 0, 0.1, 1); }
-[data-theme="lux"]  .tap-pop-lg { animation: popLgLux 0.44s cubic-bezier(0.25, 0.8, 0.25, 1); }
+[data-theme="cozy"] .tap-pop-lg.tap-pop-lg { animation: popLgCozy 0.36s ease-out; }
+[data-theme="game"] .tap-pop-lg.tap-pop-lg { animation: popLgGame 0.22s cubic-bezier(0.9, 0, 0.1, 1); }
+[data-theme="lux"]  .tap-pop-lg.tap-pop-lg { animation: popLgLux 0.44s cubic-bezier(0.25, 0.8, 0.25, 1); }
 @keyframes popLgCozy { 0% { filter: brightness(1.22) saturate(1.2); } 100% { filter: none; } }
 @keyframes popLgGame { 0% { filter: brightness(1.5); } 50% { filter: brightness(1.1); } 100% { filter: none; } }
-@keyframes popLgLux  { 0% { filter: brightness(1.14); } 100% { filter: none; } }
+@keyframes popLgLux  { 0% { filter: brightness(1.28) saturate(1.12); } 100% { filter: none; } }
 @keyframes popCozy {
   0%   { transform: scale(1.2, 0.8); }    /* nén bẹt RÕ (vừa thả từ trạng thái bấm) */
   28%  { transform: scale(0.84, 1.2); }   /* kéo cao gầy */
@@ -496,15 +500,28 @@ body::after {
   88%  { transform: scale(1.02, 0.99); }
   100% { transform: scale(1, 1); }
 }
+/* DIGITAL: bung ngay frame đầu rồi tắt dần (easeOutQuint) — sắc mà KHÔNG có
+   đoạn "giữ rồi búng" gây cảm giác giật */
 @keyframes popGame {
-  0%   { transform: scale(0.9); }
-  50%  { transform: scale(1.07); }
+  0%   { transform: scale(0.93); }
+  55%  { transform: scale(1.035); }
   100% { transform: scale(1); }
 }
+/* BOUTIQUE: trước 0.95 = chỉ 1.5px trên nút 36px → DƯỚI ngưỡng nhìn thấy.
+   Nay thêm translateY tuyệt đối (không teo theo kích thước) → ~4.5px hành
+   trình, thấy rõ mà vẫn giữ chất quiet-luxury (bằng 1/3 biên độ cozy). */
 @keyframes popLux {
-  0%   { transform: scale(0.95); }
-  45%  { transform: scale(1.035); }
-  100% { transform: scale(1); }
+  0%   { transform: translateY(2px) scale(0.92); }
+  38%  { transform: translateY(-1.5px) scale(1.045, 1.018); }
+  70%  { transform: translateY(0.5px) scale(0.995); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+/* Bất biến: trong lúc pop chạy, KHÔNG transition nào được sở hữu `transform`
+   → chỉ đúng MỘT nguồn ghi transform, hết tranh quyền gây snap/lắc. */
+.tap-pop,
+.tap-pop-lg {
+  transition-property: box-shadow, border-color, background-color, color, opacity !important;
 }
 
 /* ============================================================
@@ -514,6 +531,13 @@ body::after {
    Mỗi theme một tính cách: enter (1 nhịp) + loop NHẸ trong lúc rê chuột.
    Loop chỉ sống khi đang hover → rời chuột là dừng, không phải nền chạy vô hạn.
    ============================================================ */
+/* Bất biến: trong lúc pop chạy, KHÔNG transition nào được sở hữu `transform`
+   → chỉ đúng MỘT nguồn ghi transform, hết tranh quyền gây snap/lắc. */
+.tap-pop,
+.tap-pop-lg {
+  transition-property: box-shadow, border-color, background-color, color, opacity !important;
+}
+
 /* ============================================================
    HOVER — chỉ chạy trên thiết bị CÓ CHUỘT THẬT.
 
@@ -529,103 +553,109 @@ body::after {
    ============================================================ */
 @media (hover: hover) and (pointer: fine) {
   /* --- lớp CHẤT LIỆU: set 1 lần khi vào hover, KHÔNG animate --- */
-  :where([data-theme]) .cyber:where(:hover:not(:active):not(:disabled)),
-  :where([data-theme]) [data-fx]:where(:hover:not(:active):not(:disabled)) {
+  :where([data-theme]) .cyber:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme]) [data-fx]:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)) {
     will-change: transform;
   }
-  :where([data-theme="cozy"]) .cyber:where(:hover:not(:active):not(:disabled)),
-  :where([data-theme="cozy"]) [data-fx]:where(:hover:not(:active):not(:disabled)) {
+  /* Khi BẤM, hover-animation bị gỡ → nếu không có transition nền thì transform
+     nhảy phắt về 1 (đọc ra "lắc"). Transition này làm cú chuyển đó TRƯỢT mượt. */
+  :where([data-theme]) .cyber,
+  :where([data-theme]) [data-fx] {
+    transition: transform 150ms cubic-bezier(0.2, 0.8, 0.3, 1);
+  }
+  :where([data-theme="cozy"]) .cyber:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="cozy"]) [data-fx]:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)) {
     box-shadow: 0 10px 20px -10px rgba(150, 100, 50, 0.55);
     transition: box-shadow 220ms ease-out, transform 220ms cubic-bezier(0.34, 1.5, 0.64, 1);
   }
-  :where([data-theme="game"]) .cyber:where(:hover:not(:active):not(:disabled)),
-  :where([data-theme="game"]) [data-fx]:where(:hover:not(:active):not(:disabled)) {
+  :where([data-theme="game"]) .cyber:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="game"]) [data-fx]:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)) {
     box-shadow: 0 0 0 1px rgb(var(--c-accent) / 0.85), 0 0 16px -4px rgb(var(--c-accent) / 0.6);
     transition: box-shadow 110ms cubic-bezier(0.9, 0, 0.1, 1), transform 110ms cubic-bezier(0.9, 0, 0.1, 1);
   }
-  :where([data-theme="lux"]) .cyber:where(:hover:not(:active):not(:disabled)),
-  :where([data-theme="lux"]) [data-fx]:where(:hover:not(:active):not(:disabled)) {
+  :where([data-theme="lux"]) .cyber:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="lux"]) [data-fx]:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)) {
     box-shadow: 0 0 22px -8px rgb(var(--c-accent) / 0.6);
     transition: box-shadow 420ms ease, transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   /* ============ COZY — ấm, mềm, nảy đệm bông ============ */
   /* nút icon: phồng tròn + nhún thở */
-  :where([data-theme="cozy"]) .cyber.h-8:where(:hover:not(:active)),
-  :where([data-theme="cozy"]) .cyber.h-9:where(:hover:not(:active)),
-  :where([data-theme="cozy"]) .cyber.h-11:where(:hover:not(:active)),
-  :where([data-theme="cozy"]) .cyber.h-12:where(:hover:not(:active)),
-  :where([data-theme="cozy"]) .cyber.h-14:where(:hover:not(:active)) {
-    animation: hvCozyIcon 2.2s cubic-bezier(0.45, 0, 0.55, 1) 200ms infinite;
+  :where([data-theme="cozy"]) .cyber.h-8:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="cozy"]) .cyber.h-9:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="cozy"]) .cyber.h-11:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="cozy"]) .cyber.h-12:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="cozy"]) .cyber.h-14:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvCozyIcon 2.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
   }
   /* chip: SQUASH NGANG (bè ra, kiểu kẹo dẻo) */
-  :where([data-theme="cozy"]) .cyber.chip:where(:hover:not(:active)) {
-    animation: hvCozyChip 2s cubic-bezier(0.45, 0, 0.55, 1) 200ms infinite;
+  :where([data-theme="cozy"]) .cyber.chip:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvCozyChip 2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
   }
   /* tab nav: chỉ NÂNG lên, không phình (tránh hàng tab gợn sóng) */
-  :where([data-theme="cozy"]) nav .cyber:where(:hover:not(:active)) {
+  :where([data-theme="cozy"]) nav .cyber:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
     animation: hvCozyTab 2.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
   }
   /* nút chính */
-  :where([data-theme="cozy"]) [data-fx="hero"]:where(:hover:not(:active)) {
-    animation: hvCozyHero 2.4s cubic-bezier(0.45, 0, 0.55, 1) 200ms infinite;
+  :where([data-theme="cozy"]) [data-fx="hero"]:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvCozyHero 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
   }
   /* card lớn: gần như đứng yên */
-  :where([data-theme="cozy"]) .cyber.card-lux:where(:hover:not(:active)) {
+  :where([data-theme="cozy"]) .cyber.card-lux:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
     animation: hvCozyCard 3s cubic-bezier(0.45, 0, 0.55, 1) infinite;
   }
 
   /* ============ DIGITAL — sắc, dứt khoát (easing dốc, KHÔNG steps) ============ */
-  :where([data-theme="game"]) .cyber.h-8:where(:hover:not(:active)),
-  :where([data-theme="game"]) .cyber.h-9:where(:hover:not(:active)),
-  :where([data-theme="game"]) .cyber.h-11:where(:hover:not(:active)),
-  :where([data-theme="game"]) .cyber.h-12:where(:hover:not(:active)),
-  :where([data-theme="game"]) .cyber.h-14:where(:hover:not(:active)) {
-    animation: hvGameIcon 1.6s cubic-bezier(0.9, 0, 0.1, 1) 110ms infinite;
+  :where([data-theme="game"]) .cyber.h-8:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="game"]) .cyber.h-9:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="game"]) .cyber.h-11:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="game"]) .cyber.h-12:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="game"]) .cyber.h-14:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvGameIcon 1.6s cubic-bezier(0.9, 0, 0.1, 1) infinite;
   }
-  :where([data-theme="game"]) .cyber.chip:where(:hover:not(:active)) {
-    animation: hvGameChip 1.6s cubic-bezier(0.9, 0, 0.1, 1) 110ms infinite;
+  :where([data-theme="game"]) .cyber.chip:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvGameChip 1.6s cubic-bezier(0.9, 0, 0.1, 1) infinite;
   }
-  :where([data-theme="game"]) nav .cyber:where(:hover:not(:active)) {
+  :where([data-theme="game"]) nav .cyber:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
     animation: hvGameTab 1.5s cubic-bezier(0.9, 0, 0.1, 1) infinite;
   }
-  :where([data-theme="game"]) [data-fx="hero"]:where(:hover:not(:active)) {
-    animation: hvGameHero 1.8s cubic-bezier(0.9, 0, 0.1, 1) 110ms infinite;
+  :where([data-theme="game"]) [data-fx="hero"]:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvGameHero 1.8s cubic-bezier(0.9, 0, 0.1, 1) infinite;
   }
-  :where([data-theme="game"]) .cyber.card-lux:where(:hover:not(:active)) {
+  :where([data-theme="game"]) .cyber.card-lux:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
     animation: hvGameCard 2s cubic-bezier(0.9, 0, 0.1, 1) infinite;
   }
 
   /* ============ LUX — chậm, sang, biên độ nhỏ ============ */
-  :where([data-theme="lux"]) .cyber.h-8:where(:hover:not(:active)),
-  :where([data-theme="lux"]) .cyber.h-9:where(:hover:not(:active)),
-  :where([data-theme="lux"]) .cyber.h-11:where(:hover:not(:active)),
-  :where([data-theme="lux"]) .cyber.h-12:where(:hover:not(:active)),
-  :where([data-theme="lux"]) .cyber.h-14:where(:hover:not(:active)) {
-    animation: hvLuxIcon 3.4s cubic-bezier(0.4, 0, 0.6, 1) 420ms infinite;
+  :where([data-theme="lux"]) .cyber.h-8:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="lux"]) .cyber.h-9:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="lux"]) .cyber.h-11:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="lux"]) .cyber.h-12:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="lux"]) .cyber.h-14:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvLuxIcon 3.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
-  :where([data-theme="lux"]) .cyber.chip:where(:hover:not(:active)) {
-    animation: hvLuxChip 3.2s cubic-bezier(0.4, 0, 0.6, 1) 420ms infinite;
+  :where([data-theme="lux"]) .cyber.chip:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvLuxChip 3.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
-  :where([data-theme="lux"]) nav .cyber:where(:hover:not(:active)) {
+  :where([data-theme="lux"]) nav .cyber:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
     animation: hvLuxTab 3.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
-  :where([data-theme="lux"]) [data-fx="hero"]:where(:hover:not(:active)) {
-    animation: hvLuxHero 3.6s cubic-bezier(0.4, 0, 0.6, 1) 420ms infinite;
+  :where([data-theme="lux"]) [data-fx="hero"]:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
+    animation: hvLuxHero 3.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
-  :where([data-theme="lux"]) .cyber.card-lux:where(:hover:not(:active)) {
+  :where([data-theme="lux"]) .cyber.card-lux:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) {
     animation: hvLuxCard 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
   /* mặc định (hàng/CTA mảnh) — nhẹ nhất, dùng chung 1 nhịp theo theme */
-  :where([data-theme="cozy"]) .cyber:where(:hover:not(:active)):where(:not(.chip):not(.card-lux):not([class*="h-"])) {
-    animation: hvCozyHero 2.4s cubic-bezier(0.45, 0, 0.55, 1) 200ms infinite;
+  :where([data-theme="cozy"]) .cyber:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)):where(:not(.chip):not(.card-lux):not([class*="h-"])) {
+    animation: hvCozyHero 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
   }
-  :where([data-theme="game"]) .cyber:where(:hover:not(:active)):where(:not(.chip):not(.card-lux):not([class*="h-"])) {
-    animation: hvGameHero 1.8s cubic-bezier(0.9, 0, 0.1, 1) 110ms infinite;
+  :where([data-theme="game"]) .cyber:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)):where(:not(.chip):not(.card-lux):not([class*="h-"])) {
+    animation: hvGameHero 1.8s cubic-bezier(0.9, 0, 0.1, 1) infinite;
   }
-  :where([data-theme="lux"]) .cyber:where(:hover:not(:active)):where(:not(.chip):not(.card-lux):not([class*="h-"])) {
-    animation: hvLuxHero 3.6s cubic-bezier(0.4, 0, 0.6, 1) 420ms infinite;
+  :where([data-theme="lux"]) .cyber:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)):where(:not(.chip):not(.card-lux):not([class*="h-"])) {
+    animation: hvLuxHero 3.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
   /* Ô nhập: không scale (đang gõ mà nhấp nháy thì rối) — chỉ sáng viền 1 lần */
@@ -637,23 +667,34 @@ body::after {
 
 /* ---- KEYFRAMES: CHỈ transform, tuyệt đối không paint property ---- */
 /* cozy — thở mềm, dài hơi */
-@keyframes hvCozyIcon { 0%,100% { transform: scale(1.06) translateY(-1px); } 50% { transform: scale(1.105) translateY(-3px); } }
-@keyframes hvCozyChip { 0%,100% { transform: scale(1.06, 1.02); }            50% { transform: scale(1.1, 1.05); } }
+@keyframes hvCozyIcon { 0%,100% { transform: scale(1.035) translateY(-1px); } 50% { transform: scale(1.065) translateY(-2.5px); } }
+@keyframes hvCozyChip { 0%,100% { transform: scale(1.04, 1.015); }           50% { transform: scale(1.07, 1.04); } }
 @keyframes hvCozyTab  { 0%,100% { transform: translateY(-1px); }             50% { transform: translateY(-3.5px); } }
 @keyframes hvCozyHero { 0%,100% { transform: scale(1.02) translateY(-1px); } 50% { transform: scale(1.036) translateY(-2px); } }
 @keyframes hvCozyCard { 0%,100% { transform: scale(1.008); }                 50% { transform: scale(1.016); } }
 /* digital — GIỮ rồi bật nhanh 1 nhịp (sắc mà không nhảy nấc) */
-@keyframes hvGameIcon { 0%,58% { transform: scale(1.06); }  70% { transform: scale(1.11); }  82%,100% { transform: scale(1.06); } }
-@keyframes hvGameChip { 0%,58% { transform: scale(1.05, 1.01); } 70% { transform: scale(1.095, 1.03); } 82%,100% { transform: scale(1.05, 1.01); } }
-@keyframes hvGameTab  { 0%,60% { transform: translateY(0); } 72% { transform: translateY(-2.5px); } 84%,100% { transform: translateY(0); } }
-@keyframes hvGameHero { 0%,62% { transform: scale(1.02); }  74% { transform: scale(1.042); } 86%,100% { transform: scale(1.02); } }
-@keyframes hvGameCard { 0%,68% { transform: scale(1.008); } 78% { transform: scale(1.015); } 88%,100% { transform: scale(1.008); } }
+@keyframes hvGameIcon { 0%,100% { transform: scale(1.035); } 50% { transform: scale(1.07); } }
+@keyframes hvGameChip { 0%,100% { transform: scale(1.035, 1.008); } 50% { transform: scale(1.065, 1.022); } }
+@keyframes hvGameTab  { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-2.5px); } }
+@keyframes hvGameHero { 0%,100% { transform: scale(1.02); } 50% { transform: scale(1.042); } }
+@keyframes hvGameCard { 0%,100% { transform: scale(1.008); } 50% { transform: scale(1.015); } }
 /* lux — trôi chậm, biên độ nhỏ nhất */
-@keyframes hvLuxIcon  { 0%,100% { transform: scale(1.05) translateY(0); }  50% { transform: scale(1.075) translateY(-2px); } }
-@keyframes hvLuxChip  { 0%,100% { transform: scale(1.04); }                50% { transform: scale(1.058); } }
+@keyframes hvLuxIcon  { 0%,100% { transform: scale(1.03) translateY(0); }  50% { transform: scale(1.055) translateY(-2px); } }
+@keyframes hvLuxChip  { 0%,100% { transform: scale(1.03); }                50% { transform: scale(1.048); } }
 @keyframes hvLuxTab   { 0%,100% { transform: translateY(0); }              50% { transform: translateY(-2px); } }
 @keyframes hvLuxHero  { 0%,100% { transform: scale(1.018); }               50% { transform: scale(1.03); } }
 @keyframes hvLuxCard  { 0%,100% { transform: scale(1.006); }               50% { transform: scale(1.013); } }
+
+/* Boutique: nút chính lún 2px — cùng ngôn ngữ "lún vào" của cozy nhưng nửa
+   biên độ, giữ đúng khoảng cách tính cách giữa 3 theme */
+.btn-lux {
+  box-shadow: 0 3px 0 -1px rgb(var(--c-accent) / 0.3), 0 12px 26px -14px rgb(0 0 0 / 0.75);
+  transition: box-shadow 120ms ease-out, transform 120ms ease-out;
+}
+.btn-lux:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 -1px rgb(var(--c-accent) / 0.3), inset 0 2px 6px rgb(0 0 0 / 0.35);
+}
 
 /* ===== Nút 3D lún — CHỈ cozy (keycap); digital phẳng, boutique glow ===== */
 .btn3d {
@@ -713,13 +754,13 @@ body::after {
    trễ pha + lõi trắng nóng, đúng cách màn CRT xanh lá bị nhoè khi tín hiệu lỗi */
 @keyframes glChroma {
   0%, 68%, 100% { filter: none; }
-  12% { filter: drop-shadow(4px 0 rgba(57, 255, 106, 0.95)) drop-shadow(-2px 0 rgba(234, 255, 240, 0.7)); }
-  32% { filter: drop-shadow(-5px 0 rgba(57, 255, 106, 0.9)) drop-shadow(3px 0 rgba(234, 255, 240, 0.6)); }
-  56% { filter: drop-shadow(3px 0 rgba(26, 224, 82, 0.85)) drop-shadow(-1px 0 rgba(234, 255, 240, 0.5)); }
+  12% { filter: drop-shadow(4px 0 rgba(56, 160, 255, 0.95)) drop-shadow(-2px 0 rgba(228, 238, 255, 0.7)); }
+  32% { filter: drop-shadow(-5px 0 rgba(56, 160, 255, 0.9)) drop-shadow(3px 0 rgba(228, 238, 255, 0.6)); }
+  56% { filter: drop-shadow(3px 0 rgba(27, 130, 232, 0.85)) drop-shadow(-1px 0 rgba(228, 238, 255, 0.5)); }
 }
 [data-theme="game"] .glitch-in {
   animation: glClip 0.52s steps(1, end) both, glShift 0.52s steps(1, end) both, glChroma 0.52s steps(1, end) both;
-  will-change: clip-path, transform, filter;
+  will-change: transform;
 }
 /* thanh nhiễu quét ngang 1 lần khi glitch — scanline data-corrupt */
 [data-theme="game"] .glitch-in::before {
@@ -731,7 +772,7 @@ body::after {
   height: 14%;
   z-index: 8;
   pointer-events: none;
-  background: linear-gradient(180deg, transparent 0%, rgba(234, 255, 240, 0.55) 48%, rgba(57, 255, 106, 0.5) 52%, transparent 100%);
+  background: linear-gradient(180deg, transparent 0%, rgba(228, 238, 255, 0.6) 48%, rgba(56, 160, 255, 0.5) 52%, transparent 100%);
   animation: glScan 0.5s steps(1, end) 1;
   opacity: 0;
 }

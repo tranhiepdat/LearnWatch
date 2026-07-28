@@ -16,7 +16,7 @@ import { IconPalette, IconCheck } from "./icons";
 export default function ThemeSwitcher() {
   const { theme, setTheme } = useTheme();
   const [open, setOpen] = useState(false);
-  const [morph, setMorph] = useState<{ x: number; y: number; color: string; key: number } | null>(null);
+  const [morph, setMorph] = useState<{ x: number; y: number; color: string; key: number; d: number } | null>(null);
   const busy = useRef(false);
   // Portal ra body: TopBar có backdrop-blur → tạo containing block, nếu render
   // tại chỗ thì position:fixed của sheet bị "nhốt" trong header.
@@ -30,7 +30,8 @@ export default function ThemeSwitcher() {
     }
     busy.current = true;
     hFlip();
-    setMorph({ x: e.clientX, y: e.clientY, color: THEMES[id].preview.bg, key: Date.now() });
+    const d = Math.ceil(Math.hypot(window.innerWidth, window.innerHeight) * 2);
+    setMorph({ x: e.clientX, y: e.clientY, color: THEMES[id].preview.bg, key: Date.now(), d });
     // đổi theme khi vòng tròn đã che ~nửa màn → không thấy "nhảy" màu
     window.setTimeout(() => {
       setTheme(id);
@@ -52,7 +53,7 @@ export default function ThemeSwitcher() {
           hTap();
         }}
         aria-label="Đổi giao diện"
-        className="cyber grid h-9 w-9 place-items-center rounded-[var(--r-sm)] bg-surface-2 text-gold-300 transition active:scale-90"
+        className="cyber grid h-9 w-9 place-items-center rounded-[var(--r-sm)] bg-surface-2 text-gold-300 transition"
       >
         <IconPalette className="h-[18px] w-[18px]" />
       </button>
@@ -68,12 +69,15 @@ export default function ThemeSwitcher() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <div className="absolute inset-0 bg-ink/80 backdrop-blur-sm" onClick={() => { setOpen(false); playTap(); }} />
+            <div className="absolute inset-0 bg-ink/90" onClick={() => { setOpen(false); playTap(); }} />
             <motion.div
-              initial={{ y: 80, opacity: 0, scale: 0.96 }}
-              animate={{ y: 0, opacity: 1, scale: 1 }}
+              initial={{ y: 80, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
               exit={{ y: 60, opacity: 0 }}
               transition={{ type: "spring", stiffness: 380, damping: 30 }}
+              /* will-change: tự cấp layer riêng → bóng nhiều lớp (cozy có 3 lớp)
+                 raster đúng 1 lần thay vì repaint mỗi khung hình khi trồi lên */
+              style={{ willChange: "transform, opacity" }}
               className="relative z-10 max-h-[86dvh] w-full max-w-md overflow-y-auto rounded-t-[var(--r-xl)] border border-hairline bg-surface p-5 pb-[max(20px,env(safe-area-inset-bottom))] shadow-lux sm:rounded-[var(--r-xl)]"
             >
               <p className="label-luxe">Giao diện</p>
@@ -155,18 +159,21 @@ export default function ThemeSwitcher() {
               <motion.div
                 key={morph.key}
                 className="pointer-events-none fixed z-[70]"
+                /* base LỚN + scale 0→1 thay cho base 40px scale 90× :
+                   cùng hiệu ứng thị giác nhưng texture ~1.4MB thay vì ~52MB */
                 style={{
                   left: morph.x,
                   top: morph.y,
-                  width: 40,
-                  height: 40,
-                  marginLeft: -20,
-                  marginTop: -20,
+                  width: morph.d,
+                  height: morph.d,
+                  marginLeft: -morph.d / 2,
+                  marginTop: -morph.d / 2,
                   background: morph.color,
                   borderRadius: "50%",
+                  willChange: "transform",
                 }}
                 initial={{ scale: 0, opacity: 1 }}
-                animate={{ scale: 90, opacity: 1 }}
+                animate={{ scale: 1, opacity: 1 }}
                 exit={{ opacity: 0, transition: { duration: 0.35 } }}
                 transition={{ duration: 0.55, ease: [0.3, 0.6, 0.2, 1] }}
               />

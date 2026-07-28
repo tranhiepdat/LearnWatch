@@ -124,7 +124,7 @@ function QuizSetup() {
               setMode(m.id);
               playPop();
             }}
-            className={`cyber flex items-center gap-3 rounded-[var(--r-md)] border p-3.5 text-left transition active:scale-[0.98] ${
+            className={`cyber flex items-center gap-3 rounded-[var(--r-md)] border p-3.5 text-left transition ${
               mode === m.id
                 ? "border-gold-400 bg-gold-400"
                 : m.disabled
