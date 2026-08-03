@@ -16,13 +16,19 @@ import WatchDetail from "./WatchDetail";
 import JuicyButton from "./JuicyButton";
 import { IconCheck, IconClose, IconFlame, IconGem, IconBook, IconBolt, IconTrophy } from "./icons";
 
-const CAT_COLOR: Record<string, string> = {
-  "Biệt danh": "text-gold-300",
-  "Mẫu mã": "text-sage",
-  "Chất liệu": "text-champagne",
-  "Nhìn hình": "text-bordeaux",
-  "Dòng": "text-sage",
-  "Thật/Giả": "text-bordeaux",
+/**
+ * Mỗi nhóm câu hỏi MỘT MÀU riêng (1–6 trong bảng 7 màu cozy).
+ * Trước đây là CAT_COLOR gom 6 nhóm vào chỉ 4 class utility — vì lúc đó bảng
+ * màu chỉ có 4 màu không-trung-tính để chọn. Nay dùng data-hue nên đủ 6 màu
+ * khác nhau, và cả thẻ (nhãn, ripple, quầng sáng) đều theo màu của nhóm.
+ */
+const CAT_HUE: Record<string, number> = {
+  "Biệt danh": 1,
+  "Mẫu mã": 2,
+  "Chất liệu": 3,
+  "Nhìn hình": 4,
+  "Dòng": 6,
+  "Thật/Giả": 5,
 };
 
 /** thưởng combo: từ chuỗi 3 câu đúng liên tiếp có XP cộng thêm */
@@ -392,10 +398,10 @@ export default function QuizRunner({
             transition={meta.motion.card.transition}
             className={theme === "game" ? "glitch-in relative" : undefined}
           >
-            <motion.div animate={shake} className="card-lux relative overflow-hidden p-6">
+            <motion.div animate={shake} data-hue={CAT_HUE[q.category] ?? 1} className="card-lux relative overflow-hidden p-6">
               {burstKey > 0 && answered && selected === q.correctIndex && <GoldBurst key={burstKey} />}
 
-              <span className={`label-luxe ${CAT_COLOR[q.category] ?? "text-taupe"}`}>
+              <span className="label-luxe">
                 {q.category}
                 {mode === "mistakes" && " · ôn lỗi sai"}
               </span>

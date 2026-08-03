@@ -18,8 +18,8 @@ export default function ThemeSwitcher() {
   const [open, setOpen] = useState(false);
   const [morph, setMorph] = useState<{ x: number; y: number; color: string; key: number; d: number } | null>(null);
   const busy = useRef(false);
-  // Portal ra body: TopBar có backdrop-blur → tạo containing block, nếu render
-  // tại chỗ thì position:fixed của sheet bị "nhốt" trong header.
+  // Portal ra body: giữ position:fixed của sheet luôn tính theo viewport, không
+  // bị "nhốt" nếu header sau này lại có thuộc tính tạo containing block.
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
@@ -30,7 +30,10 @@ export default function ThemeSwitcher() {
     }
     busy.current = true;
     hFlip();
-    const d = Math.ceil(Math.hypot(window.innerWidth, window.innerHeight) * 2);
+    // Bỏ `* 2`: đường chéo màn hình đã đủ phủ kín từ MỌI điểm xuất phát.
+    // Nhân đôi làm texture phình 4 lần (~13.8MB trên máy 390×844) và phải cấp
+    // phát ngay lúc chạm → khựng một nhịp đúng lúc người dùng vừa bấm.
+    const d = Math.ceil(Math.hypot(window.innerWidth, window.innerHeight));
     setMorph({ x: e.clientX, y: e.clientY, color: THEMES[id].preview.bg, key: Date.now(), d });
     // đổi theme khi vòng tròn đã che ~nửa màn → không thấy "nhảy" màu
     window.setTimeout(() => {
@@ -53,7 +56,7 @@ export default function ThemeSwitcher() {
           hTap();
         }}
         aria-label="Đổi giao diện"
-        className="cyber grid h-9 w-9 place-items-center rounded-[var(--r-sm)] bg-surface-2 text-gold-300 transition"
+        className="cyber grid h-9 w-9 place-items-center rounded-[var(--r-sm)] bg-surface-2 text-gold-300 transition-colors"
       >
         <IconPalette className="h-[18px] w-[18px]" />
       </button>

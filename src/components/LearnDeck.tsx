@@ -105,7 +105,9 @@ export default function LearnDeck<T extends { id: string }>({
   function onDragEnd(_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) {
     if (info.offset.x > 75 || info.velocity.x > 300) fling(1);
     else if (info.offset.x < -75 || info.velocity.x < -300) fling(-1);
-    else animate(x, 0, { type: "spring", stiffness: 520, damping: 30 });
+    // damping 46 (ζ≈1) chứ không phải 30 (ζ≈0.66): vuốt hụt thì thẻ về thẳng
+    // giữa, không vọt qua rồi rung — trên đúng cử chỉ đã tay nhất của app.
+    else animate(x, 0, { type: "spring", stiffness: 520, damping: 46 });
   }
 
   if (items.length === 0 || done) {
@@ -173,9 +175,20 @@ export default function LearnDeck<T extends { id: string }>({
           }}
           initial={theme === "cozy" ? { scaleX: 0.97, scaleY: 0.92, opacity: 0, y: 10 } : { scale: 0.96, opacity: 0, y: 12 }}
           animate={{ scale: 1, scaleX: 1, scaleY: 1, opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 360, damping: 26 }}
+          /* game phải KHÔNG nảy (ζ≥1); cozy/lux giữ tính cách riêng */
+          transition={
+            theme === "game"
+              ? { type: "spring", stiffness: 360, damping: 38 }
+              : { type: "spring", stiffness: 360, damping: 26 }
+          }
           className="absolute inset-0 cursor-grab touch-pan-y select-none active:cursor-grabbing"
         >
+          {/* .glitch-in nằm trên WRAPPER, không trên node framer.
+              Trước đây nó gắn thẳng vào motion.div bên dưới — mà CSS animation
+              thắng inline style, nên `glShift` ghi đè scale của framer suốt
+              520ms, và `fill-mode: both` ghim luôn transform vĩnh viễn khiến
+              `exit` không bao giờ chạy. Tách ra là hết tranh quyền.
+              (QuizRunner.tsx vốn đã làm đúng kiểu này.) */}
           <motion.div animate={cardFx} className="relative h-full w-full">
             <AnimatePresence initial={false}>
               {!flipped ? (
@@ -185,10 +198,12 @@ export default function LearnDeck<T extends { id: string }>({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.94 }}
                   transition={{ duration: 0.28, ease: [0.2, 0.8, 0.2, 1] }}
-                  className={`card-lux absolute inset-0 flex flex-col overflow-y-auto p-6 ${theme === "game" ? "glitch-in" : ""}`}
+                  className="absolute inset-0"
                 >
-                  {renderFront(current)}
-                  <p className="mt-auto pt-4 text-center text-[11px] text-taupe">{hint}</p>
+                  <div className={`card-lux h-full w-full overflow-y-auto p-6 flex flex-col ${theme === "game" ? "glitch-in" : ""}`}>
+                    {renderFront(current)}
+                    <p className="mt-auto pt-4 text-center text-[11px] text-taupe">{hint}</p>
+                  </div>
                 </motion.div>
               ) : (
                 <motion.div
@@ -197,11 +212,15 @@ export default function LearnDeck<T extends { id: string }>({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.94 }}
                   transition={{ duration: 0.28, ease: [0.2, 0.8, 0.2, 1] }}
-                  className={`card-lux absolute inset-0 flex touch-pan-y flex-col overflow-y-auto overscroll-contain p-6 ${
-                    theme === "game" ? "glitch-in" : ""
-                  }`}
+                  className="absolute inset-0"
                 >
-                  {renderBack(current)}
+                  <div
+                    className={`card-lux flex h-full w-full touch-pan-y flex-col overflow-y-auto overscroll-contain p-6 ${
+                      theme === "game" ? "glitch-in" : ""
+                    }`}
+                  >
+                    {renderBack(current)}
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -231,7 +250,7 @@ export default function LearnDeck<T extends { id: string }>({
         <button
           onClick={() => fling(-1)}
           aria-label={skipLabel}
-          className="cyber grid h-14 w-14 place-items-center rounded-[var(--r-lg)] bg-surface-2 text-taupe transition"
+          className="cyber grid h-14 w-14 place-items-center rounded-[var(--r-lg)] bg-surface-2 text-taupe transition-colors"
         >
           <IconClose className="h-6 w-6" />
         </button>
@@ -244,7 +263,7 @@ export default function LearnDeck<T extends { id: string }>({
               onReshuffle();
             }}
             aria-label="Xáo trộn"
-            className="cyber grid h-11 w-11 place-items-center rounded-[var(--r-lg)] bg-surface-2 text-gold-300 transition"
+            className="cyber grid h-11 w-11 place-items-center rounded-[var(--r-lg)] bg-surface-2 text-gold-300 transition-colors"
           >
             <IconShuffle className="h-5 w-5" />
           </button>
@@ -252,7 +271,7 @@ export default function LearnDeck<T extends { id: string }>({
         <button
           onClick={() => fling(1)}
           aria-label={knowLabel}
-          className="cyber grid h-14 w-14 place-items-center rounded-[var(--r-lg)] bg-gold-400 text-onaccent shadow-glow transition"
+          className="cyber grid h-14 w-14 place-items-center rounded-[var(--r-lg)] bg-gold-400 text-onaccent shadow-glow transition-colors"
         >
           <IconCheck className="h-6 w-6" />
         </button>

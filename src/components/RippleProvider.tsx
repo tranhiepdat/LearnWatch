@@ -44,7 +44,12 @@ export default function RippleProvider() {
         window.removeEventListener("pointerup", release);
         window.removeEventListener("pointercancel", release);
         el.classList.remove(cls);
-        void el.offsetWidth; // ép reflow để re-trigger animation mỗi lần thả
+        // Huỷ animation cũ để keyframe chạy lại từ đầu mỗi lần thả.
+        // TRƯỚC dùng `void el.offsetWidth` — thủ thuật đó ép LAYOUT ĐỒNG BỘ
+        // TOÀN TÀI LIỆU, đúng ngay khung hình mà pop phải bắt đầu. Ở /inventory
+        // (~100 thẻ) nó ngốn vài ms → chính là cú "giật" đầu mỗi cú chạm.
+        // getAnimations() không đụng layout.
+        el.getAnimations().forEach((a) => a.cancel());
         el.classList.add(cls);
         // animationend KHÔNG đảm bảo bắn (animation bị huỷ giữa chừng, đổi
         // theme, re-render, reduced-motion…) → class kẹt lại và nút đứng ở

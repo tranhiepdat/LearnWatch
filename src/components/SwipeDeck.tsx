@@ -118,7 +118,8 @@ export default function SwipeDeck({
   function onDragEnd(_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) {
     if (info.offset.x > 75 || info.velocity.x > 300) fling(1);
     else if (info.offset.x < -75 || info.velocity.x < -300) fling(-1);
-    else animate(x, 0, { type: "spring", stiffness: 520, damping: 30 });
+    // damping 46 (ζ≈1): vuốt hụt là về thẳng giữa, không vọt qua rồi rung
+    else animate(x, 0, { type: "spring", stiffness: 520, damping: 46 });
   }
 
   if (done) {
@@ -413,21 +414,21 @@ export default function SwipeDeck({
         <button
           onClick={() => fling(-1)}
           aria-label="Ôn lại"
-          className="grid h-14 w-14 cyber place-items-center rounded-[var(--r-lg)] bg-surface-2 text-taupe transition"
+          className="grid h-14 w-14 cyber place-items-center rounded-[var(--r-lg)] bg-surface-2 text-taupe transition-colors"
         >
           <IconClose className="h-6 w-6" />
         </button>
         <button
           onClick={onReshuffle}
           aria-label="Xáo trộn"
-          className="grid h-11 w-11 cyber place-items-center rounded-[var(--r-lg)] bg-surface-2 text-gold-300 transition"
+          className="grid h-11 w-11 cyber place-items-center rounded-[var(--r-lg)] bg-surface-2 text-gold-300 transition-colors"
         >
           <IconShuffle className="h-5 w-5" />
         </button>
         <button
           onClick={() => fling(1)}
           aria-label="Đã thuộc"
-          className="grid h-14 w-14 cyber place-items-center rounded-[var(--r-lg)] bg-gold-foil text-onaccent shadow-glow transition"
+          className="grid h-14 w-14 cyber place-items-center rounded-[var(--r-lg)] bg-gold-foil text-onaccent shadow-glow transition-colors"
         >
           <IconCheck className="h-6 w-6" />
         </button>

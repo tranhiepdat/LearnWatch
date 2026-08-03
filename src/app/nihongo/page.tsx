@@ -67,6 +67,7 @@ export default function NihongoPage() {
                   playTap();
                   hTap();
                 }}
+                data-hue={s.id}
                 className={`cyber chip text-[11px] ${step === s.id ? "chip-on" : ""}`}
                 title={s.goal}
               >
@@ -119,8 +120,9 @@ export default function NihongoPage() {
             emptyText="Chặng này chưa có câu"
             hint="Chạm để xem nghĩa · Vuốt phải nếu đã thuộc"
             /* MẶT TRƯỚC: chỉ tiếng Nhật — tự nhớ nghĩa trước khi lật */
+            /* thẻ mang màu của CHẶNG → nhìn màu là biết đang học chặng nào */
             renderFront={(p) => (
-              <div className="flex flex-1 flex-col items-center justify-center text-center">
+              <div data-hue={p.step} className="flex flex-1 flex-col items-center justify-center text-center">
                 <p className="label-luxe">
                   Chặng {p.step} · {p.len === "short" ? "câu lõi" : "câu dài"}
                 </p>
@@ -134,7 +136,7 @@ export default function NihongoPage() {
               </div>
             )}
             renderBack={(p) => (
-              <div className="flex flex-1 flex-col justify-center">
+              <div data-hue={p.step} className="flex flex-1 flex-col justify-center">
                 <div className="flex items-start justify-between gap-2">
                   <p className="font-display text-2xl font-bold leading-snug text-ivory">{p.jp}</p>
                   <SpeakButton text={p.jp} lang="ja-JP" />

@@ -8,15 +8,28 @@ import { hGoal } from "@/lib/haptics";
 import { IconFlame, IconCheck, IconBolt, IconTrophy } from "./icons";
 import GoldBurst from "./GoldBurst";
 
+/**
+ * Số đếm lên. Ghi THẲNG vào DOM node qua ref thay vì setState mỗi khung hình:
+ * trước đây 4 thẻ <Num> chạy cùng lúc → 4 chuỗi re-render React mỗi khung hình
+ * suốt 600ms, ngay lúc thanh tiến độ và vòng mục tiêu cũng đang chạy.
+ */
 function Num({ to }: { to: number }) {
-  const [v, setV] = useState(0);
+  const el = useRef<HTMLSpanElement>(null);
   const prev = useRef(0);
   useEffect(() => {
-    const c = animate(prev.current, to, { duration: 0.6, ease: "easeOut", onUpdate: (x) => setV(Math.round(x)) });
+    const node = el.current;
+    if (!node) return;
+    const c = animate(prev.current, to, {
+      duration: 0.6,
+      ease: "easeOut",
+      onUpdate: (x) => {
+        node.textContent = String(Math.round(x));
+      },
+    });
     prev.current = to;
     return () => c.stop();
   }, [to]);
-  return <>{v}</>;
+  return <span ref={el}>0</span>;
 }
 
 /** Vòng mục tiêu ngày — đầy theo XP hôm nay; chạm mốc bùng 1 lần/ngày */
@@ -112,11 +125,14 @@ export default function ProgressHeader() {
           </p>
         </div>
 
+        {/* scaleX thay width: `width` là thuộc tính LAYOUT — spring stiffness 70
+            mất >1.5s để lắng, tức ~90 lượt reflow của cả khối này. scaleX chạy
+            thuần trên GPU, 0 reflow. (QuizRunner vốn đã làm đúng kiểu này.) */}
         <div className="mt-2 h-1.5 overflow-hidden rounded-[var(--r-full)] bg-surface-3">
           <motion.div
-            className="h-full rounded-[var(--r-full)] bg-gold-foil"
-            initial={{ width: 0 }}
-            animate={{ width: `${lvPct * 100}%` }}
+            className="h-full w-full origin-left rounded-[var(--r-full)] bg-gold-foil"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: lvPct }}
             transition={{ type: "spring", stiffness: 70, damping: 20 }}
           />
         </div>

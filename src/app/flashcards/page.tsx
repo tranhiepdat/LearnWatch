@@ -144,13 +144,14 @@ export default function FlashcardsPage() {
           onChange={(f) => setFilter(f as Filter)}
         />
         <span className="text-hairline">·</span>
-        {MODES.map((m) => (
+        {MODES.map((m, i) => (
           <button
             key={m}
             onClick={() => {
               setMode(m);
               playTap();
             }}
+            data-hue={i + 1}
             className={`cyber chip ${mode === m ? "chip-on" : ""}`}
           >
             {m}

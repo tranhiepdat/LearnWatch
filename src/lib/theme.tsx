@@ -73,8 +73,11 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
       bg: "#f8eedd",
       card: "#fffdf8",
       text: "#3f2d20",
-      accent: "#ef9b3f",
-      extra: ["#d95d55", "#6fae7f", "#b5691a"],
+      // TRƯỚC là #ef9b3f (cam) trong khi --c-accent thật là #f7bb2f (vàng mật
+      // ong) → ô màu trong bảng chọn theme hiện SAI màu so với theme thật.
+      accent: "#f7bb2f",
+      // đúng bảng 7 màu đang dùng trên UI
+      extra: ["#6aaf82", "#e08bb4", "#7fb3d5", "#e27268", "#c79ae0"],
     },
     bar: "#f8eedd",
     motion: {
@@ -119,11 +122,17 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
     bar: "#040710",
     motion: {
       tap: 0.96,
-      spring: { type: "spring", stiffness: 650, damping: 34 },
-      bouncy: { type: "spring", stiffness: 700, damping: 22 },
-      pop: { keyframes: { scale: [0.96, 1.015, 1] }, transition: { duration: 0.18, ease: "easeOut" } },
-      // CRT: gần như tức thì, chất "chọn ô" của terminal
-      hover: { scale: 1.012, transition: { duration: 0.09, ease: [0.9, 0, 0.1, 1] } },
+      // damping đủ cao để ζ ≥ 1 → tới nơi là DỪNG, không vọt qua rồi lùi lại.
+      // (trước 650/34 = ζ≈0.67 và 700/22 = ζ≈0.42 — cả hai đều nảy.)
+      spring: { type: "spring", stiffness: 650, damping: 52 },
+      bouncy: { type: "spring", stiffness: 700, damping: 54 },
+      // ĐƠN ĐIỆU: 0.96 → 1, không vượt qua 1. Trước là [0.96, 1.015, 1] —
+      // bản CSS `popGame` đã bỏ vọt lố từ lần trước mà bản JS này thì chưa,
+      // nên nút chính vẫn lắc dù CSS đã đúng.
+      pop: { keyframes: { scale: [0.96, 1] }, transition: { duration: 0.16, ease: [0.16, 1, 0.3, 1] } },
+      // CRT: nút ĐỨNG YÊN tuyệt đối khi rê chuột — chuyển động 100% do lớp
+      // scanline (CSS ::after) lo. scale 1 = không ghi transform nào.
+      hover: { scale: 1, transition: { duration: 0.09, ease: [0.9, 0, 0.1, 1] } },
       // reveal do CSS .glitch-cut / .glitch-in lo (cắt lát + RGB split) —
       // framer chỉ giữ opacity để không tranh transform/clip với glitch
       page: {

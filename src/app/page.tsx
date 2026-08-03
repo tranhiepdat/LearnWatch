@@ -108,7 +108,10 @@ export default function Home() {
             <Link
               href={m.href}
               onClick={() => playTap()}
-              className="cyber flex flex-col items-start gap-3 rounded-[var(--r-lg)] border border-hairline bg-surface p-4 shadow-lux transition"
+              /* mỗi ô một màu (chỉ có tác dụng ở cozy): ô icon, ripple, quầng
+                 sáng và mọi class gold-* bên trong đều theo màu này */
+              data-hue={i + 1}
+              className="cyber flex flex-col items-start gap-3 rounded-[var(--r-lg)] border border-hairline bg-surface p-4 shadow-lux transition-shadow"
             >
               <span className="tile h-12 w-12">
                 <m.Icon className="h-6 w-6" />

@@ -203,7 +203,7 @@ export default function BrowsePage() {
 
 function WatchCard({ w, onClick }: { w: Watch; onClick: () => void }) {
   return (
-    <button onClick={onClick} className="cyber card-lux group p-4 text-left transition">
+    <button onClick={onClick} className="cyber card-lux group p-4 text-left transition-colors">
       <div className="flex gap-3">
         <div className="h-16 w-16 shrink-0 overflow-hidden rounded-[var(--r-lg)] ring-1 ring-hairline">
           <WatchVisual watch={w} size={64} className="h-16 w-16" />
@@ -222,7 +222,7 @@ function WatchCard({ w, onClick }: { w: Watch; onClick: () => void }) {
             {w.resale && <span className="text-sage">{w.resale}</span>}
           </div>
         </div>
-        <IconChevron className="h-4 w-4 shrink-0 self-center text-taupe transition group-hover:translate-x-0.5 group-hover:text-gold-300" />
+        <IconChevron className="h-4 w-4 shrink-0 self-center text-taupe transition-colors group-hover:translate-x-0.5 group-hover:text-gold-300" />
       </div>
       {w.warning && (
         <p className="mt-2 rounded-[var(--r-xs)] border border-bordeaux bg-bordeaux/15 px-2 py-1 text-[11px] text-ivory">

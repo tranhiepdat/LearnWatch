@@ -138,7 +138,7 @@ export default function AssistantPage() {
           <button
             key={s}
             onClick={() => ask(s)}
-            className="cyber rounded-[var(--r-sm)] border border-hairline px-3 py-1.5 text-xs text-taupe transition"
+            className="cyber rounded-[var(--r-sm)] border border-hairline px-3 py-1.5 text-xs text-taupe transition-colors"
           >
             {s}
           </button>
@@ -217,7 +217,7 @@ export default function AssistantPage() {
         <button
           type="submit"
           aria-label="Gửi"
-          className="cyber grid h-12 w-12 shrink-0 place-items-center rounded-[var(--r-md)] bg-gold-foil text-onaccent shadow-glow transition"
+          className="cyber grid h-12 w-12 shrink-0 place-items-center rounded-[var(--r-md)] bg-gold-foil text-onaccent shadow-glow transition-colors"
         >
           <IconSend className="h-5 w-5" />
         </button>

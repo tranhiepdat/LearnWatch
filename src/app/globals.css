@@ -85,22 +85,60 @@
   /* COZY KHÔNG DÙNG LINE MỎNG: hairline trong suốt, ranh giới bằng KHỐI + bóng */
   --c-hairline: rgba(120, 80, 44, 0);
 
+  /* BẢNG 7 MÀU (Animal Crossing) — trước chỉ dùng ở nền mờ 15% và pháo giấy,
+     nay lên UI thật. Mỗi màu 2 sắc: bản ĐẶC tô nền + bản ĐẬM (-ink) làm chữ
+     trên nền kem. Tương phản đã đo bằng script, tất cả đạt AA (≥4.5:1). */
+  --c-h1: 247 187 47;    --c-h1-ink: 146 102 1;    /* vàng mật ong */
+  --c-h2: 106 175 130;   --c-h2-ink: 63 122 84;    /* xanh cỏ */
+  --c-h3: 224 139 180;   --c-h3-ink: 199 48 121;   /* hồng đào */
+  --c-h4: 127 179 213;   --c-h4-ink: 49 117 162;   /* xanh trời */
+  --c-h5: 226 114 104;   --c-h5-ink: 208 48 35;    /* đỏ ấm — chỉnh sáng từ
+                            #e06a60 (4.25, dưới chuẩn) lên #e27268 = 4.54 */
+  --c-h6: 199 154 224;   --c-h6-ink: 155 69 203;   /* tím oải hương */
+  --c-h7: 255 212 94;    --c-h7-ink: 140 102 0;    /* vàng nắng */
+
   --bg-wash: linear-gradient(#fdf4e2, #fdf4e2); /* SOLID kem vàng */
-  --grad-primary: linear-gradient(#f7bb2f, #f7bb2f); /* SOLID vàng mật ong */
-  --grad-line: linear-gradient(90deg, transparent, rgba(233, 167, 26, 0.5), transparent);
-  --sh-glow: 0 8px 16px -6px rgba(233, 167, 26, 0.45), 0 16px 34px -14px rgba(201, 139, 16, 0.3);
+  /* DẪN XUẤT từ --c-accent (trước là hex nướng cứng nên không đổi theo nhóm).
+     Nhờ 2 dòng này, 30 chỗ dùng bg-gold-foil / shadow-glow tự đổi màu theo
+     [data-hue] mà không phải sửa component nào. */
+  --grad-primary: linear-gradient(rgb(var(--c-accent)), rgb(var(--c-accent))); /* SOLID */
+  --grad-line: linear-gradient(90deg, transparent, rgb(var(--c-accent-lo) / 0.5), transparent);
+  --sh-glow: 0 8px 16px -6px rgb(var(--c-accent-lo) / 0.45), 0 16px 34px -14px rgb(var(--c-accent-600) / 0.3);
   --sh-ring: 0 6px 14px -8px rgba(150, 105, 45, 0.26), 0 14px 30px -16px rgba(150, 105, 45, 0.22);
   --sh-lux: 0 4px 10px -5px rgba(158, 112, 52, 0.2), 0 14px 28px -12px rgba(158, 112, 52, 0.22), 0 28px 56px -28px rgba(158, 112, 52, 0.28);
-  --btn-edge: rgba(186, 128, 14, 1);
+  --btn-edge: rgb(var(--c-accent-600)); /* mép keycap cũng theo màu nhóm */
 
   --r-xs: 16px; --r-sm: 20px; --r-md: 26px; --r-lg: 32px; --r-xl: 38px; --r-full: 9999px;
   --track-luxe: 0.06em;
   --font-display-active: var(--font-round);
   --font-tech-active: var(--font-round);
 
-  --sel-bg: rgba(247, 187, 47, 0.34);
+  --sel-bg: rgb(var(--c-accent) / 0.34);
   --hl-sheen: rgba(255, 244, 214, 0.95);
   --hl-dur: 0.5s;
+}
+
+/* ============================================================
+   MỖI NHÓM MỘT MÀU — chỉ áp cho cozy.
+   Mọi thành phần đều đọc rgb(var(--c-accent)) tại LÚC DÙNG, và biến CSS thì
+   kế thừa xuống con → ghi đè 4 biến này trên thẻ cha là cả nhánh con đổi màu:
+   .tile, .chip-on, ripple, quầng sáng, vòng focus, .rule-line, và MỌI class
+   Tailwind gold-* bên trong. Không phải sửa component nào.
+   game & lux KHÔNG có khối này → giữ nguyên bản sắc một-màu.
+   ============================================================ */
+[data-theme="cozy"] [data-hue="1"] { --c-accent: var(--c-h1); --c-accent-hi: var(--c-h1-ink); --c-accent-lo: 233 167 26;  --c-accent-600: 201 139 16; }
+[data-theme="cozy"] [data-hue="2"] { --c-accent: var(--c-h2); --c-accent-hi: var(--c-h2-ink); --c-accent-lo: 92 158 116;  --c-accent-600: 74 132 95; }
+[data-theme="cozy"] [data-hue="3"] { --c-accent: var(--c-h3); --c-accent-hi: var(--c-h3-ink); --c-accent-lo: 212 116 163; --c-accent-600: 186 84 137; }
+[data-theme="cozy"] [data-hue="4"] { --c-accent: var(--c-h4); --c-accent-hi: var(--c-h4-ink); --c-accent-lo: 106 162 199; --c-accent-600: 79 136 175; }
+[data-theme="cozy"] [data-hue="5"] { --c-accent: var(--c-h5); --c-accent-hi: var(--c-h5-ink); --c-accent-lo: 215 92 82;   --c-accent-600: 190 71 61; }
+[data-theme="cozy"] [data-hue="6"] { --c-accent: var(--c-h6); --c-accent-hi: var(--c-h6-ink); --c-accent-lo: 181 130 212; --c-accent-600: 155 104 188; }
+[data-theme="cozy"] [data-hue="7"] { --c-accent: var(--c-h7); --c-accent-hi: var(--c-h7-ink); --c-accent-lo: 243 194 62;  --c-accent-600: 212 165 40; }
+
+/* Chip CHƯA chọn cũng phải khoe màu của nhóm — nếu không thì lúc nghỉ cả hàng
+   chip vẫn xám như cũ và "mỗi nhóm một màu" chẳng thấy đâu. Dùng sắc ĐẬM
+   (-ink, đã đo đạt 4.5:1 trên nền kem) nên vẫn đọc rõ. */
+[data-theme="cozy"] .chip[data-hue]:not(.chip-on) {
+  color: rgb(var(--c-accent-hi));
 }
 
 /* ===== BOUTIQUE (lux) — emerald & champagne, quiet luxury ===== */
@@ -197,15 +235,16 @@ body::after {
    Tuyệt đối không animate — nền đứng yên, mắt được nghỉ. */
 [data-theme="game"] body::after {
   opacity: 1;
+  /* CHỈ scanline ngang (chữ ký CRT). Lưới dọc 44px đã bỏ — nó cộng thêm một
+     lớp kẻ nữa vào nền vốn đã nhiều line. */
   background-image: repeating-linear-gradient(
-      180deg,
-      rgba(56, 160, 255, 0.06) 0px,
-      rgba(56, 160, 255, 0.06) 1px,
-      transparent 1px,
-      transparent 4px
-    ),
-    linear-gradient(90deg, rgba(56, 160, 255, 0.04) 1px, transparent 1px);
-  background-size: 100% 4px, 44px 44px;
+    180deg,
+    rgba(56, 160, 255, 0.06) 0px,
+    rgba(56, 160, 255, 0.06) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  background-size: 100% 4px;
   -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 16%, #000 100%);
   mask-image: linear-gradient(180deg, transparent 0%, #000 16%, #000 100%);
 }
@@ -301,7 +340,9 @@ body::after {
   border-color: rgba(56, 160, 255, 0.22);
   box-shadow: none;
 }
-[data-theme="game"] .card-lux::before,
+/* CHỈ CÒN MỘT kẻ reveal (dưới). Kẻ TRÊN (::before) đã xoá: nó vốn đã hỏng sẵn
+   — `.glitch-in::before` cùng độ ưu tiên, cùng trúng node này, khai sau nên
+   THAY THẾ nó. Giữ lại chỉ tổ tốn 1 line mà không bao giờ hiện. */
 [data-theme="game"] .card-lux::after {
   content: "";
   position: absolute;
@@ -310,17 +351,9 @@ body::after {
   background: linear-gradient(90deg, rgb(var(--c-accent)), rgba(228, 238, 255, 0.55));
   animation: linereveal 0.55s cubic-bezier(0.65, 0, 0.35, 1) both;
   pointer-events: none;
-}
-[data-theme="game"] .card-lux::before {
-  top: 0;
-  left: 0;
-  transform-origin: left;
-}
-[data-theme="game"] .card-lux::after {
   bottom: 0;
   right: 0;
   transform-origin: right;
-  animation-delay: 0.08s;
 }
 @keyframes linereveal {
   from { transform: scaleX(0); }
@@ -381,20 +414,20 @@ body::after {
   background: linear-gradient(90deg, transparent 0%, var(--hl-sheen) 35%, var(--hl-sheen) 65%, transparent 100%);
   animation: hlsweep var(--hl-dur) ease-out forwards;
 }
-/* Digital: vệt quét là LÀN KẺ mảnh sắc, không blur */
-[data-theme="game"] .hl-sweep {
-  width: 14%;
-  transform: translateX(-140%) skewX(-24deg);
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
-}
+/* Digital KHÔNG dùng .hl-sweep nữa: vì nút digital bỏ `overflow:hidden` (để
+   không cắt mất 4 góc), vệt chéo này BAY RA NGOÀI nút, quét ngang qua cả UI
+   bên cạnh. Digital giờ dùng 4 khối góc đặc (.crn) — xem phần CORNER GRAPHIC. */
 @keyframes hlsweep {
   to { transform: translateX(320%) skewX(-16deg); }
 }
 
 /* ===== Đáp án ĐÚNG — vài nhịp rồi ĐỨNG YÊN ===== */
+/* vòng sáng lan ra — TRƯỚC animate `box-shadow` suốt 1s × 2 vòng (repaint cả
+   nút + 12px lề mỗi khung hình). NAY vẽ sẵn vòng trên ::after rồi chỉ
+   scale + opacity. */
 @keyframes goldring {
-  0%   { box-shadow: 0 0 0 0 rgb(var(--c-accent) / 0.5); }
-  100% { box-shadow: 0 0 0 12px rgb(var(--c-accent) / 0); }
+  0%   { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(1.14); opacity: 0; }
 }
 /* nảy dọc kiểu thạch — squash & stretch, KHÔNG lắc ngang */
 @keyframes jellypop {
@@ -404,17 +437,40 @@ body::after {
   75%  { transform: scale(1.008, 0.995); }
   100% { transform: scale(1); }
 }
-/* flash sáng bừng 1 nhịp (giữ nền SOLID, chỉ đánh brightness) */
+/* flash sáng bừng 1 nhịp — TRƯỚC animate `filter: brightness` (repaint cả nút
+   mỗi khung hình). NAY phủ lớp trắng trên ::before rồi tắt bằng opacity. */
 @keyframes solidflash {
-  0%   { filter: brightness(1.65); }
-  100% { filter: brightness(1); }
+  0%   { opacity: 0.5; }
+  100% { opacity: 0; }
 }
 .neon-correct {
   border-color: rgb(var(--c-accent)) !important;
+  position: relative;
 }
-/* Digital: viền tự vẽ (line reveal) + tick 4 góc TRẮNG nổi trên nền solid */
+.neon-correct::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: inherit;
+  background: #fff;
+  animation: solidflash 0.5s ease-out forwards;
+}
+.wrong-pick { position: relative; }
+.wrong-pick::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: inherit;
+  background: #fff;
+  animation: solidflash 0.45s ease-out forwards;
+}
+/* Digital: viền tự vẽ (line reveal) + tick 4 góc TRẮNG nổi trên nền solid.
+   (solidflash nay chạy trên ::before chung, không khai lại ở đây) */
 [data-theme="game"] .neon-correct {
-  animation: solidflash 0.5s ease-out 1;
   background-image:
     linear-gradient(#fff, #fff), linear-gradient(#fff, #fff),
     linear-gradient(#fff, #fff), linear-gradient(#fff, #fff);
@@ -433,7 +489,7 @@ body::after {
 }
 /* Ấm áp: OUTLINE DÀY (không phải viền chỉ) + 4 chấm bi góc — ngôn ngữ solid shape */
 [data-theme="cozy"] .neon-correct {
-  animation: jellypop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 1, solidflash 0.5s ease-out 1;
+  animation: jellypop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 1;
   outline: 3px solid rgb(var(--c-on-accent));
   outline-offset: -3px;
   background-image:
@@ -445,13 +501,16 @@ body::after {
   background-repeat: no-repeat;
   background-position: 3px 3px, calc(100% - 3px) 3px, 3px calc(100% - 3px), calc(100% - 3px) calc(100% - 3px);
 }
-[data-theme="lux"] .neon-correct {
-  animation: goldring 1s ease-out 2, solidflash 0.55s ease-out 1;
-}
-
-/* Đáp án SAI đã chọn — nền SOLID đỏ, chỉ flash brightness 1 nhịp (không rung) */
-.wrong-pick {
-  animation: solidflash 0.45s ease-out 1;
+/* Boutique: vòng champagne lan ra — vẽ sẵn trên ::after, chỉ scale + opacity */
+[data-theme="lux"] .neon-correct::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow: 0 0 0 3px rgb(var(--c-accent) / 0.5);
+  animation: goldring 0.9s ease-out forwards;
 }
 
 /* ===== TAP FX toàn cục cho .cyber (do RippleProvider gắn) ===== */
@@ -470,9 +529,16 @@ body::after {
   opacity: 0.85;
   animation: ripple 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
 }
-/* Digital: đĩa vuông (đồng bộ ngôn ngữ hình khối) */
+/* Digital: đĩa VUÔNG đặc (đồng bộ ngôn ngữ hình khối).
+   TRƯỚC: khối này bị một khối thứ hai cách 210 dòng ghi đè bằng
+   `ripplePhosphor .62s steps(7,end)` — đĩa nở ra bằng 7 BƯỚC NHẢY, mỗi bước
+   animate `background` (một lần repaint). Đó chính là "bấm giật giật", vì
+   ripple là phản hồi chạm thấy nhiều nhất (51 chỗ dùng .cyber).
+   NAY: gộp về đúng MỘT khối, bỏ steps, bỏ animate màu — chỉ transform+opacity.
+   Thời lượng 0.5s khớp với lúc RippleProvider xoá node (550ms) nên không cụt. */
 [data-theme="game"] .ripple {
   border-radius: 0;
+  background: rgb(var(--c-accent-hi));
 }
 @keyframes ripple {
   to {
@@ -490,12 +556,26 @@ body::after {
 
 /* Khối LỚN (card bấm được): phản hồi bằng ÁNH SÁNG, không transform —
    scale trên khối 340px sẽ dịch mép 7px gây chóng mặt. */
-[data-theme="cozy"] .tap-pop-lg.tap-pop-lg { animation: popLgCozy 0.36s ease-out; }
-[data-theme="game"] .tap-pop-lg.tap-pop-lg { animation: popLgGame 0.22s cubic-bezier(0.9, 0, 0.1, 1); }
-[data-theme="lux"]  .tap-pop-lg.tap-pop-lg { animation: popLgLux 0.44s cubic-bezier(0.25, 0.8, 0.25, 1); }
-@keyframes popLgCozy { 0% { filter: brightness(1.22) saturate(1.2); } 100% { filter: none; } }
-@keyframes popLgGame { 0% { filter: brightness(1.5); } 50% { filter: brightness(1.1); } 100% { filter: none; } }
-@keyframes popLgLux  { 0% { filter: brightness(1.28) saturate(1.12); } 100% { filter: none; } }
+/* TRƯỚC: cả 3 animate `filter: brightness` — mà .tap-pop-lg chỉ gán cho khối
+   CAO > 220px, tức là các mảng TO nhất màn hình. filter buộc tạo render
+   surface và repaint cả thẻ mỗi khung hình, đúng ngay khung hình sau cú chạm.
+   NAY: phủ một lớp ::after màu accent rồi chỉ animate `opacity` → composite. */
+/* Dùng ::before chứ KHÔNG ::after — vì trong game, `.card-lux::after` đang là
+   kẻ reveal dưới, mà .tap-pop-lg chính là các thẻ .cyber.card-lux → sẽ đụng. */
+.tap-pop-lg { position: relative; }
+.tap-pop-lg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  border-radius: inherit;
+  background: rgb(var(--c-accent));
+}
+[data-theme="cozy"] .tap-pop-lg.tap-pop-lg::before { animation: popLgFade 0.36s ease-out forwards; }
+[data-theme="game"] .tap-pop-lg.tap-pop-lg::before { animation: popLgFade 0.22s cubic-bezier(0.9, 0, 0.1, 1) forwards; }
+[data-theme="lux"]  .tap-pop-lg.tap-pop-lg::before { animation: popLgFade 0.44s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; }
+@keyframes popLgFade { 0% { opacity: 0.3; } 100% { opacity: 0; } }
 @keyframes popCozy {
   0%   { transform: scale(1.2, 0.8); }    /* nén bẹt RÕ (vừa thả từ trạng thái bấm) */
   28%  { transform: scale(0.84, 1.2); }   /* kéo cao gầy */
@@ -523,28 +603,9 @@ body::after {
 }
 
 /* Bất biến: trong lúc pop chạy, KHÔNG transition nào được sở hữu `transform`
-   → chỉ đúng MỘT nguồn ghi transform, hết tranh quyền gây snap/lắc. */
-.tap-pop,
-.tap-pop-lg {
-  transition-property: box-shadow, border-color, background-color, color, opacity !important;
-}
-
-/* Bất biến: trong lúc pop chạy, KHÔNG transition nào được sở hữu `transform`
-   → chỉ đúng MỘT nguồn ghi transform, hết tranh quyền gây snap/lắc. */
-.tap-pop,
-.tap-pop-lg {
-  transition-property: box-shadow, border-color, background-color, color, opacity !important;
-}
-
-/* Bất biến: trong lúc pop chạy, KHÔNG transition nào được sở hữu `transform`
-   → chỉ đúng MỘT nguồn ghi transform, hết tranh quyền gây snap/lắc. */
-.tap-pop,
-.tap-pop-lg {
-  transition-property: box-shadow, border-color, background-color, color, opacity !important;
-}
-
-/* Bất biến: trong lúc pop chạy, KHÔNG transition nào được sở hữu `transform`
-   → chỉ đúng MỘT nguồn ghi transform, hết tranh quyền gây snap/lắc. */
+   → chỉ đúng MỘT nguồn ghi transform, hết tranh quyền gây snap/lắc.
+   (Khối này từng bị lặp 4 lần y hệt — đúng kiểu tích tụ đã gây bug 3 khối
+   hover chồng nhau lần trước. Nay giữ đúng MỘT bản.) */
 .tap-pop,
 .tap-pop-lg {
   transition-property: box-shadow, border-color, background-color, color, opacity !important;
@@ -553,73 +614,80 @@ body::after {
 /* ---- KEYFRAMES: CHỈ transform, tuyệt đối không paint property ---- */
 /* Boutique: nút chính lún 2px — cùng ngôn ngữ "lún vào" của cozy nhưng nửa
    biên độ, giữ đúng khoảng cách tính cách giữa 3 theme */
+/* KHÔNG có `transform` trong transition: framer ghi transform lên nút này mỗi
+   khung hình, nếu CSS cũng transition transform thì nó nội suy lại TỪNG giá
+   trị framer vừa ghi → nhoè, cao su, đúng cảm giác "giật giật".
+   Phần `:active { transform }` cũ cũng là code chết (inline style luôn thắng). */
 .btn-lux {
   box-shadow: 0 3px 0 -1px rgb(var(--c-accent) / 0.3), 0 12px 26px -14px rgb(0 0 0 / 0.75);
-  transition: box-shadow 120ms ease-out, transform 120ms ease-out;
+  transition: box-shadow 120ms ease-out;
 }
 .btn-lux:active {
-  transform: translateY(2px);
   box-shadow: 0 1px 0 -1px rgb(var(--c-accent) / 0.3), inset 0 2px 6px rgb(0 0 0 / 0.35);
 }
 
 /* ===== Nút 3D lún — CHỈ cozy (keycap); digital phẳng, boutique glow ===== */
+/* Cùng lý do như .btn-lux: bỏ `transform` khỏi transition (framer là chủ),
+   giữ lại hiệu ứng "lún keycap" bằng box-shadow — vốn mới là thứ tạo cảm giác
+   dày/lún, chứ không phải translateY. */
 .btn3d {
   box-shadow: 0 5px 0 0 var(--btn-edge), var(--sh-glow), inset 0 2px 0 rgba(255, 255, 255, 0.4);
-  transition: box-shadow 0.09s ease, transform 0.09s ease;
-  will-change: transform;
+  transition: box-shadow 0.09s ease;
 }
 .btn3d:active {
-  transform: translateY(4px) scale(0.99, 0.97);
   box-shadow: 0 1px 0 0 var(--btn-edge), var(--sh-glow), inset 0 3px 6px rgba(120, 60, 10, 0.22);
 }
 
-/* digital: MỘT đường viền chạy quanh nút khi bấm (thay 4 khung góc cho đỡ rối) */
-.brk-line {
+/* ============================================================
+   CORNER GRAPHIC — 4 KHỐI ĐẶC dày bay vào rồi hội tụ (digital).
+   Thay cho .brk-line (nguyên khung viền = 4 cạnh) → bớt line, và đúng tinh
+   thần "shape solid highlight là chính": khối ĐẶC, không phải nét.
+   Bề dày arm = 34% × 14px ≈ 4.8px — thấy rõ độ dày, không phải hairline.
+   clip-path đặt TĨNH trên từng góc (KHÔNG nằm trong keyframes) nên không tốn
+   gì; chỉ transform + opacity chạy → composite thuần, 60fps.
+   ============================================================ */
+.crn {
   position: absolute;
-  inset: -2px;
+  width: 14px;
+  height: 14px;
   z-index: 5;
   pointer-events: none;
-  border: 1.5px solid rgb(var(--c-accent-hi));
-  animation: brkline 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  background: rgb(var(--c-accent));
+  opacity: 0;
+  animation: crnIn 0.34s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-@keyframes brkline {
-  0%   { opacity: 0; transform: scale(1.06); }
-  25%  { opacity: 1; }
-  100% { opacity: 0; transform: scale(1); }
+.crn-tl { top: -3px; left: -3px;  clip-path: polygon(0 0, 100% 0, 100% 34%, 34% 34%, 34% 100%, 0 100%);        --ox: -9px; --oy: -9px; }
+.crn-tr { top: -3px; right: -3px; clip-path: polygon(0 0, 100% 0, 100% 100%, 66% 100%, 66% 34%, 0 34%);        --ox:  9px; --oy: -9px; }
+.crn-bl { bottom: -3px; left: -3px;  clip-path: polygon(0 0, 34% 0, 34% 66%, 100% 66%, 100% 100%, 0 100%);     --ox: -9px; --oy:  9px; }
+.crn-br { bottom: -3px; right: -3px; clip-path: polygon(66% 0, 100% 0, 100% 100%, 0 100%, 0 66%, 66% 66%);     --ox:  9px; --oy:  9px; }
+@keyframes crnIn {
+  0%   { opacity: 0; transform: translate(var(--ox), var(--oy)); }
+  38%  { opacity: 1; }
+  78%  { opacity: 1; transform: translate(0, 0); }
+  100% { opacity: 0; transform: translate(0, 0); }
 }
 
 /* ============================================================
    GLITCH — motion chữ ký của theme DIGITAL (chỉ [data-theme="game"])
    Cắt lát clip-path + dịch ngang + RGB split, HARD-CUT (steps) = data-corrupt
    ============================================================ */
+/* GLITCH "ÍT THÔI": còn ĐÚNG 2 lát cắt trong 0.18s.
+   Đã bỏ hẳn 2 thứ:
+   · glShift — nó ghi `transform` qua CSS animation lên ĐÚNG node mà framer
+     đang animate. CSS animation thắng inline style, và `fill-mode: both` ghim
+     translate3d(0,0,0) VĨNH VIỄN → framer's scale chết hẳn từ đó. Đây là lý do
+     cú lật digital đọc ra "nhảy, nhảy, nhảy, rồi đứng im".
+   · glChroma — animate `filter: drop-shadow()` ×2 trên thẻ ~340×500px, phải
+     raster lại alpha của cả thẻ 2 lần mỗi keyframe. Animation đắt nhất file. */
 @keyframes glClip {
   0%   { clip-path: inset(0 0 100% 0); }
-  12%  { clip-path: inset(0 0 38% 0); }
-  22%  { clip-path: inset(46% 0 40% 0); }
-  32%  { clip-path: inset(12% 0 68% 0); }
-  44%  { clip-path: inset(58% 0 12% 0); }
-  56%  { clip-path: inset(4% 0 30% 0); }
-  68%, 100% { clip-path: inset(0 0 0 0); }
+  38%  { clip-path: inset(0 0 34% 0); }
+  70%, 100% { clip-path: inset(0 0 0 0); }
 }
-@keyframes glShift {
-  0%, 68%, 100% { transform: translate3d(0, 0, 0); }
-  12% { transform: translate3d(-7px, 0, 0); }
-  22% { transform: translate3d(6px, 0, 0); }
-  32% { transform: translate3d(-4px, 0, 0); }
-  44% { transform: translate3d(5px, 0, 0); }
-  56% { transform: translate3d(-2px, 0, 0); }
-}
-/* CRT GHOSTING — thay RGB-split đỏ/cyan bằng "bóng ma lân quang": vệt xanh lá
-   trễ pha + lõi trắng nóng, đúng cách màn CRT xanh lá bị nhoè khi tín hiệu lỗi */
-@keyframes glChroma {
-  0%, 68%, 100% { filter: none; }
-  12% { filter: drop-shadow(4px 0 rgba(56, 160, 255, 0.95)) drop-shadow(-2px 0 rgba(228, 238, 255, 0.7)); }
-  32% { filter: drop-shadow(-5px 0 rgba(56, 160, 255, 0.9)) drop-shadow(3px 0 rgba(228, 238, 255, 0.6)); }
-  56% { filter: drop-shadow(3px 0 rgba(27, 130, 232, 0.85)) drop-shadow(-1px 0 rgba(228, 238, 255, 0.5)); }
-}
+/* `backwards` chứ không `both`: `forwards` sẽ GHIM clip-path lại vĩnh viễn,
+   giữ một lớp clip sống suốt phiên dù trạng thái cuối là "không cắt gì". */
 [data-theme="game"] .glitch-in {
-  animation: glClip 0.52s steps(1, end) both, glShift 0.52s steps(1, end) both, glChroma 0.52s steps(1, end) both;
-  will-change: transform;
+  animation: glClip 0.18s steps(1, end) backwards;
 }
 /* thanh nhiễu quét ngang 1 lần khi glitch — scanline data-corrupt */
 [data-theme="game"] .glitch-in::before {
@@ -631,27 +699,26 @@ body::after {
   height: 14%;
   z-index: 8;
   pointer-events: none;
-  background: linear-gradient(180deg, transparent 0%, rgba(228, 238, 255, 0.6) 48%, rgba(56, 160, 255, 0.5) 52%, transparent 100%);
-  animation: glScan 0.5s steps(1, end) 1;
+  /* MẢNG SÁNG ĐẶC quét xuống — đây là "nhân vật chính" của cú lật.
+     Trước dùng steps(1,end) nhảy 4 nấc; nay quét MỘT lượt liền mạch. */
+  background: linear-gradient(180deg, transparent 0%, rgb(var(--c-accent-50) / 0.55) 46%, rgb(var(--c-accent)) 50%, rgb(var(--c-accent-50) / 0.55) 54%, transparent 100%);
+  animation: glScan 0.42s cubic-bezier(0.4, 0, 0.3, 1) 1;
   opacity: 0;
 }
 @keyframes glScan {
-  0%   { transform: translateY(-120%); opacity: 0.9; }
-  20%  { transform: translateY(120%); }
-  22%  { transform: translateY(360%); opacity: 0.9; }
-  40%  { transform: translateY(620%); }
-  42%, 100% { opacity: 0; }
+  0%   { transform: translateY(-120%); opacity: 0.95; }
+  85%  { opacity: 0.95; }
+  100% { transform: translateY(720%); opacity: 0; }
 }
-/* page-in gọn hơn cho chuyển trang (không chroma nặng) */
+/* Vào trang: TRƯỚC animate `clip-path` theo nấc trên CONTAINER CUỘN của cả
+   trang, và `fill-mode: both` để lại một lớp clip sống suốt phiên. Nay chỉ
+   opacity + translateY (composite thuần), không fill-mode. */
 @keyframes glCut {
-  0%   { clip-path: inset(0 0 100% 0); opacity: 0.5; }
-  20%  { clip-path: inset(0 0 30% 0); opacity: 1; }
-  32%  { clip-path: inset(42% 0 30% 0); }
-  46%  { clip-path: inset(8% 0 55% 0); }
-  60%, 100% { clip-path: inset(0 0 0 0); }
+  0%   { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 [data-theme="game"] .glitch-cut {
-  animation: glCut 0.4s steps(1, end) both;
+  animation: glCut 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ===== XP bay lên khi trả lời đúng ===== */
@@ -676,21 +743,6 @@ body::after {
   pointer-events: none;
   box-shadow: inset 0 0 44px 4px rgb(var(--c-danger) / 0.4);
   animation: dangeredge 0.5s ease-out forwards;
-}
-
-/* CRT PHOSPHOR AFTERGLOW khi bấm — vệt cháy lân quang tắt dần theo BẬC
-   (trắng nóng → xanh sáng → xanh → xanh sẫm), lượng tử hoá bằng steps() để
-   đọc ra "lưu ảnh N khung hình". Event-based, 1 lần, tại chỗ. */
-[data-theme="game"] .ripple {
-  mix-blend-mode: plus-lighter;
-  animation: ripplePhosphor 0.62s steps(7, end) forwards;
-}
-@keyframes ripplePhosphor {
-  0%   { transform: translate(-50%, -50%) scale(0); opacity: 0.95; background: rgb(var(--c-accent-50)); }
-  22%  { background: rgb(var(--c-accent-hi)); }
-  50%  { background: rgb(var(--c-accent)); }
-  78%  { background: rgb(var(--c-accent-600)); }
-  100% { transform: translate(-50%, -50%) scale(1); opacity: 0; background: rgb(var(--c-accent-700)); }
 }
 
 /* Digital: nền đỏ đặc + chữ ivory chỉ đạt 3.4:1 → đổi sang kiểu OUTLINE,
@@ -721,61 +773,64 @@ body::after {
    · DIGITAL: nút bất động TUYỆT ĐỐI; chuyển động 100% do scanline lo.
    ============================================================ */
 @media (hover: hover) and (pointer: fine) {
-  :where([data-theme]) .cyber:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)),
-  :where([data-theme]) [data-fx]:where(:hover:not(:active):not(:disabled):not(.tap-pop)) {
+  /* TRANSITION ĐẶT Ở RULE GỐC, KHÔNG đặt trong :hover.
+     Trước đây nó nằm trong :hover → lúc rê chuột RA, selector hết khớp nên
+     transition-duration về 0s → vào thì mượt 170ms mà ra thì SNAP. */
+  :where([data-theme]) .cyber:where(:not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme]) [data-fx]:where(:not(.tap-pop):not(.tap-pop-lg)) {
     transition: transform 170ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 170ms ease-out;
-    will-change: transform;
   }
 
   /* COZY — phồng mềm ấm */
-  :where([data-theme="cozy"]) .cyber:where(:hover:not(:active):not(.tap-pop)) {
+  :where([data-theme="cozy"]) .cyber:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)) {
     transform: scale(1.035);
     box-shadow: 0 10px 20px -10px rgba(150, 105, 45, 0.5);
   }
-  :where([data-theme="cozy"]) .cyber.card-lux:where(:hover:not(:active)) { transform: scale(1.012); }
-  :where([data-theme="cozy"]) [data-fx="hero"]:where(:hover:not(:active)) { transform: scale(1.02); }
+  :where([data-theme="cozy"]) .cyber.card-lux:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) { transform: scale(1.012); }
+  :where([data-theme="cozy"]) [data-fx="hero"]:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)) { transform: scale(1.02); }
 
   /* DIGITAL — ĐỨNG YÊN: viền "khoá mục tiêu" + scanline quét */
-  :where([data-theme="game"]) .cyber:where(:hover:not(:active):not(.tap-pop)),
-  :where([data-theme="game"]) [data-fx="hero"]:where(:hover:not(:active)) {
+  :where([data-theme="game"]) .cyber:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)),
+  :where([data-theme="game"]) [data-fx="hero"]:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)) {
     transform: none;
     box-shadow: 0 0 0 1px rgb(var(--c-accent)), 0 0 18px -4px rgb(var(--c-accent) / 0.75);
   }
 
   /* LUX — nở rất nhẹ + quầng champagne */
-  :where([data-theme="lux"]) .cyber:where(:hover:not(:active):not(.tap-pop)) {
+  :where([data-theme="lux"]) .cyber:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)) {
     transform: scale(1.022);
     box-shadow: 0 0 22px -8px rgb(var(--c-accent) / 0.65);
   }
-  :where([data-theme="lux"]) .cyber.card-lux:where(:hover:not(:active)) { transform: scale(1.008); }
-  :where([data-theme="lux"]) [data-fx="hero"]:where(:hover:not(:active)) { transform: scale(1.014); }
+  :where([data-theme="lux"]) .cyber.card-lux:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) { transform: scale(1.008); }
+  :where([data-theme="lux"]) [data-fx="hero"]:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)) { transform: scale(1.014); }
 
   /* ---- LỚP ÁNH SÁNG (::after) — nơi DUY NHẤT có vòng lặp ---- */
-  :where([data-theme]) .cyber:where(:hover:not(:active):not(.tap-pop)):not(.card-lux)::after,
-  :where([data-theme]) [data-fx="hero"]:where(:hover:not(:active))::after {
+  /* LỚP ÁNH SÁNG — nơi DUY NHẤT còn vòng lặp. Đã bỏ `mix-blend-mode: screen`:
+     blend mode làm mất đường composite nhanh, mỗi khung hình 60fps phải trộn
+     lại với nền phía sau nút. */
+  :where([data-theme]) .cyber:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)):not(.card-lux)::after,
+  :where([data-theme]) [data-fx="hero"]:where(:hover:not(:active):not(.tap-pop))::after {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 4;
     pointer-events: none;
     border-radius: inherit;
-    will-change: transform;
   }
-  :where([data-theme="game"]) .cyber:where(:hover:not(:active):not(.tap-pop)):not(.card-lux)::after,
-  :where([data-theme="game"]) [data-fx="hero"]:where(:hover:not(:active))::after {
+  :where([data-theme="game"]) .cyber:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)):not(.card-lux)::after,
+  :where([data-theme="game"]) [data-fx="hero"]:where(:hover:not(:active):not(.tap-pop))::after {
     background: linear-gradient(180deg, transparent 0%, transparent 38%,
-      rgb(var(--c-accent-hi) / 0.45) 47%, rgb(var(--c-accent-50) / 0.9) 50%,
-      rgb(var(--c-accent-hi) / 0.45) 53%, transparent 62%, transparent 100%);
-    mix-blend-mode: screen;
+      rgb(var(--c-accent-hi) / 0.4) 47%, rgb(var(--c-accent-50) / 0.75) 50%,
+      rgb(var(--c-accent-hi) / 0.4) 53%, transparent 62%, transparent 100%);
     animation: fxScan 1.05s linear infinite;
   }
-  :where([data-theme="cozy"]) .cyber:where(:hover:not(:active):not(.tap-pop)):not(.card-lux)::after,
-  :where([data-theme="cozy"]) [data-fx="hero"]:where(:hover:not(:active))::after {
+  :where([data-theme="cozy"]) .cyber:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)):not(.card-lux)::after,
+  :where([data-theme="cozy"]) [data-fx="hero"]:where(:hover:not(:active):not(.tap-pop))::after {
     background: radial-gradient(circle at 50% 120%, rgb(var(--c-accent) / 0.4) 0%, transparent 62%);
     animation: fxGlowBreathe 2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
   }
-  :where([data-theme="lux"]) .cyber:where(:hover:not(:active):not(.tap-pop)):not(.card-lux)::after,
-  :where([data-theme="lux"]) [data-fx="hero"]:where(:hover:not(:active))::after {
+  :where([data-theme="lux"]) .cyber:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)):not(.card-lux)::after,
+  :where([data-theme="lux"]) [data-fx="hero"]:where(:hover:not(:active):not(.tap-pop))::after {
     background: linear-gradient(100deg, transparent 30%, rgb(var(--c-accent-hi) / 0.45) 50%, transparent 70%);
     animation: fxSheen 2.6s cubic-bezier(0.4, 0, 0.3, 1) infinite;
   }
@@ -786,7 +841,9 @@ body::after {
   }
 }
 @keyframes fxScan { from { transform: translateY(-100%); } to { transform: translateY(100%); } }
-@keyframes fxGlowBreathe { 0%,100% { transform: scale(0.9); opacity: 0.55; } 50% { transform: scale(1.15); opacity: 1; } }
+/* biên độ hạ từ 0.9↔1.15 (dao động 25% VÔ HẠN ngay dưới con trỏ — chính nó là
+   "lắc") xuống 0.96↔1.06: vẫn thấy thở, không còn nhấp nhô gây mỏi mắt */
+@keyframes fxGlowBreathe { 0%,100% { transform: scale(0.96); opacity: 0.6; } 50% { transform: scale(1.06); opacity: 1; } }
 @keyframes fxSheen { 0% { transform: translateX(-115%); } 55%,100% { transform: translateX(115%); } }
 
 @media (prefers-reduced-motion: reduce) {
@@ -807,7 +864,7 @@ body::after {
   /* 3) bỏ hẳn FX trang trí lớn / dịch chuyển nhiều */
   .ripple,
   .hl-sweep,
-  .brk,
+  .crn,
   .xp-float {
     display: none !important;
   }

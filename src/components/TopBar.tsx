@@ -31,7 +31,9 @@ export default function TopBar() {
   }, []);
 
   return (
-    <header className="z-30 shrink-0 bg-ink/70 backdrop-blur-xl">
+    /* KHÔNG backdrop-blur (xem chú thích ở BottomNav): lớp mờ fixed trên
+       container cuộn buộc lấy mẫu + blur lại nền mỗi khung hình cuộn. */
+    <header className="z-30 shrink-0 bg-ink">
       <div className="app-frame flex items-center justify-between gap-3 px-5 py-2.5">
         <span className="whitespace-nowrap font-display text-sm font-extrabold gold-text">LearnWatch</span>
 

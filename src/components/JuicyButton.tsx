@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { motion, useAnimationControls } from "framer-motion";
 import { useTheme } from "@/lib/theme";
 import { playTap } from "@/lib/sound";
@@ -37,32 +37,52 @@ export default function JuicyButton({
   const body = useAnimationControls();
   const [fxKey, setFxKey] = useState(0);
 
+  /**
+   * MỘT CHỦ SỞ HỮU TRANSFORM DUY NHẤT — `body`.
+   *
+   * Trước đây nút này có BỐN thứ cùng ghi `scale`: whileTap (0.96), whileHover
+   * (1.012), body lúc pointerdown (1→0.94→1), body lúc pointerup (0.96→1.015→1)
+   * — và fireRelease còn gắn cả vào onPointerLeave nên chạy hai lần. Chuỗi thật
+   * của một cú bấm là 1 → 0.94/0.96 → 1.015 → 1 → 1.012: BỐN lần đảo chiều.
+   * Mỗi lần đảo chiều mắt đọc thành "lắc" — đó chính là thứ user chê.
+   *
+   * Nay whileTap/whileHover bị bỏ hẳn; mọi trạng thái đi qua đúng `body` nên
+   * không bao giờ có hai animation tranh nhau một giá trị.
+   */
+  const held = useRef(false);
+  const hovering = useRef(false);
+
+  /** scale lúc rê chuột (digital ĐỨNG YÊN tuyệt đối) */
+  const hoverScale = theme === "game" ? 1 : meta.motion.hover.scale;
+
+  function toRest() {
+    body.start({ scale: hovering.current ? hoverScale : 1, scaleY: 1, transition: meta.motion.hover.transition });
+  }
+
   function firePress() {
     if (disabled) return;
     if (sound) playTap();
     hTap();
-    setFxKey((k) => k + 1); // remount hl-sweep + brackets
+    held.current = true;
+    setFxKey((k) => k + 1); // remount 4 góc đặc
     // solid highlight SOLID 100% màu theme chớp lên khi bấm rồi tắt — mọi theme
     flash.set({ opacity: 1 });
     flash.start({ opacity: 0, transition: { duration: theme === "cozy" ? 0.32 : 0.24, ease: "easeOut" } });
-    // Digital: TRƯỚC ĐÂY lắc ngang x:[0,-4,4,-2,3,0] — đó chính là cảm giác
-    // "lắc lắc" user chê. Thay bằng cú NÉN sắc 1 nhịp: vẫn dứt khoát, không lắc.
-    if (theme === "game") {
-      body.start({ scale: [1, 0.94, 1], transition: { duration: 0.13, ease: [0.22, 1, 0.36, 1] } });
-    }
+    // Phản hồi bắt đầu ngay lúc ĐÈ XUỐNG (trước đây digital không nhúc nhích
+    // lúc đè, thả ra mới giật một cái — đọc ra là "chết rồi nhảy").
+    body.start(
+      theme === "cozy"
+        ? { scale: meta.motion.tap, scaleY: meta.motion.tap - 0.02, transition: { duration: 0.09, ease: "easeOut" } }
+        : { scale: meta.motion.tap, transition: { duration: 0.09, ease: "easeOut" } },
+    );
   }
 
   function fireRelease() {
-    if (disabled) return;
+    if (disabled || !held.current) return; // chốt: không chạy hai lần
+    held.current = false;
     const pop = meta.motion.pop;
-    body.start({ ...pop.keyframes, transition: pop.transition });
+    body.start({ ...pop.keyframes, transition: pop.transition }).then(toRest);
   }
-
-  const press = disabled
-    ? undefined
-    : theme === "cozy"
-      ? { scale: meta.motion.tap, scaleY: meta.motion.tap - 0.02 }
-      : { scale: meta.motion.tap };
 
   return (
     <motion.button
@@ -72,14 +92,22 @@ export default function JuicyButton({
       onClick={onClick}
       onPointerDown={firePress}
       onPointerUp={fireRelease}
-      onPointerLeave={fireRelease}
-      whileTap={press}
-      whileHover={disabled ? undefined : { scale: meta.motion.hover.scale, transition: meta.motion.hover.transition }}
+      onPointerEnter={() => {
+        hovering.current = true;
+        if (!held.current && !disabled) toRest();
+      }}
+      onPointerLeave={() => {
+        hovering.current = false;
+        // CHỈ dọn trạng thái — KHÔNG bắn fireRelease như bản cũ (trên desktop,
+        // bấm xong rê chuột ra là pop chạy lần thứ hai).
+        held.current = false;
+        if (!disabled) toRest();
+      }}
       animate={body}
-      /* KHÔNG dùng .cyber ở đây: .cyber ép overflow:hidden sẽ cắt mất khung 4
-         góc (.brk) của theme digital, và ripple sẽ tranh chấp với flash sẵn có.
-         data-fx="hero" nhận tầng hover CSS (filter/outline/glow) — còn transform
-         do framer sở hữu qua whileHover/whileTap. */
+      /* KHÔNG dùng .cyber ở đây: .cyber ép overflow:hidden sẽ cắt mất 4 khối
+         góc (.crn) của theme digital, và ripple sẽ tranh chấp với flash sẵn có.
+         data-fx="hero" nhận tầng hover CSS (glow/scanline) — transform thì do
+         MỘT MÌNH `body` sở hữu. */
       data-fx="hero"
       data-no-pop
       data-no-ripple
@@ -95,10 +123,17 @@ export default function JuicyButton({
         className={`pointer-events-none absolute inset-0 z-0 ${theme === "game" ? "bg-gold-300 mix-blend-plus-lighter" : "bg-white"}`}
         style={{ borderRadius: "inherit" }}
       />
-      {/* scanline sắc quét — CHỈ digital (cyberpunk), các theme khác không dùng vệt gradient */}
-      {theme === "game" && fxKey > 0 && <span key={`sw${fxKey}`} aria-hidden className="hl-sweep" />}
-      {/* digital: MỘT đường viền quét quanh nút (trước dùng 4 khung góc → rối) */}
-      {theme === "game" && fxKey > 0 && <span key={`br${fxKey}`} aria-hidden className="brk-line" />}
+      {/* DIGITAL: 4 KHỐI ĐẶC ở góc bay vào rồi hội tụ.
+          Thay cho .brk-line (nguyên khung = 4 cạnh) + .hl-sweep (vệt chéo bay
+          ra ngoài nút) → bớt hẳn 5 line, và đúng ý "shape solid là chính". */}
+      {theme === "game" && fxKey > 0 && (
+        <span key={`cr${fxKey}`} aria-hidden>
+          <span className="crn crn-tl" />
+          <span className="crn crn-tr" />
+          <span className="crn crn-bl" />
+          <span className="crn crn-br" />
+        </span>
+      )}
       <span className="relative z-10 flex items-center justify-center gap-2">{children}</span>
     </motion.button>
   );

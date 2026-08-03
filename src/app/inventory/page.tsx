@@ -115,7 +115,7 @@ export default function InventoryPage() {
               setSelected(w);
               playTap();
             }}
-            className="cyber card-lux group p-2.5 text-left transition"
+            className="cyber card-lux group p-2.5 text-left transition-colors"
           >
             <div className="relative aspect-square w-full overflow-hidden rounded-[var(--r-md)] ring-1 ring-hairline">
               <WatchVisual watch={w} size={150} className="h-full w-full" />

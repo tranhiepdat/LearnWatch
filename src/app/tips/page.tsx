@@ -13,6 +13,17 @@ import SpeakButton from "@/components/SpeakButton";
 type Deck = "today" | "all" | TipCat;
 const tipKey = (id: string) => `tip:${id}`;
 
+/** Màu riêng cho từng nhóm mẹo. Chọn các sắc CÁCH XA nhau (bỏ hue 7 vì vàng
+ *  nắng nhìn gần như vàng mật ong của hue 1) → nhìn màu là phân biệt được ngay. */
+const CAT_HUE: Record<TipCat, number> = {
+  "Tư vấn": 1,      // vàng mật ong
+  "Chốt deal": 5,   // đỏ ấm
+  "Nhận diện": 4,   // xanh trời
+  "Chăm sóc": 2,    // xanh cỏ
+  "Kiến thức": 6,   // tím oải hương
+};
+const deckHue = (d: Deck) => (d === "today" ? 7 : d === "all" ? 3 : CAT_HUE[d]);
+
 export default function TipsPage() {
   const [learned, setLearned] = useState<string[]>([]);
   const [deck, setDeck] = useState<Deck>("today");
@@ -63,6 +74,7 @@ export default function TipsPage() {
                 playTap();
                 hTap();
               }}
+              data-hue={deckHue(d)}
               className={`cyber chip ${deck === d ? "chip-on" : ""}`}
             >
               {d === "today" ? `Hôm nay (${today.length})` : d === "all" ? `Tất cả (${tips.length})` : d}
@@ -98,8 +110,9 @@ export default function TipsPage() {
             skipLabel="Ôn lại"
             emptyText="Chưa có mẹo trong nhóm này"
             hint="Chạm để xem chi tiết · Vuốt phải nếu đã thuộc"
+            /* thẻ mang ĐÚNG màu chip của nhóm đó */
             renderFront={(t) => (
-              <div className="flex flex-1 flex-col items-center justify-center text-center">
+              <div data-hue={CAT_HUE[t.cat]} className="flex flex-1 flex-col items-center justify-center text-center">
                 <span className="tile h-12 w-12">
                   <IconBulb className="h-6 w-6" />
                 </span>
@@ -113,7 +126,7 @@ export default function TipsPage() {
               </div>
             )}
             renderBack={(t) => (
-              <div className="flex flex-1 flex-col">
+              <div data-hue={CAT_HUE[t.cat]} className="flex flex-1 flex-col">
                 <p className="label-luxe">{t.cat} · vì sao</p>
                 <p className="mt-2 text-[15px] font-bold leading-snug text-ivory">{t.short}</p>
                 <p className="mt-2.5 text-[13.5px] leading-relaxed text-ivory/85">{t.detail}</p>

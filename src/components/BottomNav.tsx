@@ -31,11 +31,14 @@ function Tab({
   label,
   Icon,
   active,
+  hue,
 }: {
   href: string;
   label: string;
   Icon: (p: React.SVGProps<SVGSVGElement>) => JSX.Element;
   active: boolean;
+  /** 1–7: màu riêng của tab (chỉ có tác dụng ở theme cozy) */
+  hue: number;
 }) {
   const { theme, meta } = useTheme();
   const bounce = useAnimationControls();
@@ -50,7 +53,9 @@ function Tab({
       theme === "cozy"
         ? { scaleX: [1, 1.18, 0.9, 1.03, 1], scaleY: [1, 0.82, 1.12, 0.97, 1], transition: { duration: 0.42, ease: "easeOut" } }
         : theme === "game"
-          ? { scale: [1, 0.88, 1.06, 1], transition: { duration: 0.2, ease: "easeOut" } }
+          ? // ĐƠN ĐIỆU: nén rồi về 1. Trước là [1, 0.88, 1.06, 1] — vọt lên
+            // 1.06 rồi lùi lại, trên đúng thứ được bấm nhiều nhất app.
+            { scale: [1, 0.9, 1], transition: { duration: 0.18, ease: [0.16, 1, 0.3, 1] } }
           : { scale: [1, 0.95, 1.02, 1], transition: { duration: 0.34, ease: "easeOut" } },
     );
     // highlight bao CẢ icon + text, bo góc theo theme (cozy tròn, digital vuông)
@@ -64,6 +69,7 @@ function Tab({
       onClick={onTap}
       data-no-pop
       data-no-ripple
+      data-hue={hue}
       className={`cyber relative flex flex-1 flex-col items-center gap-1 py-2.5 ${
         cozyActive ? "text-onaccent" : active ? "text-gold-300" : "text-taupe"
       }`}
@@ -74,7 +80,8 @@ function Tab({
         initial={{ opacity: 0 }}
         animate={press}
         className="pointer-events-none absolute inset-x-1 inset-y-0.5 z-0 rounded-[var(--r-md)]"
-        style={{ background: "rgb(var(--c-accent))", mixBlendMode: theme === "game" ? "screen" : "normal" }}
+        /* bỏ mixBlendMode: nó làm mất đường composite nhanh của lớp đang animate */
+        style={{ background: "rgb(var(--c-accent))" }}
       />
       <AnimatePresence>
         {/* CHỈ BÁO ACTIVE (static) — bao TRỌN cả icon + label + ô, shape theo theme */}
@@ -121,11 +128,6 @@ function Tab({
       <motion.span animate={bounce} className="relative z-10 flex flex-col items-center gap-1">
         <Icon
           className="h-[22px] w-[22px]"
-          style={
-            active && theme === "game"
-              ? { filter: "drop-shadow(0 0 5px rgb(var(--c-accent) / 0.7))" }
-              : undefined
-          }
         />
         <span className={`text-[10px] tracking-wide ${active ? "font-bold" : "font-medium"}`}>{label}</span>
       </motion.span>
@@ -138,13 +140,18 @@ export default function BottomNav() {
   return (
     <nav className="fixed inset-x-0 bottom-0 z-30">
       <div className="mx-auto w-full max-w-lg px-4 pb-[max(10px,env(safe-area-inset-bottom))]">
-        <div className="flex items-center justify-around rounded-[var(--r-lg)] border border-hairline bg-surface/90 shadow-lux backdrop-blur-xl">
-          {tabs.map(({ href, label, Icon }) => (
+        {/* KHÔNG backdrop-blur: thanh này fixed đè lên container cuộn nên trình
+            duyệt phải lấy mẫu + blur lại nền MỖI KHUNG HÌNH CUỘN — chi phí FPS
+            thường trực lớn nhất trên điện thoại. Nền gần đặc cho kết quả nhìn
+            gần như nhau mà không tốn gì. */}
+        <div className="flex items-center justify-around rounded-[var(--r-lg)] border border-hairline bg-surface shadow-lux">
+          {tabs.map(({ href, label, Icon }, i) => (
             <Tab
               key={href}
               href={href}
               label={label}
               Icon={Icon}
+              hue={i + 1}
               active={href === "/" ? path === "/" : path.startsWith(href)}
             />
           ))}
