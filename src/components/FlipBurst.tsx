@@ -7,7 +7,8 @@ import { useTheme } from "@/lib/theme";
  * Hiệu ứng khi LẬT thẻ — thay lớp glow gradient cũ bằng chất hợp từng theme:
  *  · game — DIGITAL: viền tự vẽ OFFSET chromatic (cyan + magenta lệch) chạy
  *    quanh ô + lớp solid highlight QUÉT LÊN (như ref Framer/Klickhat).
- *  · cozy — vòng bo tròn NẢY bật ra (card tự squash-stretch ở SwipeDeck).
+ *  · cozy — vệt sáng ấm QUÉT NGANG, khớp nhịp với cú nén ngang "lật giấy"
+ *    của thẻ ở LearnDeck/SwipeDeck.
  *  · lux  — vành champagne mảnh nở ra + ánh nhung quét lên nhẹ.
  */
 export default function FlipBurst() {
@@ -65,15 +66,22 @@ export default function FlipBurst() {
     );
   }
 
-  // cozy — vòng bo tròn NẢY bật ra (card tự nảy squash-stretch ở SwipeDeck)
+  // cozy — LẬT GIẤY: một vệt sáng ấm QUÉT NGANG, cùng nhịp 0.34s với cú nén
+  // ngang của thẻ, như ánh sáng bắt vào trang giấy đang lật.
+  // Trước đây chỗ này là một vòng VIỀN 4px bung ra với ease [0.34, 1.5, 0.6, 1]
+  // — cp2y = 1.5 nghĩa là vọt QUA đích rồi lùi lại, tức là lại thêm một cú nảy
+  // nữa chồng lên cú nảy của thẻ; mà nó cũng chính là thêm một cái viền.
+  // Vệt quét chỉ đi MỘT chiều, không đảo chiều lần nào.
   return (
-    <div className="pointer-events-none absolute inset-0 z-30 grid place-items-center overflow-hidden">
+    <div className="pointer-events-none absolute inset-0 z-30 overflow-hidden">
       <motion.div
-        initial={{ scale: 0.72, opacity: 0.55 }}
-        animate={{ scale: 1.12, opacity: 0 }}
-        transition={{ duration: 0.5, ease: [0.34, 1.5, 0.6, 1] }}
-        className="absolute inset-3 rounded-[var(--r-lg)] border-4"
-        style={{ borderColor: "rgb(var(--c-accent))" }}
+        initial={{ x: "-120%" }}
+        animate={{ x: "120%" }}
+        transition={{ duration: 0.34, ease: [0.4, 0, 0.2, 1] }}
+        className="absolute inset-y-0 left-0 w-1/2"
+        style={{
+          background: "linear-gradient(90deg, transparent, rgb(var(--c-accent) / 0.26), transparent)",
+        }}
       />
     </div>
   );

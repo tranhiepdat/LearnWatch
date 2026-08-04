@@ -141,6 +141,23 @@ export default function LearnDeck<T extends { id: string }>({
     );
   }
 
+  /* Nhịp đổi mặt thẻ, khớp với cú LẬT GIẤY ở trên.
+     cozy: mặt cũ mờ đi trong 0.14s, mặt mới đợi 0.13s rồi mới hiện — tức là
+     đổi ĐÚNG LÚC thẻ hẹp nhất (giữa cú nén 0.34s). Mắt đọc thành "lật xong
+     mới thấy mặt kia", chứ không phải "chữ đổi trong lúc thẻ đang méo".
+     Và bỏ luôn cú phóng 1.06→1 của mặt thẻ: cú nén đã là chuyển động rồi,
+     chồng thêm zoom nữa là hai thứ đánh nhau.
+     Các theme khác giữ nguyên crossfade + zoom như cũ. */
+  const cozyFlip = theme === "cozy";
+  const faceEase = [0.2, 0.8, 0.2, 1] as const;
+  const faceInit = cozyFlip ? { opacity: 0, scale: 1 } : { opacity: 0, scale: 1.06 };
+  const faceShow = cozyFlip
+    ? { opacity: 1, scale: 1, transition: { duration: 0.2, delay: 0.13, ease: faceEase } }
+    : { opacity: 1, scale: 1, transition: { duration: 0.28, ease: faceEase } };
+  const faceExit = cozyFlip
+    ? { opacity: 0, scale: 1, transition: { duration: 0.14, ease: faceEase } }
+    : { opacity: 0, scale: 0.94, transition: { duration: 0.28, ease: faceEase } };
+
   return (
     <div className="flex h-full flex-col">
       <div className="relative min-h-0 flex-1">
@@ -163,11 +180,17 @@ export default function LearnDeck<T extends { id: string }>({
             if (Math.abs(x.get()) < 8) {
               setFlipped((f) => !f);
               setFlipBurst((k) => k + 1);
+              // cozy — LẬT GIẤY: thẻ hẹp ngang lại như đang xoay quanh trục
+              // dọc rồi mở ra. Chỉ MỘT lần đảo chiều (hẹp → mở) thay vì 4 như
+              // cú nảy squash-stretch cũ, nên đọc ra là "lật" chứ không phải
+              // "rung". Dùng scaleX chứ không scaleY: thẻ cao ~500px nên nén
+              // dọc sẽ kéo mép đi rất xa, còn nén ngang trên bề rộng ~340px
+              // chỉ ~40px — vừa đủ thấy. Và nén ngang mới đúng là hình chiếu
+              // của một cú xoay quanh trục dọc.
               if (theme === "cozy") {
                 cardFx.start({
-                  scaleX: [1, 1.05, 0.97, 1.01, 1],
-                  scaleY: [1, 0.95, 1.04, 0.99, 1],
-                  transition: { duration: 0.5, ease: "easeOut" },
+                  scaleX: [1, 0.88, 1],
+                  transition: { duration: 0.34, times: [0, 0.5, 1], ease: [0.4, 0, 0.2, 1] },
                 });
               }
               playFlip();
@@ -195,10 +218,9 @@ export default function LearnDeck<T extends { id: string }>({
               {!flipped ? (
                 <motion.div
                   key="front"
-                  initial={{ opacity: 0, scale: 1.06 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.94 }}
-                  transition={{ duration: 0.28, ease: [0.2, 0.8, 0.2, 1] }}
+                  initial={faceInit}
+                  animate={faceShow}
+                  exit={faceExit}
                   className="absolute inset-0"
                 >
                   <div className={`card-lux h-full w-full overflow-y-auto p-6 flex flex-col ${theme === "game" ? "glitch-in" : ""}`}>
@@ -209,10 +231,9 @@ export default function LearnDeck<T extends { id: string }>({
               ) : (
                 <motion.div
                   key="back"
-                  initial={{ opacity: 0, scale: 1.06 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.94 }}
-                  transition={{ duration: 0.28, ease: [0.2, 0.8, 0.2, 1] }}
+                  initial={faceInit}
+                  animate={faceShow}
+                  exit={faceExit}
                   className="absolute inset-0"
                 >
                   <div
