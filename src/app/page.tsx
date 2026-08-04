@@ -86,6 +86,9 @@ export default function Home() {
         <Link
           href="/quiz?mode=blitz"
           onClick={() => playTap()}
+          /* đỏ ấm: "Blitz 60 giây" là hành động gấp gáp — màu phải nói lên điều
+             đó, và phải khác hẳn vàng mật ong để có tương phản trên trang chủ */
+          data-hue={5}
           className="cyber flex items-center gap-3 rounded-[var(--r-md)] bg-gold-500 px-4 py-3"
         >
           <IconBolt className="h-5 w-5 shrink-0 text-onaccent" />
@@ -126,7 +129,7 @@ export default function Home() {
       </section>
 
       {/* Kho — card số liệu phẳng */}
-      <Link href="/inventory" onClick={() => playTap()} className="cyber card-lux block p-4">
+      <Link href="/inventory" onClick={() => playTap()} data-hue={6} className="cyber card-lux block p-4">
         <div className="flex items-center justify-between">
           <p className="label-luxe">Kho hàng · Thư viện</p>
           <span className="text-xs font-semibold text-gold-300">Xem kho →</span>
@@ -147,6 +150,7 @@ export default function Home() {
             <Link
               href="/browse?tab=dong"
               onClick={() => playTap()}
+              data-hue={4}
               className="cyber chip shrink-0 text-gold-300"
             >
               Tất cả {collCount} dòng →

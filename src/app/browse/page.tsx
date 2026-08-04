@@ -90,14 +90,15 @@ export default function BrowsePage() {
       />
 
       <div className="flex flex-wrap items-center gap-2">
-        {TABS.map((t) => (
+        {TABS.map((t, ti) => (
           <button
             key={t}
             onClick={() => {
               setTab(t);
               playTap();
             }}
-            className={`cyber rounded-[var(--r-sm)] px-4 py-1.5 text-sm font-semibold transition ${
+            data-hue={ti + 2}
+            className={`cyber rounded-[var(--r-sm)] px-4 py-1.5 text-sm font-semibold transition-colors ${
               tab === t ? "bg-gold-foil text-onaccent shadow-glow" : "border border-hairline text-taupe"
             }`}
           >

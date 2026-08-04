@@ -86,10 +86,15 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
       spring: { type: "spring", stiffness: 420, damping: 24 },
       bouncy: { type: "spring", stiffness: 480, damping: 16 },
       pop: {
-        // squash & stretch RÕ RỆT: nén bẹt → kéo cao gầy → lắng (chỉ scale,
-        // in-place nên không tiền đình). Biên độ ±14% cho "đã tay" kiểu AC.
-        keyframes: { scaleX: [1.14, 0.9, 1.05, 0.98, 1], scaleY: [0.86, 1.14, 0.96, 1.01, 1] },
-        transition: { duration: 0.46, ease: [0.3, 0.9, 0.4, 1] },
+        // Squash & stretch GIỮ NGUYÊN chất, nhưng lắng nhanh hơn:
+        // trước ±14% với BỐN lần đảo chiều → đọc ra "rung" chứ không phải "nảy".
+        // Nay ±8% và chỉ HAI lần đảo chiều: vẫn nảy mềm kiểu đệm bông, dứt khoát
+        // hơn, không còn đoạn lắc đuôi.
+        // Bắt đầu ĐÚNG chỗ nút đang đứng lúc đè (1.06 / 0.90) → nối liền mạch,
+        // không có cú nhảy. Rồi bung cao gầy, rồi lắng. Mỗi trục chỉ 2 lần đảo
+        // chiều: vẫn "boing" kiểu Animal Crossing nhưng không còn đuôi rung.
+        keyframes: { scaleX: [1.06, 0.96, 1.008, 1], scaleY: [0.9, 1.05, 0.994, 1] },
+        transition: { duration: 0.38, ease: [0.25, 0.85, 0.35, 1] },
       },
       // bật lên như keycap kem
       hover: { scale: 1.03, transition: { type: "spring", stiffness: 380, damping: 18 } },

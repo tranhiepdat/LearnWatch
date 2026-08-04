@@ -15,28 +15,31 @@ export default function FlipBurst() {
 
   if (theme === "game") {
     return (
-      // KHÔNG overflow-hidden: 4 khối góc nằm sát mép, bị cắt là mất nửa hình.
       <div className="pointer-events-none absolute inset-0 z-30">
         {/* MẢNG SOLID quét lên — nhân vật chính của cú lật.
+            PHẢI có overflow-hidden bọc RIÊNG: mảng này chạy y từ 110% → -110%,
+            để hở là nó tràn LÊN TRÊN thẻ, phủ xanh cả tiêu đề + hàng chip.
             (bỏ mixBlendMode: blend làm mất đường composite nhanh) */}
-        <motion.div
-          initial={{ y: "110%" }}
-          animate={{ y: "-110%" }}
-          transition={{ duration: 0.42, ease: [0.6, 0, 0.4, 1] }}
-          className="absolute inset-x-0 top-0 h-2/3"
-          style={{
-            background: "linear-gradient(0deg, transparent, rgb(var(--c-accent) / 0.5) 65%, rgb(var(--c-accent)) 100%)",
-          }}
-        />
-        {/* 4 KHỐI ĐẶC ở góc bay vào rồi hội tụ.
-            TRƯỚC chỗ này vẽ HAI hình chữ nhật SVG đầy đủ (8 cạnh) lệch nhau
-            2px bằng `pathLength` — mà framer hiện thực pathLength bằng
-            strokeDashoffset, tức PAINT lại mỗi khung hình. Vừa nhiều line vừa
-            tốn. Nay chỉ còn 4 khối, chạy transform+opacity thuần. */}
-        <span className="crn crn-tl" />
-        <span className="crn crn-tr" />
-        <span className="crn crn-bl" />
-        <span className="crn crn-br" />
+        <div className="absolute inset-0 overflow-hidden">
+          <motion.div
+            initial={{ y: "110%" }}
+            animate={{ y: "-110%" }}
+            transition={{ duration: 0.42, ease: [0.6, 0, 0.4, 1] }}
+            className="absolute inset-x-0 top-0 h-2/3"
+            style={{
+              background: "linear-gradient(0deg, transparent, rgb(var(--c-accent) / 0.5) 65%, rgb(var(--c-accent)) 100%)",
+            }}
+          />
+        </div>
+        {/* 4 KHỐI ĐẶC ở góc bay vào rồi hội tụ. Nằm NGOÀI lớp cắt ở trên, nhưng
+            đặt sát mép trong (inset dương) nên không thò ra khỏi thẻ.
+            TRƯỚC chỗ này vẽ HAI hình chữ nhật SVG đầy đủ (8 cạnh) lệch nhau 2px
+            bằng `pathLength` — framer hiện thực pathLength bằng
+            strokeDashoffset, tức PAINT lại mỗi khung hình. */}
+        <span className="crn crn-in crn-tl" />
+        <span className="crn crn-in crn-tr" />
+        <span className="crn crn-in crn-bl" />
+        <span className="crn crn-in crn-br" />
       </div>
     );
   }

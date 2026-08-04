@@ -131,6 +131,7 @@ export default function LearnDeck<T extends { id: string }>({
               x.set(0);
               onReshuffle();
             }}
+            data-hue={2}
             className="cyber mt-2 rounded-[var(--r-md)] bg-gold-400 px-6 py-3 font-bold text-onaccent shadow-glow"
           >
             Học lại (xáo trộn)
@@ -263,6 +264,7 @@ export default function LearnDeck<T extends { id: string }>({
               onReshuffle();
             }}
             aria-label="Xáo trộn"
+            data-hue={4}
             className="cyber grid h-11 w-11 place-items-center rounded-[var(--r-lg)] bg-surface-2 text-gold-300 transition-colors"
           >
             <IconShuffle className="h-5 w-5" />
@@ -271,6 +273,8 @@ export default function LearnDeck<T extends { id: string }>({
         <button
           onClick={() => fling(1)}
           aria-label={knowLabel}
+          /* "đã thuộc" = XANH CỎ, không phải vàng — màu nói đúng nghĩa hành động */
+          data-hue={2}
           className="cyber grid h-14 w-14 place-items-center rounded-[var(--r-lg)] bg-gold-400 text-onaccent shadow-glow transition-colors"
         >
           <IconCheck className="h-6 w-6" />

@@ -527,7 +527,14 @@ export default function QuizRunner({
 
       <AnimatePresence>
         {answered && !isBlitz && (
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="shrink-0">
+          // nút mang ĐÚNG màu của nhóm câu hỏi → cả màn hình cùng một tông
+          <motion.div
+            data-hue={CAT_HUE[q.category] ?? 1}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="shrink-0"
+          >
             <JuicyButton
               onClick={next}
               className="mt-3 w-full rounded-[var(--r-md)] bg-gold-foil py-3.5 font-bold text-onaccent shadow-glow"

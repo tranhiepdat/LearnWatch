@@ -56,7 +56,14 @@ export default function JuicyButton({
   const hoverScale = theme === "game" ? 1 : meta.motion.hover.scale;
 
   function toRest() {
-    body.start({ scale: hovering.current ? hoverScale : 1, scaleY: 1, transition: meta.motion.hover.transition });
+    // reset CẢ scaleX lẫn scaleY: framer cộng dồn scale × scaleX × scaleY, bỏ
+    // sót một trục là nút đứng ở tỉ lệ méo vĩnh viễn.
+    body.start({
+      scale: hovering.current ? hoverScale : 1,
+      scaleX: 1,
+      scaleY: 1,
+      transition: meta.motion.hover.transition,
+    });
   }
 
   function firePress() {
@@ -70,9 +77,15 @@ export default function JuicyButton({
     flash.start({ opacity: 0, transition: { duration: theme === "cozy" ? 0.32 : 0.24, ease: "easeOut" } });
     // Phản hồi bắt đầu ngay lúc ĐÈ XUỐNG (trước đây digital không nhúc nhích
     // lúc đè, thả ra mới giật một cái — đọc ra là "chết rồi nhảy").
+    //
+    // Cozy đè xuống là NÉN BẸT (rộng ra + thấp xuống) — đúng vật lý squash, và
+    // quan trọng hơn: dùng CÙNG BỘ KHOÁ scaleX/scaleY với keyframe lúc thả.
+    // Trước đây đè bằng `scale` mà thả bằng `scaleX/scaleY` — hai bộ khác nhau
+    // nên framer phải NHẢY từ trạng thái đang có sang giá trị đầu của keyframe
+    // kia, sinh thêm mấy lần đảo chiều thừa. Đó là chỗ "bounce chưa ổn".
     body.start(
       theme === "cozy"
-        ? { scale: meta.motion.tap, scaleY: meta.motion.tap - 0.02, transition: { duration: 0.09, ease: "easeOut" } }
+        ? { scaleX: 1.06, scaleY: 0.9, transition: { duration: 0.09, ease: "easeOut" } }
         : { scale: meta.motion.tap, transition: { duration: 0.09, ease: "easeOut" } },
     );
   }
