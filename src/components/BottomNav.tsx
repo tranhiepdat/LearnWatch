@@ -51,7 +51,10 @@ function Tab({
     // NẢY cả nút (icon + label) — squash & stretch theo theme
     bounce.start(
       theme === "cozy"
-        ? { scaleX: [1, 1.18, 0.9, 1.03, 1], scaleY: [1, 0.82, 1.12, 0.97, 1], transition: { duration: 0.42, ease: "easeOut" } }
+        ? // ±8% / 2 lần đảo chiều, thay cho ±18% / 4 lần. Chạm tab còn KÈM đổi
+          // route (React mount cả trang mới) nên biên độ lớn + nhiều lần đảo
+          // chiều là chỗ dễ rớt khung hình nhất → đọc ra "giựt giựt".
+          { scaleX: [1, 1.08, 0.97, 1], scaleY: [1, 0.92, 1.02, 1], transition: { duration: 0.3, ease: "easeOut" } }
         : theme === "game"
           ? // ĐƠN ĐIỆU: nén rồi về 1. Trước là [1, 0.88, 1.06, 1] — vọt lên
             // 1.06 rồi lùi lại, trên đúng thứ được bấm nhiều nhất app.

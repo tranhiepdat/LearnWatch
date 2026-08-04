@@ -83,8 +83,11 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
     motion: {
       // Animal Crossing: pop tròn trịa, dễ thương — boing MỀM biên độ nhỏ
       tap: 0.94,
-      spring: { type: "spring", stiffness: 420, damping: 24 },
-      bouncy: { type: "spring", stiffness: 480, damping: 16 },
+      // damping nâng cho ζ ≈ 0.7: VẪN nảy đúng chất Animal Crossing nhưng tắt
+      // dứt khoát. Trước bouncy ζ=0.365 (dao động rất lâu) và nó chính là thứ
+      // chạy chỉ báo tab active — nảy dai trong lúc trang mới đang mount.
+      spring: { type: "spring", stiffness: 420, damping: 30 },
+      bouncy: { type: "spring", stiffness: 480, damping: 30 },
       pop: {
         // Squash & stretch GIỮ NGUYÊN chất, nhưng lắng nhanh hơn:
         // trước ±14% với BỐN lần đảo chiều → đọc ra "rung" chứ không phải "nảy".
@@ -97,7 +100,8 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
         transition: { duration: 0.38, ease: [0.25, 0.85, 0.35, 1] },
       },
       // bật lên như keycap kem
-      hover: { scale: 1.03, transition: { type: "spring", stiffness: 380, damping: 18 } },
+      // hover mà dao động (ζ=0.462) là vô lý — rê chuột vào nút thì nó rung
+      hover: { scale: 1.03, transition: { type: "spring", stiffness: 380, damping: 26 } },
       page: {
         initial: { opacity: 0, y: 10, scale: 0.99 },
         animate: { opacity: 1, y: 0, scale: 1 },
@@ -108,7 +112,7 @@ export const THEMES: Record<ThemeId, ThemeMeta> = {
         initial: { opacity: 0, y: 6, scaleX: 0.97, scaleY: 0.9 },
         animate: { opacity: 1, y: 0, scaleX: 1, scaleY: 1 },
         exit: { opacity: 0, scaleY: 0.96 },
-        transition: { type: "spring", stiffness: 440, damping: 20 },
+        transition: { type: "spring", stiffness: 440, damping: 28 },
       },
     },
   },

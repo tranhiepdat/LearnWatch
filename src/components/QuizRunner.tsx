@@ -15,21 +15,8 @@ import CollectionToggle from "./CollectionToggle";
 import WatchDetail from "./WatchDetail";
 import JuicyButton from "./JuicyButton";
 import { IconCheck, IconClose, IconFlame, IconGem, IconBook, IconBolt, IconTrophy } from "./icons";
+import { QUIZ_CAT_HUE } from "@/lib/hue";
 
-/**
- * Mỗi nhóm câu hỏi MỘT MÀU riêng (1–6 trong bảng 7 màu cozy).
- * Trước đây là CAT_COLOR gom 6 nhóm vào chỉ 4 class utility — vì lúc đó bảng
- * màu chỉ có 4 màu không-trung-tính để chọn. Nay dùng data-hue nên đủ 6 màu
- * khác nhau, và cả thẻ (nhãn, ripple, quầng sáng) đều theo màu của nhóm.
- */
-const CAT_HUE: Record<string, number> = {
-  "Biệt danh": 1,
-  "Mẫu mã": 2,
-  "Chất liệu": 3,
-  "Nhìn hình": 4,
-  "Dòng": 6,
-  "Thật/Giả": 5,
-};
 
 /** thưởng combo: từ chuỗi 3 câu đúng liên tiếp có XP cộng thêm */
 function comboBonus(combo: number): number {
@@ -398,7 +385,7 @@ export default function QuizRunner({
             transition={meta.motion.card.transition}
             className={theme === "game" ? "glitch-in relative" : undefined}
           >
-            <motion.div animate={shake} data-hue={CAT_HUE[q.category] ?? 1} className="card-lux relative overflow-hidden p-6">
+            <motion.div animate={shake} data-hue={QUIZ_CAT_HUE[q.category] ?? 1} className="card-lux relative overflow-hidden p-6">
               {burstKey > 0 && answered && selected === q.correctIndex && <GoldBurst key={burstKey} />}
 
               <span className="label-luxe">
@@ -438,7 +425,7 @@ export default function QuizRunner({
                       disabled={answered}
                       data-no-pop
                       whileTap={{ scale: answered ? 1 : theme === "cozy" ? 0.94 : 0.97 }}
-                      className={`cyber flex items-center justify-between rounded-[var(--r-md)] border px-4 py-3 text-left text-sm font-medium transition ${cls}`}
+                      className={`cyber flex items-center justify-between rounded-[var(--r-md)] border px-4 py-3 text-left text-sm font-medium transition-colors ${cls}`}
                     >
                       <span>{opt}</span>
                       {answered && isCorrect && <IconCheck className="h-5 w-5 text-onaccent" />}
@@ -529,7 +516,7 @@ export default function QuizRunner({
         {answered && !isBlitz && (
           // nút mang ĐÚNG màu của nhóm câu hỏi → cả màn hình cùng một tông
           <motion.div
-            data-hue={CAT_HUE[q.category] ?? 1}
+            data-hue={QUIZ_CAT_HUE[q.category] ?? 1}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
@@ -549,7 +536,7 @@ export default function QuizRunner({
         <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center" onClick={() => setShowDetail(false)}>
           <div className="absolute inset-0 bg-ink/92" />
           <div
-            className="relative z-10 max-h-[88vh] w-full max-w-lg overflow-y-auto rounded-t-[var(--r-xl)] border border-hairline bg-surface p-5 pb-8 shadow-2xl sm:rounded-[var(--r-xl)]"
+            className="relative z-10 max-h-[88vh] w-full max-w-lg overflow-y-auto rounded-t-[var(--r-xl)] border border-hairline bg-surface p-5 pb-8 edge-solid sm:rounded-[var(--r-xl)]"
             onClick={(e) => e.stopPropagation()}
           >
             <button

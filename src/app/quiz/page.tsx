@@ -13,6 +13,7 @@ import { visibleWatches } from "@/data/watches";
 import { useTheme } from "@/lib/theme";
 import { IconQuiz, IconBolt, IconRedo } from "@/components/icons";
 import type { Brand } from "@/data/types";
+import { QUIZ_CAT_HUE, QUIZ_MODE_HUE, hueByIndex } from "@/lib/hue";
 
 type BrandOpt = "Tất cả" | Brand;
 type CatOpt = "Tất cả" | QuizCategory;
@@ -124,7 +125,8 @@ function QuizSetup() {
               setMode(m.id);
               playPop();
             }}
-            className={`cyber flex items-center gap-3 rounded-[var(--r-md)] border p-3.5 text-left transition ${
+            data-hue={QUIZ_MODE_HUE[m.id]}
+            className={`cyber flex items-center gap-3 rounded-[var(--r-md)] border p-3.5 text-left transition-colors ${
               mode === m.id
                 ? "border-gold-400 bg-gold-400"
                 : m.disabled
@@ -156,7 +158,13 @@ function QuizSetup() {
             <p className="label-luxe mb-2">Hãng</p>
             <FilterSelect value={brand} options={BRANDS} counts={QB_COUNTS} onChange={(v) => setBrand(v as BrandOpt)} />
           </div>
-          <Picker label="Chủ đề" options={CATS} value={cat} onChange={setCat} />
+          <Picker
+            label="Chủ đề"
+            options={CATS}
+            value={cat}
+            onChange={setCat}
+            hueOf={(o, i) => QUIZ_CAT_HUE[o] ?? hueByIndex(i)}
+          />
         </>
       )}
 
@@ -164,8 +172,8 @@ function QuizSetup() {
         <div>
           <p className="label-luxe mb-2">Số câu</p>
           <div className="flex gap-2">
-            {LENGTHS.map((n) => (
-              <Chip key={n} active={count === n} onClick={() => setCount(n)}>
+            {LENGTHS.map((n, i) => (
+              <Chip key={n} hue={hueByIndex(i)} active={count === n} onClick={() => setCount(n)}>
                 {n} câu
               </Chip>
             ))}
@@ -173,12 +181,15 @@ function QuizSetup() {
         </div>
       )}
 
-      <JuicyButton
-        onClick={start}
-        className="w-full rounded-[var(--r-md)] bg-gold-foil py-4 font-display text-lg font-semibold text-onaccent shadow-glow"
-      >
-        {mode === "blitz" ? "⚡ Vào đua!" : mode === "mistakes" ? "Xoá nợ thôi!" : "Bắt đầu"}
-      </JuicyButton>
+      {/* nút mang màu của CHẾ ĐỘ đang chọn → nhìn nút là biết sắp chơi kiểu gì */}
+      <div data-hue={QUIZ_MODE_HUE[mode]}>
+        <JuicyButton
+          onClick={start}
+          className="w-full rounded-[var(--r-md)] bg-gold-foil py-4 font-display text-lg font-semibold text-onaccent shadow-glow"
+        >
+          {mode === "blitz" ? "⚡ Vào đua!" : mode === "mistakes" ? "Xoá nợ thôi!" : "Bắt đầu"}
+        </JuicyButton>
+      </div>
     </div>
   );
 }
@@ -195,10 +206,13 @@ function Chip({
   active,
   onClick,
   children,
+  hue,
 }: {
   active: boolean;
   onClick: () => void;
   children: React.ReactNode;
+  /** màu nhóm (1–7); chỉ có tác dụng ở theme cozy */
+  hue?: number;
 }) {
   return (
     <button
@@ -206,6 +220,7 @@ function Chip({
         onClick();
         playTap();
       }}
+      data-hue={hue}
       className={`cyber chip text-sm ${active ? "chip-on" : ""}`}
     >
       {children}
@@ -218,18 +233,21 @@ function Picker<T extends string>({
   options,
   value,
   onChange,
+  hueOf,
 }: {
   label: string;
   options: T[];
   value: T;
   onChange: (v: T) => void;
+  /** chọn chủ đề nào thì thấy ĐÚNG màu sẽ gặp lúc chơi */
+  hueOf?: (o: T, i: number) => number;
 }) {
   return (
     <div>
       <p className="label-luxe mb-2">{label}</p>
       <div className="flex flex-wrap gap-2">
-        {options.map((o) => (
-          <Chip key={o} active={value === o} onClick={() => onChange(o)}>
+        {options.map((o, i) => (
+          <Chip key={o} hue={hueOf?.(o, i)} active={value === o} onClick={() => onChange(o)}>
             {o}
           </Chip>
         ))}

@@ -58,7 +58,7 @@ export default function FilterSelect({
             exit={{ opacity: 0, y: -4, scaleY: 0.96, transition: { duration: 0.12 } }}
             transition={{ duration: 0.18, ease: [0.25, 0.8, 0.25, 1] }}
             style={{ transformOrigin: "top" }}
-            className="absolute left-0 top-full z-40 mt-1.5 max-h-[55vh] w-52 overflow-y-auto rounded-[var(--r-md)] border border-hairline bg-surface p-1 shadow-2xl"
+            className="absolute left-0 top-full z-40 mt-1.5 max-h-[55vh] w-52 overflow-y-auto rounded-[var(--r-md)] border border-hairline bg-surface p-1 edge-solid"
           >
           {options.map((o) => (
             <button
@@ -68,7 +68,7 @@ export default function FilterSelect({
                 setOpen(false);
                 playTap();
               }}
-              className={`cyber flex w-full items-center justify-between rounded-[var(--r-xs)] px-3 py-2 text-left text-sm transition ${
+              className={`cyber flex w-full items-center justify-between rounded-[var(--r-xs)] px-3 py-2 text-left text-sm transition-colors ${
                 o === value ? "bg-gold-400 font-semibold text-onaccent" : "text-ivory"
               }`}
             >

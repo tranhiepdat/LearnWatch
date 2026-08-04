@@ -50,7 +50,7 @@ export default function WatchVisual({
         width={size}
         height={size}
         onError={() => setImgFailed(true)}
-        className={`rounded-full object-cover shadow-inner ${className}`}
+        className={`rounded-full object-cover ${className}`}
         style={{ width: size, height: size }}
       />
     );

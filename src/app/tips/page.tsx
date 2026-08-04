@@ -9,19 +9,11 @@ import { hTap } from "@/lib/haptics";
 import { shuffle } from "@/lib/quiz";
 import { IconBulb, IconCheck } from "@/components/icons";
 import SpeakButton from "@/components/SpeakButton";
+import { TIP_CAT_HUE as CAT_HUE } from "@/lib/hue";
 
 type Deck = "today" | "all" | TipCat;
 const tipKey = (id: string) => `tip:${id}`;
 
-/** Màu riêng cho từng nhóm mẹo. Chọn các sắc CÁCH XA nhau (bỏ hue 7 vì vàng
- *  nắng nhìn gần như vàng mật ong của hue 1) → nhìn màu là phân biệt được ngay. */
-const CAT_HUE: Record<TipCat, number> = {
-  "Tư vấn": 1,      // vàng mật ong
-  "Chốt deal": 5,   // đỏ ấm
-  "Nhận diện": 4,   // xanh trời
-  "Chăm sóc": 2,    // xanh cỏ
-  "Kiến thức": 6,   // tím oải hương
-};
 const deckHue = (d: Deck) => (d === "today" ? 7 : d === "all" ? 3 : CAT_HUE[d]);
 
 export default function TipsPage() {

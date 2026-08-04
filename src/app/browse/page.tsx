@@ -182,7 +182,7 @@ export default function BrowsePage() {
         <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center" onClick={() => setSelected(null)}>
           <div className="absolute inset-0 bg-ink/92" />
           <div
-            className="relative z-10 max-h-[88vh] w-full max-w-lg overflow-y-auto rounded-t-[var(--r-xl)] border border-hairline bg-surface p-5 pb-8 shadow-2xl sm:rounded-[var(--r-xl)]"
+            className="relative z-10 max-h-[88vh] w-full max-w-lg overflow-y-auto rounded-t-[var(--r-xl)] border border-hairline bg-surface p-5 pb-8 edge-solid sm:rounded-[var(--r-xl)]"
             onClick={(e) => e.stopPropagation()}
           >
             <button

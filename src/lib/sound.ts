@@ -592,8 +592,33 @@ export function playTimeUp() {
   audio((t) => v().timeup(t));
 }
 
+/**
+ * DỰNG SẴN lúc máy rảnh, để cú chạm ĐẦU TIÊN không phải trả giá.
+ *
+ * `ac()` vừa tạo AudioContext vừa gọi `ensureVerb()` — mà dựng IR vang là vòng
+ * lặp JS nặng (cozy ~76.800 vòng, lux ~201.600, mỗi vòng có Math.random +
+ * Math.pow). Trước đây toàn bộ việc đó chạy ĐỒNG BỘ ngay trong handler
+ * pointerdown, tức đúng khung hình mà animation vừa bắt đầu → cú chạm đầu bị
+ * khựng. AudioContext tạo được ở trạng thái "suspended" mà không cần cử chỉ,
+ * và dựng IR cũng không cần nó đang chạy, nên dời hết sang lúc rảnh là an toàn.
+ */
+function warmUpAudio() {
+  try {
+    ac();
+    // tạo xong thì cho ngủ lại; cú chạm thật sẽ resume() — thao tác rất rẻ
+    if (ctx && ctx.state === "running") void ctx.suspend();
+  } catch {
+    /* ignore */
+  }
+}
+
 // FIX mobile: mở khoá + giữ AudioContext chạy; đổi theme = đổi luôn IR vang.
 if (typeof window !== "undefined") {
+  const ric = (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => void })
+    .requestIdleCallback;
+  if (ric) ric(() => warmUpAudio(), { timeout: 2500 });
+  else window.setTimeout(warmUpAudio, 1200);
+
   const keepAlive = () => {
     ac();
   };

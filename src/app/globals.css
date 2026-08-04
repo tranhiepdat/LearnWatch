@@ -45,9 +45,10 @@
   --grad-primary: linear-gradient(#38a0ff, #38a0ff); /* SOLID phosphor blue */
   --grad-line: linear-gradient(90deg, transparent, rgba(56, 160, 255, 0.6), transparent);
   /* bloom lân quang 2 lớp: lõi sắc + quầng rộng mờ */
-  --sh-glow: 0 0 14px -4px rgba(56, 160, 255, 0.6), 0 0 40px -16px rgba(56, 160, 255, 0.38);
-  --sh-ring: 0 0 0 1px rgba(56, 160, 255, 0.3), 0 10px 30px -14px rgba(0, 0, 0, 0.8);
-  --sh-lux: 0 18px 44px -22px rgba(0, 0, 0, 0.9);
+  /* PHẲNG: không còn lớp mờ nào. Chỉ giữ vành CỨNG 0 blur làm ranh giới. */
+  --sh-glow: 0 0 0 1px rgb(var(--c-accent) / 0.55);
+  --sh-ring: 0 0 0 1px rgba(56, 160, 255, 0.3);
+  --sh-lux: 0 0 0 1px rgba(56, 160, 255, 0.18);
   --btn-edge: rgba(11, 75, 148, 0.95);
 
   --r-xs: 0px; --r-sm: 0px; --r-md: 0px; --r-lg: 0px; --r-xl: 0px; --r-full: 0px;
@@ -63,11 +64,14 @@
 /* ===== ẤM ÁP (cozy) — MẬT ONG & NẮNG: vàng ấm chủ đạo, nhiều màu vui ===== */
 :root[data-theme="cozy"] {
   color-scheme: light;
-  --c-bg: 253 244 226;
-  --c-bg2: 249 234 205;
+  /* Nền DIM một nấc (253 244 226 → 240 223 190). Bỏ bóng mờ rồi thì thẻ phải
+     tự nổi bằng MÀU: đo được nền/thẻ đi từ 1.074:1 lên 1.289:1 — đủ thấy mép
+     mà vẫn ấm, vẫn kem. chip (surface2) cũng được đẩy tách khỏi nền. */
+  --c-bg: 240 223 190;
+  --c-bg2: 234 214 176;
   --c-surface: 255 253 246;
-  --c-surface2: 251 241 222;
-  --c-surface3: 245 228 197;
+  --c-surface2: 252 243 227;
+  --c-surface3: 246 231 203;
   --c-fg: 68 48 30;
   --c-muted: 146 118 88;
   --c-soft: 214 122 58; /* cam đất — dùng cho chữ nhấn ấm */
@@ -97,15 +101,21 @@
   --c-h6: 199 154 224;   --c-h6-ink: 155 69 203;   /* tím oải hương */
   --c-h7: 255 212 94;    --c-h7-ink: 140 102 0;    /* vàng nắng */
 
-  --bg-wash: linear-gradient(#fdf4e2, #fdf4e2); /* SOLID kem vàng */
+  --bg-wash: linear-gradient(#f0dfbe, #f0dfbe); /* SOLID kem vàng đã dim */
   /* DẪN XUẤT từ --c-accent (trước là hex nướng cứng nên không đổi theo nhóm).
      Nhờ 2 dòng này, 30 chỗ dùng bg-gold-foil / shadow-glow tự đổi màu theo
      [data-hue] mà không phải sửa component nào. */
   --grad-primary: linear-gradient(rgb(var(--c-accent)), rgb(var(--c-accent))); /* SOLID */
   --grad-line: linear-gradient(90deg, transparent, rgb(var(--c-accent-lo) / 0.5), transparent);
-  --sh-glow: 0 8px 16px -6px rgb(var(--c-accent-lo) / 0.45), 0 16px 34px -14px rgb(var(--c-accent-600) / 0.3);
-  --sh-ring: 0 6px 14px -8px rgba(150, 105, 45, 0.26), 0 14px 30px -16px rgba(150, 105, 45, 0.22);
-  --sh-lux: 0 4px 10px -5px rgba(158, 112, 52, 0.2), 0 14px 28px -12px rgba(158, 112, 52, 0.22), 0 28px 56px -28px rgba(158, 112, 52, 0.28);
+  /* PHẲNG: bỏ sạch bóng mờ. Ranh giới nay là VIỀN ĐẶC DÀY 2px bám theo bo góc
+     (`inset` nên không bao giờ lệch góc như border rời), cộng với nền đã dim
+     một nấc ở trên nên khối tự nổi bằng MÀU. */
+  --sh-glow: inset 0 0 0 2px rgb(var(--c-accent-600) / 0.55);
+  --sh-ring: inset 0 0 0 2px rgba(150, 105, 45, 0.24);
+  --sh-lux: inset 0 0 0 2px rgba(158, 112, 52, 0.16);
+  /* viền đặc dùng chung cho khối nổi (popup, dropdown, nav) — đậm hơn để tách
+     hẳn khỏi nội dung nằm dưới */
+  --edge: inset 0 0 0 2px rgba(150, 105, 45, 0.34);
   --btn-edge: rgb(var(--c-accent-600)); /* mép keycap cũng theo màu nhóm */
 
   --r-xs: 16px; --r-sm: 20px; --r-md: 26px; --r-lg: 32px; --r-xl: 38px; --r-full: 9999px;
@@ -145,7 +155,7 @@
 [data-theme="cozy"] [data-hue] {
   --grad-primary: linear-gradient(rgb(var(--c-accent)), rgb(var(--c-accent)));
   --grad-line: linear-gradient(90deg, transparent, rgb(var(--c-accent-lo) / 0.5), transparent);
-  --sh-glow: 0 8px 16px -6px rgb(var(--c-accent-lo) / 0.45), 0 16px 34px -14px rgb(var(--c-accent-600) / 0.3);
+  --sh-glow: inset 0 0 0 2px rgb(var(--c-accent-600) / 0.55);
   --btn-edge: rgb(var(--c-accent-600));
   --sel-bg: rgb(var(--c-accent) / 0.34);
 }
@@ -183,9 +193,10 @@
   --bg-wash: radial-gradient(130% 90% at 50% -15%, #143126 0%, #0c1d16 52%, #0a1712 100%);
   --grad-primary: linear-gradient(#d9b978, #d9b978); /* SOLID champagne (accent) */
   --grad-line: linear-gradient(90deg, transparent, rgba(217, 185, 120, 0.55), transparent);
-  --sh-glow: 0 10px 26px -10px rgba(217, 185, 120, 0.35);
-  --sh-ring: 0 0 0 1px rgba(217, 185, 120, 0.28), 0 14px 34px -16px rgba(0, 0, 0, 0.6);
-  --sh-lux: 0 22px 54px -26px rgba(0, 0, 0, 0.75);
+  /* PHẲNG: giữ đúng vành champagne 1px (0 blur), bỏ hết lớp mờ */
+  --sh-glow: 0 0 0 1px rgba(217, 185, 120, 0.45);
+  --sh-ring: 0 0 0 1px rgba(217, 185, 120, 0.28);
+  --sh-lux: 0 0 0 1px rgba(217, 185, 120, 0.16);
   --btn-edge: rgba(120, 92, 40, 0.95);
 
   --r-xs: 6px; --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-full: 9999px;
@@ -235,7 +246,7 @@ body::before {
 [data-theme="cozy"] body::before { opacity: 0.075; mix-blend-mode: multiply; }
 /* quầng nắng ấm TĨNH — cảm giác ánh chiều hắt vào phòng (không animate) */
 [data-theme="cozy"] body {
-  background-image: radial-gradient(120% 80% at 50% -10%, rgba(255, 226, 150, 0.55) 0%, rgba(255, 226, 150, 0) 55%), var(--bg-wash);
+  background-image: radial-gradient(120% 80% at 50% -10%, rgba(255, 226, 150, 0.38) 0%, rgba(255, 226, 150, 0) 55%), var(--bg-wash);
 }
 
 /* Digital: lưới điểm TĨNH mảnh — bàn vẽ kỹ thuật */
@@ -304,6 +315,12 @@ body::after {
   .stat {
     @apply flex items-center gap-1 whitespace-nowrap text-[11px] font-semibold text-taupe;
   }
+  /* Khối NỔI (popup, dropdown, nav): thay bóng mờ `shadow-2xl` bằng viền ĐẶC
+     bám theo bo góc. Riêng cozy cần đậm hơn vì nền mờ phía sau cũng là màu
+     kem (bg-ink = kem), popup và nền chỉ cách nhau ~1.07:1 nếu không có mép. */
+  .edge-solid {
+    box-shadow: var(--edge, inset 0 0 0 1px rgb(var(--c-accent) / 0.32));
+  }
   .app-frame {
     @apply mx-auto w-full max-w-[480px] lg:max-w-5xl;
   }
@@ -330,10 +347,10 @@ body::after {
 /* Ô nhập: nền đặc lõm vào (không viền chỉ) */
 [data-theme="cozy"] input {
   background: rgb(var(--c-surface2));
-  box-shadow: inset 0 2px 4px rgba(150, 100, 50, 0.16);
+  box-shadow: inset 0 0 0 2px rgba(150, 105, 45, 0.26);
 }
 [data-theme="cozy"] input:focus {
-  box-shadow: inset 0 2px 4px rgba(150, 100, 50, 0.16), 0 0 0 3px rgb(var(--c-accent) / 0.45);
+  box-shadow: inset 0 0 0 2px rgb(var(--c-accent)), 0 0 0 3px rgb(var(--c-accent) / 0.45);
 }
 /* Icon UI dày lên cho hợp chất ấm (chỉ icon 24×24 của icons.tsx —
    KHÔNG đụng GoalRing 84×84 hay WatchVisual) */
@@ -396,16 +413,16 @@ body::after {
 }
 /* Cozy: chip mềm, bóng ẤM toả — không còn mép keycap 3D */
 [data-theme="cozy"] .chip {
-  box-shadow: 0 3px 8px -4px rgba(150, 100, 50, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  box-shadow: inset 0 0 0 2px rgba(150, 105, 45, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 /* lux: phản hồi bấm phải tới trong ~90ms mới quy được về cú chạm */
 [data-theme="lux"] .cyber:active:not(:disabled),
 [data-theme="lux"] .chip:active {
-  box-shadow: inset 0 0 0 1px rgb(var(--c-accent) / 0.55), 0 0 18px -6px rgb(var(--c-accent) / 0.7);
+  box-shadow: inset 0 0 0 2px rgb(var(--c-accent) / 0.7);
   transition: box-shadow 90ms ease-out;
 }
 [data-theme="cozy"] .chip:active {
-  box-shadow: 0 1px 4px -3px rgba(150, 100, 50, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  box-shadow: inset 0 0 0 3px rgba(150, 105, 45, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 [data-theme="cozy"] .chip-on {
   box-shadow: var(--sh-glow), inset 0 1px 0 rgba(255, 255, 255, 0.45);
@@ -629,11 +646,11 @@ body::after {
    trị framer vừa ghi → nhoè, cao su, đúng cảm giác "giật giật".
    Phần `:active { transform }` cũ cũng là code chết (inline style luôn thắng). */
 .btn-lux {
-  box-shadow: 0 3px 0 -1px rgb(var(--c-accent) / 0.3), 0 12px 26px -14px rgb(0 0 0 / 0.75);
+  box-shadow: 0 0 0 1px rgb(var(--c-accent) / 0.4);
   transition: box-shadow 120ms ease-out;
 }
 .btn-lux:active {
-  box-shadow: 0 1px 0 -1px rgb(var(--c-accent) / 0.3), inset 0 2px 6px rgb(0 0 0 / 0.35);
+  box-shadow: 0 0 0 1px rgb(var(--c-accent) / 0.7);
 }
 
 /* ===== Nút 3D lún — CHỈ cozy (keycap); digital phẳng, boutique glow ===== */
@@ -641,11 +658,11 @@ body::after {
    cũ. Thay bằng bóng ẤM MỀM toả xuống: vẫn có chiều sâu, vẫn "cozy", nhưng
    không còn khối 3D giả. Không có `transform` trong transition (framer là chủ). */
 .btn3d {
-  box-shadow: 0 6px 18px -8px rgb(var(--c-accent-600) / 0.55), 0 2px 6px -2px rgb(var(--c-accent-600) / 0.28);
+  box-shadow: inset 0 0 0 2px rgb(var(--c-accent-600) / 0.5);
   transition: box-shadow 0.16s ease;
 }
 .btn3d:active {
-  box-shadow: 0 2px 8px -6px rgb(var(--c-accent-600) / 0.5);
+  box-shadow: inset 0 0 0 3px rgb(var(--c-accent-600) / 0.7);
 }
 
 /* ============================================================
@@ -765,7 +782,7 @@ body::after {
   inset: 0;
   z-index: 70;
   pointer-events: none;
-  box-shadow: inset 0 0 44px 4px rgb(var(--c-danger) / 0.4);
+  box-shadow: inset 0 0 0 4px rgb(var(--c-danger) / 0.85);
   animation: dangeredge 0.5s ease-out forwards;
 }
 
@@ -808,7 +825,7 @@ body::after {
   /* COZY — phồng mềm ấm */
   :where([data-theme="cozy"]) .cyber:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)) {
     transform: scale(1.035);
-    box-shadow: 0 10px 20px -10px rgba(150, 105, 45, 0.5);
+    box-shadow: inset 0 0 0 2px rgb(var(--c-accent-600) / 0.45);
   }
   :where([data-theme="cozy"]) .cyber.card-lux:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) { transform: scale(1.012); }
   :where([data-theme="cozy"]) [data-fx="hero"]:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)) { transform: scale(1.02); }
@@ -817,13 +834,13 @@ body::after {
   :where([data-theme="game"]) .cyber:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)),
   :where([data-theme="game"]) [data-fx="hero"]:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)) {
     transform: none;
-    box-shadow: 0 0 0 1px rgb(var(--c-accent)), 0 0 18px -4px rgb(var(--c-accent) / 0.75);
+    box-shadow: 0 0 0 1px rgb(var(--c-accent));
   }
 
   /* LUX — nở rất nhẹ + quầng champagne */
   :where([data-theme="lux"]) .cyber:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)) {
     transform: scale(1.022);
-    box-shadow: 0 0 22px -8px rgb(var(--c-accent) / 0.65);
+    box-shadow: 0 0 0 1px rgb(var(--c-accent) / 0.55);
   }
   :where([data-theme="lux"]) .cyber.card-lux:where(:hover:not(:active):not(.tap-pop):not(.tap-pop-lg)) { transform: scale(1.008); }
   :where([data-theme="lux"]) [data-fx="hero"]:where(:hover:not(:active):not(:disabled):not(.tap-pop):not(.tap-pop-lg)) { transform: scale(1.014); }
